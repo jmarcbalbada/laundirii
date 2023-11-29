@@ -3,7 +3,7 @@ import android.content.Context;
 
 import com.example.laundirii.database.Connect;
 public class Washer {
-    private String washerID;
+    private int washerID;
     private String username;
     private String password;
     private String shopName;
@@ -15,7 +15,6 @@ public class Washer {
     //constructors
     public Washer()
     {
-        washerID = "";
         username = "";
         password = "";
         shopName  = "";
@@ -24,9 +23,8 @@ public class Washer {
         status = false;
     }
 
-    public Washer(String washID,String user,String pass,String name,String loc,String contact, boolean stat)
+    public Washer(String user,String pass,String name,String loc,String contact, boolean stat)
     {
-        this.washerID = washID;
         this.username = user;
         this.password = pass;
         this.shopName = name;
@@ -54,6 +52,14 @@ public class Washer {
     {
         dbHelper = new Connect(context);
         return dbHelper.insertWasher(username,password,shopName,shopLocation,contactNo,washerStatus);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Shop name: " + shopName + "\n"
+                + "Contact No: " + contactNo + "\n"
+                + "Shop Location: " + shopLocation + "\n";
     }
 
 }

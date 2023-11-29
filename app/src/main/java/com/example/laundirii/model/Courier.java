@@ -5,7 +5,7 @@ import com.example.laundirii.database.Connect;
 
 public class Courier {
 
-    private String courierID;
+    private int courierID;
     private String username;
     private String password;
     private String name;
@@ -14,10 +14,10 @@ public class Courier {
     private boolean status;
     Connect dbHelper;
 
+
     //constructors
     public Courier()
     {
-        courierID = "";
         username = "";
         password = "";
         name  = "";
@@ -26,9 +26,8 @@ public class Courier {
         status = false;
     }
 
-    public Courier(String courID,String user,String pass,String name,String contact,String plate, boolean stat)
+    public Courier(String user,String pass,String name,String contact,String plate, boolean stat)
     {
-        this.courierID = courID;
         this.username = user;
         this.password = pass;
         this.name = name;
@@ -55,5 +54,13 @@ public class Courier {
     {
         dbHelper = new Connect(context);
         return dbHelper.insertCourier(username,password,name,contactNo,plateNo,courierStatus);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Name: " + name + "\n"
+                + "Contact No: " + contactNo + "\n"
+                + "Plate No: " + contactNo + "\n";
     }
 }

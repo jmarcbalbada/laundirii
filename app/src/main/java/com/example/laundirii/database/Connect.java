@@ -9,6 +9,10 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.laundirii.model.Client;
+import com.example.laundirii.model.Courier;
+import com.example.laundirii.model.Washer;
+
 public class Connect extends SQLiteOpenHelper {
     /* Fields on tables*/
 
@@ -40,6 +44,28 @@ public class Connect extends SQLiteOpenHelper {
     public static final String WASHER_CONTACT_NO = "WASHER_CONTACT_NO";
     public static final String WASHER_STATUS = "WASHER_STATUS";
 
+    // ORDER
+    public static final String ORDER_ID = "ORDER_ID";
+    public static final String ORDER_CLIENT_ID = "ORDER_CLIENT_ID";
+    public static final String ORDER_WASHER_ID = "ORDER_WASHER_ID";
+    public static final String ORDER_COURIER1_ID = "ORDER_COURIER1_ID";
+    public static final String TOTAL_COURIER1 = "TOTAL_COURIER1";
+    public static final String DATE_COURIER1 = "DATE_COURIER1";
+    public static final String ORDER_COURIER2_ID = "ORDER_COURIER2_ID";
+    public static final String TOTAL_COURIER2 = "TOTAL_COURIER2";
+    public static final String DATE_COURIER2 = "DATE_COURIER2";
+    public static final String TOTAL_DUE = "TOTAL_DUE";
+    public static final String TOTAL_PAID = "TOTAL_PAID";
+    public static final String PAYMENT_STATUS = "PAYMENT_STATUS";
+    public static final String GRAND_TOTAL = "GRAND_TOTAL";
+    public static final String DATE_RECEIVED = "DATE_RECEIVED";
+
+    // FEEDBACK
+    public static final String FEEDBACK_ID = "FEEDBACK_ID";
+    public static final String FEEDBACK_ORDER_ID = "FEEDBACK_ORDER_ID";
+    public static final String COMMENT = "COMMENT";
+    public static final String RATING = "RATING";
+
     public Connect(@Nullable Context context) {
         super(context,"laundiri.db",null,1);
     }
@@ -55,10 +81,33 @@ public class Connect extends SQLiteOpenHelper {
         String createWasherTableStatement = "CREATE TABLE WASHER (WASHER_ID INTEGER PRIMARY KEY, " +
                 "WASHER_USERNAME TEXT NOT NULL, WASHER_PASSWORD TEXT NOT NULL, SHOP_NAME TEXT, " +
                 "SHOP_LOCATION TEXT, WASHER_CONTACT_NO TEXT, WASHER_STATUS INTEGER);";
+        String createOrderTableStatement = "CREATE TABLE ORDER_TABLE (" +
+                "ORDER_ID INTEGER PRIMARY KEY, " +
+                "CLIENT_ID INTEGER, " +
+                "WASHER_ID INTEGER, " +
+                "COURIER1_ID INTEGER, " +
+                "TOTAL_COURIER1 REAL, " +
+                "DATE_COURIER1 TEXT, " +
+                "COURIER2_ID INTEGER, " +
+                "TOTAL_COURIER2 REAL, " +
+                "DATE_COURIER2 TEXT, " +
+                "TOTAL_DUE REAL, " +
+                "TOTAL_PAID REAL, " +
+                "PAYMENT_STATUS INTEGER, " +
+                "GRAND_TOTAL REAL, " +
+                "DATE_RECEIVED TEXT" +
+                ");";
+        String createFeedbackTableStatement = "CREATE TABLE FEEDBACK (" +
+                "FEEDBACK_ID INTEGER PRIMARY KEY, " +
+                "ORDER_ID INTEGER, " +
+                "COMMENT TEXT, " +
+                "RATING INTEGER" +
+                ");";
+        db.execSQL(createFeedbackTableStatement);
+        db.execSQL(createOrderTableStatement);
         db.execSQL(createClientTableStatement);
         db.execSQL(createCourierTableStatement);
         db.execSQL(createWasherTableStatement);
-
     }
 
     @Override
@@ -66,6 +115,8 @@ public class Connect extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS CLIENT");
         db.execSQL("DROP TABLE IF EXISTS COURIER");
         db.execSQL("DROP TABLE IF EXISTS WASHER");
+        db.execSQL("DROP TABLE IF EXISTS ORDER_TABLE");
+        db.execSQL("DROP TABLE IF EXISTS FEEDBACK");
         onCreate(db);
     }
 
@@ -144,9 +195,7 @@ public class Connect extends SQLiteOpenHelper {
         return isValid;
     }
 
-
-
-    // INSERT CLIENT
+    // INSERT CLIENT (REGISTER)
 
     public boolean insertClient(String username, String password, String name, String contactNo, String address, int paymentInfo) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -176,7 +225,7 @@ public class Connect extends SQLiteOpenHelper {
         return isInserted;
     }
 
-    // INSERT COURIER
+    // INSERT COURIER (REGISTER)
 
     public boolean insertCourier(String username, String password, String name, String contactNo, String plateNo, int courierStatus) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -206,7 +255,7 @@ public class Connect extends SQLiteOpenHelper {
         return isInserted;
     }
 
-    // INSERT WASHER
+    // INSERT WASHER (REGISTER)
     public boolean insertWasher(String username, String password, String shopName, String shopLocation, String contactNo, int washerStatus) {
         SQLiteDatabase db = this.getWritableDatabase();
         boolean isInserted = false;
@@ -233,6 +282,16 @@ public class Connect extends SQLiteOpenHelper {
         }
 
         return isInserted;
+    }
+
+    public boolean insertOrder(String orderID, Client client, Washer washer, Courier courier1,
+                               double totalCourier1, String dateCourier1, Courier courier2,
+                               double totalCourier2, String dateCourier2, double totalDue,
+                               double totalPaid, boolean paymentStatus, double grandTotal,
+                               String dateReceived)
+    {
+        boolean isValid = false;
+        return isValid;
     }
 
 

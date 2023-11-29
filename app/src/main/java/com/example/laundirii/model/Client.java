@@ -6,7 +6,7 @@ import com.example.laundirii.database.Connect;
 import com.example.laundirii.view.LoginActivity;
 
 public class Client {
-    private String customerID;
+    private int customerID;
     private String username;
     private String password;
     private String name;
@@ -19,7 +19,6 @@ public class Client {
     //constructors
     public Client()
     {
-        customerID = "";
         username = "";
         password = "";
         name  = "";
@@ -28,9 +27,8 @@ public class Client {
         paymentInfo = 0;
     }
 
-    public Client(String cusID,String user,String pass,String name,String contact,String address, int payment)
+    public Client(String user,String pass,String name,String contact,String address, int payment)
     {
-        this.customerID = cusID;
         this.username = user;
         this.password = pass;
         this.name = name;
@@ -57,6 +55,14 @@ public class Client {
     {
         dbHelper = new Connect(context);
         return dbHelper.insertClient(username,password,name,contactNo,address,paymentInfo);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Name: " + name + "\n"
+                + "Contact No: " + contactNo + "\n"
+                + "Address: " + address;
     }
 
 }
