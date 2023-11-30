@@ -1,4 +1,4 @@
-package com.example.laundirii.view.ui.slideshow;
+package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_logs;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,22 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.laundirii.databinding.FragmentSlideshowBinding;
+import com.example.laundirii.databinding.WasherDashboardFragmentLogsBinding;
 
-public class SlideshowFragment extends Fragment {
+public class WasherDashboardLogsFragment extends Fragment {
 
-    private FragmentSlideshowBinding binding;
+    private WasherDashboardFragmentLogsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        SlideshowViewModel slideshowViewModel =
-                new ViewModelProvider(this).get(SlideshowViewModel.class);
+        WasherDashboardLogsViewModel washerDashboardLogsViewModel =
+                new ViewModelProvider(this).get(WasherDashboardLogsViewModel.class);
 
-        binding = FragmentSlideshowBinding.inflate(inflater, container, false);
+        binding = WasherDashboardFragmentLogsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textSlideshow;
-        slideshowViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        washerDashboardLogsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
