@@ -18,6 +18,7 @@ import com.example.laundirii.R;
 import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.controller.RegisterAndLoginController;
 import com.example.laundirii.model.Courier;
+import com.example.laundirii.view.client_dashboard_ui.ClientDashboardActivity;
 import com.example.laundirii.view.courier_dashboard_ui.CourierDashboardActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -66,6 +67,8 @@ public class LoginActivity extends AppCompatActivity {
                         if(loginController.loginClient(username,password,LoginActivity.this))
                         {
                             Toast.makeText(getApplicationContext(), "Logging in as Client", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginActivity.this, ClientDashboardActivity.class);
+                            startActivity(intent);
                         }
                         else
                         {
