@@ -1,4 +1,4 @@
-package com.example.laundirii.view.ui;
+package com.example.laundirii.view.washer_dashboard_ui;
 
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.laundirii.databinding.ActivityWasherDashboardUiBinding;
 
-public class washer_dashboard_ui extends AppCompatActivity {
+public class Washer_dashboard_ui extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityWasherDashboardUiBinding binding;

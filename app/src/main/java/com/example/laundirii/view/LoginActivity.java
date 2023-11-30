@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.example.laundirii.R;
 import com.example.laundirii.controller.RegisterAndLoginController;
-import com.example.laundirii.view.ui.washer_dashboard_ui;
+import com.example.laundirii.view.washer_dashboard_ui.Washer_dashboard_ui;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class LoginActivity extends AppCompatActivity {
@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                         if(loginController.loginWasher(username,password,LoginActivity.this))
                         {
                             Toast.makeText(getApplicationContext(), "Logging in as Washer", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, washer_dashboard_ui.class);
+                            Intent intent = new Intent(LoginActivity.this, Washer_dashboard_ui.class);
                             startActivity(intent);
                         }
                         else
