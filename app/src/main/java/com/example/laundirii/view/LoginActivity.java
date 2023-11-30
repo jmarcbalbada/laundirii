@@ -4,17 +4,22 @@ package com.example.laundirii.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.laundirii.R;
+import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.controller.RegisterAndLoginController;
+import com.example.laundirii.model.Courier;
+import com.example.laundirii.view.client_dashboard_ui.ClientDashboardActivity;
+import com.example.laundirii.view.courier_dashboard_ui.CourierDashboardActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class LoginActivity extends AppCompatActivity {
@@ -36,6 +41,9 @@ public class LoginActivity extends AppCompatActivity {
         test = findViewById(R.id.labelSignin);
         loginController = new RegisterAndLoginController();
         signup = findViewById(R.id.signupText);
+        //DashboardController dashboardController = new DashboardController();
+        //boolean inserted = dashboardController.insertDummyValuesOnOrder(this);
+        //Log.e("DUMMY", inserted + "");
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +78,29 @@ public class LoginActivity extends AppCompatActivity {
                     case 1:
                         if(loginController.loginCourier(username,password,LoginActivity.this))
                         {
+                            DashboardController dashboardController = new DashboardController();
+                            Courier courier = dashboardController.getCourier(username,LoginActivity.this);
+                            Log.e("COURIER LOGIN", courier.getCourierID() + ", " + courier.getUsername() + ","
+                            + courier.getPassword() + ", " + courier.getName() + ", " + courier.getContactNo() + ","
+                            + courier.getPlateNo() + "," + courier.getStatus());
+                            // Get SharedPreferences instance
+                            SharedPreferences sharedPreferences = getSharedPreferences("LoginCourierPreferences", Context.MODE_PRIVATE);
+
+//                          // Create an editor to modify SharedPreferences
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                            editor.putInt("courierID", courier.getCourierID());
+                            editor.putString("courierUsername", courier.getUsername());
+                            editor.putString("courierPassword", courier.getPassword());
+                            editor.putString("courierName", courier.getName());
+                            editor.putString("courierContactNo", courier.getContactNo());
+                            editor.putString("courierPlateNo", courier.getPlateNo());
+                            editor.putBoolean("courierStatus", courier.getStatus());
+                            editor.apply();
+
                             Toast.makeText(getApplicationContext(), "Logging in as Courier", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginActivity.this, CourierDashboardActivity.class);
+                            startActivity(intent);
                         }
                         else
                         {

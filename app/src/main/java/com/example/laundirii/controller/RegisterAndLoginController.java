@@ -38,7 +38,6 @@ public class RegisterAndLoginController {
         int typeOfUserResult = 0;
         if(client.checkClientByUsername(username,context))
         {
-
             typeOfUserResult = 0;
         }else if(courier.checkCourierByUsername(username,context))
         {
@@ -85,9 +84,9 @@ public class RegisterAndLoginController {
         return courier.insertCourier(username,password,name,contactNo,plateNo,courierStatus,context);
     }
 
-    public boolean registerWasher(String username, String password, String shopName, String shopLocation, String contactNo, int washerStatus, Context context)
+    public boolean registerWasher(String username, String password, String shopName, String shopLocation, String contactNo, int washerStatus, double ratePerKg, Context context)
     {
-        return washer.insertWasher(username,password,shopName,shopLocation,contactNo,washerStatus,context);
+        return washer.insertWasher(username,password,shopName,shopLocation,contactNo,washerStatus,ratePerKg, context);
     }
 
 

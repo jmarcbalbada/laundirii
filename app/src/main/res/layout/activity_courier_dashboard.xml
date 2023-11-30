@@ -9,8 +9,8 @@
     tools:openDrawer="start">
 
     <include
-        android:id="@+id/app_bar_client_dashboard"
-        layout="@layout/app_bar_client_dashboard"
+        android:id="@+id/app_bar_courier_dashboard"
+        layout="@layout/app_bar_courier_dashboard"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -20,6 +20,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_client_dashboard"
-        app:menu="@menu/client_activity_main_drawer" />
+        app:headerLayout="@layout/nav_header_courier_dashboard"
+        app:menu="@menu/courier_activity_main_drawer" />
 </androidx.drawerlayout.widget.DrawerLayout>

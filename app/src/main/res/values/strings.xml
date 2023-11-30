@@ -33,4 +33,10 @@
     <string name="menu_logout">Logout</string>
     <string name="menu_current">Current</string>
     <string name="menu_history">History</string>
+    <string name="title_activity_courier_dashboard">CourierDashboardActivity</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="courier_home">Home</string>
+    <string name="courier_transaction">Transaction</string>
+    <string name="courier_logout">Logout</string>
 </resources>

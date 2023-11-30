@@ -13,9 +13,14 @@
         android:theme="@style/Theme.LaunDirii"
         tools:targetApi="31">
         <activity
-            android:name=".view.ClientDashboardActivity"
+            android:name=".view.client_dashboard_ui.ClientDashboardActivity"
             android:exported="false"
             android:label="@string/title_activity_client_dashboard"
+            android:theme="@style/Theme.LaunDirii.NoActionBar" />
+        <activity
+            android:name=".view.courier_dashboard_ui.CourierDashboardActivity"
+            android:exported="false"
+            android:label="@string/title_activity_courier_dashboard"
             android:theme="@style/Theme.LaunDirii.NoActionBar" />
         <activity
             android:name=".view.RegisterActivity"

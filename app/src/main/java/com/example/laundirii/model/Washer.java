@@ -9,6 +9,7 @@ public class Washer {
     private String shopName;
     private String shopLocation;
     private String contactNo;
+    private double ratePerKg;
     private boolean status;
     Connect dbHelper;
 
@@ -21,9 +22,22 @@ public class Washer {
         shopLocation  = "";
         contactNo = "";
         status = false;
+        ratePerKg = 0.0;
     }
 
-    public Washer(String user,String pass,String name,String loc,String contact, boolean stat)
+    public Washer(int washerID,String user,String pass,String name,String loc,String contact, double ratePerKg, boolean stat)
+    {
+        this.washerID = washerID;
+        this.username = user;
+        this.password = pass;
+        this.shopName = name;
+        this.shopLocation = loc;
+        this.contactNo = contact;
+        this.status = stat;
+        this.ratePerKg = ratePerKg;
+    }
+
+    public Washer(String user,String pass,String name,String loc,String contact, double ratePerKg, boolean stat)
     {
         this.username = user;
         this.password = pass;
@@ -31,6 +45,49 @@ public class Washer {
         this.shopLocation = loc;
         this.contactNo = contact;
         this.status = stat;
+        this.ratePerKg = ratePerKg;
+    }
+
+    // GETTERS AND SETTERS
+
+    public int getWasherID()
+    {
+        return this.washerID;
+    }
+
+    public String getUsername()
+    {
+        return this.username;
+    }
+
+    public String getPassword()
+    {
+        return this.password;
+    }
+
+    public String getShopName()
+    {
+        return this.shopName;
+    }
+
+    public String getShopLocation()
+    {
+        return this.shopLocation;
+    }
+
+    public String getContactNo()
+    {
+        return this.contactNo;
+    }
+
+    public double getRatePerKg()
+    {
+        return this.ratePerKg;
+    }
+
+    public boolean getStatus()
+    {
+        return this.status;
     }
 
     public boolean loginWasher(String username, String password, Context context)
@@ -48,10 +105,10 @@ public class Washer {
 
     // REGISTER
 
-    public boolean insertWasher(String username, String password, String shopName, String shopLocation, String contactNo, int washerStatus, Context context)
+    public boolean insertWasher(String username, String password, String shopName, String shopLocation, String contactNo, int washerStatus, double ratePerKg, Context context)
     {
         dbHelper = new Connect(context);
-        return dbHelper.insertWasher(username,password,shopName,shopLocation,contactNo,washerStatus);
+        return dbHelper.insertWasher(username,password,shopName,shopLocation,contactNo,washerStatus,ratePerKg);
     }
 
     @Override

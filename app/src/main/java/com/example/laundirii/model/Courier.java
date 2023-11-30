@@ -36,6 +36,17 @@ public class Courier {
         this.status = stat;
     }
 
+    public Courier(int courierID, String user,String pass,String name,String contact,String plate, boolean stat)
+    {
+        this.courierID = courierID;
+        this.username = user;
+        this.password = pass;
+        this.name = name;
+        this.contactNo = contact;
+        this.plateNo = plate;
+        this.status = stat;
+    }
+
     public boolean loginCourier(String username, String password, Context context)
     {
         dbHelper = new Connect(context);
@@ -54,6 +65,50 @@ public class Courier {
     {
         dbHelper = new Connect(context);
         return dbHelper.insertCourier(username,password,name,contactNo,plateNo,courierStatus);
+    }
+
+    public Courier getCourier(String username, Context context)
+    {
+        dbHelper = new Connect(context);
+        Courier courier = dbHelper.getCourier(username);
+        return courier;
+    }
+
+    // GETTERS AND SETTERS
+
+    public int getCourierID()
+    {
+        return this.courierID;
+    }
+
+    public String getUsername()
+    {
+        return this.username;
+    }
+
+    public String getPassword()
+    {
+        return this.password;
+    }
+
+    public String getName()
+    {
+        return this.name;
+    }
+
+    public String getContactNo()
+    {
+        return this.contactNo;
+    }
+
+    public String getPlateNo()
+    {
+        return this.plateNo;
+    }
+
+    public boolean getStatus()
+    {
+        return this.status;
     }
 
     @Override

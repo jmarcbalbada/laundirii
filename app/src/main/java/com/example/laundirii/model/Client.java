@@ -27,6 +27,17 @@ public class Client {
         paymentInfo = 0;
     }
 
+    public Client(int customerID,String user,String pass,String name,String contact,String address, int payment)
+    {
+        this.customerID = customerID;
+        this.username = user;
+        this.password = pass;
+        this.name = name;
+        this.contactNo = contact;
+        this.address = address;
+        this.paymentInfo = payment;
+    }
+
     public Client(String user,String pass,String name,String contact,String address, int payment)
     {
         this.username = user;
@@ -55,6 +66,41 @@ public class Client {
     {
         dbHelper = new Connect(context);
         return dbHelper.insertClient(username,password,name,contactNo,address,paymentInfo);
+    }
+
+    public int getCustomerID()
+    {
+        return this.customerID;
+    }
+
+    public String getUsername()
+    {
+        return this.username;
+    }
+
+    public String getPassword()
+    {
+        return this.password;
+    }
+
+    public String getName()
+    {
+        return this.name;
+    }
+
+    public String getContactNo()
+    {
+        return this.contactNo;
+    }
+
+    public String getAddress()
+    {
+        return this.address;
+    }
+
+    public int getPaymentInfo()
+    {
+        return this.paymentInfo;
     }
 
     @Override

@@ -11,7 +11,11 @@ import androidx.annotation.Nullable;
 
 import com.example.laundirii.model.Client;
 import com.example.laundirii.model.Courier;
+import com.example.laundirii.model.Order;
 import com.example.laundirii.model.Washer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Connect extends SQLiteOpenHelper {
     /* Fields on tables*/
@@ -43,6 +47,7 @@ public class Connect extends SQLiteOpenHelper {
     public static final String SHOP_LOCATION = "SHOP_LOCATION";
     public static final String WASHER_CONTACT_NO = "WASHER_CONTACT_NO";
     public static final String WASHER_STATUS = "WASHER_STATUS";
+    public static final String RATE_PER_KG = "RATE_PER_KG";
 
     // ORDER
     public static final String ORDER_ID = "ORDER_ID";
@@ -80,15 +85,15 @@ public class Connect extends SQLiteOpenHelper {
                 "COURIER_CONTACT_NO TEXT, COURIER_PLATE_NO TEXT, COURIER_STATUS INTEGER);";
         String createWasherTableStatement = "CREATE TABLE WASHER (WASHER_ID INTEGER PRIMARY KEY, " +
                 "WASHER_USERNAME TEXT NOT NULL, WASHER_PASSWORD TEXT NOT NULL, SHOP_NAME TEXT, " +
-                "SHOP_LOCATION TEXT, WASHER_CONTACT_NO TEXT, WASHER_STATUS INTEGER);";
+                "SHOP_LOCATION TEXT, WASHER_CONTACT_NO TEXT, WASHER_STATUS INTEGER, RATE_PER_KG REAL);";
         String createOrderTableStatement = "CREATE TABLE ORDER_TABLE (" +
                 "ORDER_ID INTEGER PRIMARY KEY, " +
-                "CLIENT_ID INTEGER, " +
-                "WASHER_ID INTEGER, " +
-                "COURIER1_ID INTEGER, " +
+                "ORDER_CLIENT_ID INTEGER, " +
+                "ORDER_WASHER_ID INTEGER, " +
+                "ORDER_COURIER1_ID INTEGER, " +
                 "TOTAL_COURIER1 REAL, " +
                 "DATE_COURIER1 TEXT, " +
-                "COURIER2_ID INTEGER, " +
+                "ORDER_COURIER2_ID INTEGER, " +
                 "TOTAL_COURIER2 REAL, " +
                 "DATE_COURIER2 TEXT, " +
                 "TOTAL_DUE REAL, " +
@@ -256,7 +261,7 @@ public class Connect extends SQLiteOpenHelper {
     }
 
     // INSERT WASHER (REGISTER)
-    public boolean insertWasher(String username, String password, String shopName, String shopLocation, String contactNo, int washerStatus) {
+    public boolean insertWasher(String username, String password, String shopName, String shopLocation, String contactNo, int washerStatus, double ratePerKg) {
         SQLiteDatabase db = this.getWritableDatabase();
         boolean isInserted = false;
 
@@ -268,6 +273,7 @@ public class Connect extends SQLiteOpenHelper {
             values.put(SHOP_LOCATION, shopLocation);
             values.put(WASHER_CONTACT_NO, contactNo);
             values.put(WASHER_STATUS, washerStatus);
+            values.put(RATE_PER_KG, ratePerKg);
 
             long newRowId = db.insert("WASHER", null, values);
 
@@ -284,15 +290,46 @@ public class Connect extends SQLiteOpenHelper {
         return isInserted;
     }
 
-    public boolean insertOrder(String orderID, Client client, Washer washer, Courier courier1,
-                               double totalCourier1, String dateCourier1, Courier courier2,
+    public boolean insertOrder(int orderID, int clientID, int washerID, int courier1ID,
+                               double totalCourier1, String dateCourier1, int courier2ID,
                                double totalCourier2, String dateCourier2, double totalDue,
                                double totalPaid, boolean paymentStatus, double grandTotal,
-                               String dateReceived)
-    {
-        boolean isValid = false;
-        return isValid;
+                               String dateReceived) {
+        boolean isInserted = false;
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put("ORDER_ID", orderID);
+            values.put("CLIENT_ID", clientID);
+            values.put("WASHER_ID", washerID);
+            values.put("COURIER1_ID", courier1ID);
+            values.put("TOTAL_COURIER1", totalCourier1);
+            values.put("DATE_COURIER1", dateCourier1);
+            values.put("COURIER2_ID", courier2ID);
+            values.put("TOTAL_COURIER2", totalCourier2);
+            values.put("DATE_COURIER2", dateCourier2);
+            values.put("TOTAL_DUE", totalDue);
+            values.put("TOTAL_PAID", totalPaid);
+            values.put("PAYMENT_STATUS", paymentStatus ? 1 : 0); // 1 for true, 0 for false
+            values.put("GRAND_TOTAL", grandTotal);
+            values.put("DATE_RECEIVED", dateReceived);
+
+            long newRowId = db.insert("ORDER_TABLE", null, values);
+
+            // Check if the insertion was successful
+            isInserted = newRowId != -1;
+        } catch (Exception e) {
+            Log.e("Database", "Error inserting order: " + e.getMessage());
+        } finally {
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
+        }
+
+        return isInserted;
     }
+
 
 
     public boolean checkClientByUsername(String username) {
@@ -328,6 +365,415 @@ public class Connect extends SQLiteOpenHelper {
 
         return washerExists;
     }
+
+    // Fetching client by ClientID
+
+    public Client getClient(int clientID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Client client = null;
+
+        // Query the Client table
+        Cursor cursor = db.rawQuery("SELECT * FROM CLIENT WHERE CUSTOMER_ID = ?", new String[]{String.valueOf(clientID)});
+
+        if (cursor.moveToFirst()) {
+            int usernameColumnIndex = cursor.getColumnIndex(CLIENT_USERNAME);
+            int passwordColumnIndex = cursor.getColumnIndex(CLIENT_PASSWORD);
+            int nameColumnIndex = cursor.getColumnIndex(CLIENT_NAME);
+            int contactNoColumnIndex = cursor.getColumnIndex(CLIENT_CONTACT_NO);
+            int addressColumnIndex = cursor.getColumnIndex(CLIENT_ADDRESS);
+            int paymentInfoColumnIndex = cursor.getColumnIndex(PAYMENT_INFO);
+
+            // Check if the column indexes are valid
+            if (usernameColumnIndex != -1 && passwordColumnIndex != -1 &&
+                    nameColumnIndex != -1 && contactNoColumnIndex != -1 &&
+                    addressColumnIndex != -1 && paymentInfoColumnIndex != -1) {
+
+                // Create a new Client instance using the constructor
+                client = new Client(
+                        clientID,
+                        cursor.getString(usernameColumnIndex),
+                        cursor.getString(passwordColumnIndex),
+                        cursor.getString(nameColumnIndex),
+                        cursor.getString(contactNoColumnIndex),
+                        cursor.getString(addressColumnIndex),
+                        cursor.getInt(paymentInfoColumnIndex)
+                );
+            } else {
+                // Handle invalid column indexes, log an error, or throw an exception
+            }
+        }
+
+        // Close the cursor and database
+        cursor.close();
+        db.close();
+
+        return client;
+    }
+
+    // Fetching client by username
+    public Client getClient(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Client client = null;
+
+        // Query the Client table
+        Cursor cursor = db.rawQuery("SELECT * FROM CLIENT WHERE CLIENT_USERNAME = ?", new String[]{username});
+
+        if (cursor.moveToFirst()) {
+            int clientIDColumnIndex = cursor.getColumnIndex(CUSTOMER_ID);
+            int passwordColumnIndex = cursor.getColumnIndex(CLIENT_PASSWORD);
+            int nameColumnIndex = cursor.getColumnIndex(CLIENT_NAME);
+            int contactNoColumnIndex = cursor.getColumnIndex(CLIENT_CONTACT_NO);
+            int addressColumnIndex = cursor.getColumnIndex(CLIENT_ADDRESS);
+            int paymentInfoColumnIndex = cursor.getColumnIndex(PAYMENT_INFO);
+
+            // Check if the column indexes are valid
+            if (clientIDColumnIndex != -1 && passwordColumnIndex != -1 &&
+                    nameColumnIndex != -1 && contactNoColumnIndex != -1 &&
+                    addressColumnIndex != -1 && paymentInfoColumnIndex != -1) {
+
+                // Create a new Client instance using the constructor
+                client = new Client(
+                        cursor.getInt(clientIDColumnIndex),
+                        username,
+                        cursor.getString(passwordColumnIndex),
+                        cursor.getString(nameColumnIndex),
+                        cursor.getString(contactNoColumnIndex),
+                        cursor.getString(addressColumnIndex),
+                        cursor.getInt(paymentInfoColumnIndex)
+                );
+            } else {
+                // Handle invalid column indexes, log an error, or throw an exception
+            }
+        }
+
+        // Close the cursor and database
+        cursor.close();
+        db.close();
+
+        return client;
+    }
+
+    // Fetching courier by username
+    public Courier getCourier(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Courier courier = null;
+
+        // Query the Courier table
+        Cursor cursor = db.rawQuery("SELECT * FROM COURIER WHERE COURIER_USERNAME = ?", new String[]{username});
+
+        if (cursor.moveToFirst()) {
+            int courierIDColumnIndex = cursor.getColumnIndex(COURIER_ID);
+            int usernameColumnIndex = cursor.getColumnIndex(COURIER_USERNAME);
+            int passwordColumnIndex = cursor.getColumnIndex(COURIER_PASSWORD);
+            int nameColumnIndex = cursor.getColumnIndex(COURIER_NAME);
+            int contactNoColumnIndex = cursor.getColumnIndex(COURIER_CONTACT_NO);
+            int plateNoColumnIndex = cursor.getColumnIndex(COURIER_PLATE_NO);
+            int statusColumnIndex = cursor.getColumnIndex(COURIER_STATUS);
+
+            // Check if the column indexes are valid
+            if (courierIDColumnIndex != -1 && usernameColumnIndex != -1 && passwordColumnIndex != -1 &&
+                    nameColumnIndex != -1 && contactNoColumnIndex != -1 &&
+                    plateNoColumnIndex != -1 && statusColumnIndex != -1) {
+
+                // Create a new Courier instance using the constructor
+                courier = new Courier(
+                        cursor.getInt(courierIDColumnIndex),
+                        cursor.getString(usernameColumnIndex),
+                        cursor.getString(passwordColumnIndex),
+                        cursor.getString(nameColumnIndex),
+                        cursor.getString(contactNoColumnIndex),
+                        cursor.getString(plateNoColumnIndex),
+                        cursor.getInt(statusColumnIndex) != 0
+                );
+            } else {
+                // Handle invalid column indexes, log an error, or throw an exception
+            }
+        }
+
+        // Close the cursor and database
+        cursor.close();
+        db.close();
+
+        return courier;
+    }
+
+    // Fetching courier by courierID
+    public Courier getCourier(int courierID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Courier courier = null;
+
+        // Query the Courier table
+        Cursor cursor = db.rawQuery("SELECT * FROM COURIER WHERE COURIER_ID = ?", new String[]{String.valueOf(courierID)});
+
+        if (cursor.moveToFirst()) {
+            int usernameColumnIndex = cursor.getColumnIndex(COURIER_USERNAME);
+            int passwordColumnIndex = cursor.getColumnIndex(COURIER_PASSWORD);
+            int nameColumnIndex = cursor.getColumnIndex(COURIER_NAME);
+            int contactNoColumnIndex = cursor.getColumnIndex(COURIER_CONTACT_NO);
+            int plateNoColumnIndex = cursor.getColumnIndex(COURIER_PLATE_NO);
+            int statusColumnIndex = cursor.getColumnIndex(COURIER_STATUS);
+
+            // Check if the column indexes are valid
+            if (usernameColumnIndex != -1 && passwordColumnIndex != -1 &&
+                    nameColumnIndex != -1 && contactNoColumnIndex != -1 &&
+                    plateNoColumnIndex != -1 && statusColumnIndex != -1) {
+
+                // Create a new Courier instance using the constructor
+                courier = new Courier(
+                        courierID,
+                        cursor.getString(usernameColumnIndex),
+                        cursor.getString(passwordColumnIndex),
+                        cursor.getString(nameColumnIndex),
+                        cursor.getString(contactNoColumnIndex),
+                        cursor.getString(plateNoColumnIndex),
+                        cursor.getInt(statusColumnIndex) != 0
+                );
+            } else {
+                // Handle invalid column indexes, log an error, or throw an exception
+            }
+        }
+
+        // Close the cursor and database
+        cursor.close();
+        db.close();
+
+        return courier;
+    }
+
+    // Fetching washer by washerID
+
+    public Washer getWasher(int washerID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Washer washer = null;
+
+        // Query the Washer table
+        Cursor cursor = db.rawQuery("SELECT * FROM WASHER WHERE WASHER_ID = ?", new String[]{String.valueOf(washerID)});
+
+        if (cursor.moveToFirst()) {
+            int usernameColumnIndex = cursor.getColumnIndex(WASHER_USERNAME);
+            int passwordColumnIndex = cursor.getColumnIndex(WASHER_PASSWORD);
+            int shopNameColumnIndex = cursor.getColumnIndex(SHOP_NAME);
+            int shopLocationColumnIndex = cursor.getColumnIndex(SHOP_LOCATION);
+            int contactNoColumnIndex = cursor.getColumnIndex(WASHER_CONTACT_NO);
+            int ratePerKgColumnIndex = cursor.getColumnIndex(RATE_PER_KG);
+            int statusColumnIndex = cursor.getColumnIndex(WASHER_STATUS);
+
+            // Check if the column indexes are valid
+            if (usernameColumnIndex != -1 && passwordColumnIndex != -1 &&
+                    shopNameColumnIndex != -1 && shopLocationColumnIndex != -1 &&
+                    contactNoColumnIndex != -1 && ratePerKgColumnIndex != -1 &&
+                    statusColumnIndex != -1) {
+
+                // Create a new Washer instance using the constructor
+                washer = new Washer(
+                        washerID,
+                        cursor.getString(usernameColumnIndex),
+                        cursor.getString(passwordColumnIndex),
+                        cursor.getString(shopNameColumnIndex),
+                        cursor.getString(shopLocationColumnIndex),
+                        cursor.getString(contactNoColumnIndex),
+                        cursor.getDouble(ratePerKgColumnIndex),
+                        cursor.getInt(statusColumnIndex) != 0
+                );
+            } else {
+                // Handle invalid column indexes, log an error, or throw an exception
+            }
+        }
+
+        // Close the cursor and database
+        cursor.close();
+        db.close();
+
+        return washer;
+    }
+
+    // Fetching washer using username
+    public Washer getWasher(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Washer washer = null;
+
+        // Query the Washer table
+        Cursor cursor = db.rawQuery("SELECT * FROM WASHER WHERE WASHER_USERNAME = ?", new String[]{username});
+
+        if (cursor.moveToFirst()) {
+            int washerIDColumnIndex = cursor.getColumnIndex(WASHER_ID);
+            int passwordColumnIndex = cursor.getColumnIndex(WASHER_PASSWORD);
+            int shopNameColumnIndex = cursor.getColumnIndex(SHOP_NAME);
+            int shopLocationColumnIndex = cursor.getColumnIndex(SHOP_LOCATION);
+            int contactNoColumnIndex = cursor.getColumnIndex(WASHER_CONTACT_NO);
+            int ratePerKgColumnIndex = cursor.getColumnIndex(RATE_PER_KG);
+            int statusColumnIndex = cursor.getColumnIndex(WASHER_STATUS);
+
+            // Check if the column indexes are valid
+            if (washerIDColumnIndex != -1 && passwordColumnIndex != -1 &&
+                    shopNameColumnIndex != -1 && shopLocationColumnIndex != -1 &&
+                    contactNoColumnIndex != -1 && ratePerKgColumnIndex != -1 &&
+                    statusColumnIndex != -1) {
+
+                // Create a new Washer instance using the constructor
+                washer = new Washer(
+                        cursor.getInt(washerIDColumnIndex),
+                        username,
+                        cursor.getString(passwordColumnIndex),
+                        cursor.getString(shopNameColumnIndex),
+                        cursor.getString(shopLocationColumnIndex),
+                        cursor.getString(contactNoColumnIndex),
+                        cursor.getDouble(ratePerKgColumnIndex),
+                        cursor.getInt(statusColumnIndex) != 0
+                );
+            } else {
+                // Handle invalid column indexes, log an error, or throw an exception
+            }
+        }
+
+        // Close the cursor and database
+        cursor.close();
+        db.close();
+
+        return washer;
+    }
+
+    // QUERY PENDING DELIVERIES WHERE PAYMENT STATUS = FALSE
+    public List<Order> getPendingDeliveriesOnCourier(int courierID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Order> pendingDeliveries = new ArrayList<>();
+
+        // Query the Order table for pending deliveries for the specified courier
+        Log.e("SQL Query", "SELECT * FROM ORDER_TABLE WHERE ORDER_COURIER1_ID = " + courierID + " AND PAYMENT_STATUS = 0");
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM ORDER_TABLE WHERE ORDER_COURIER1_ID = ? AND PAYMENT_STATUS = 0",
+                new String[]{String.valueOf(courierID)}
+        );
+        Log.e("Cursor Count", String.valueOf(cursor.getCount()));
+
+        while (cursor.moveToNext()) {
+            int orderIDColumnIndex = cursor.getColumnIndex(ORDER_ID);
+            int clientIDColumnIndex = cursor.getColumnIndex(ORDER_CLIENT_ID);
+            int washerIDColumnIndex = cursor.getColumnIndex(ORDER_WASHER_ID);
+            int courier1IDColumnIndex = cursor.getColumnIndex(ORDER_COURIER1_ID);
+            int totalCourier1ColumnIndex = cursor.getColumnIndex(TOTAL_COURIER1);
+            int dateCourier1ColumnIndex = cursor.getColumnIndex(DATE_COURIER1);
+            int courier2IDColumnIndex = cursor.getColumnIndex(ORDER_COURIER2_ID);
+            int totalCourier2ColumnIndex = cursor.getColumnIndex(TOTAL_COURIER2);
+            int dateCourier2ColumnIndex = cursor.getColumnIndex(DATE_COURIER2);
+            int totalDueColumnIndex = cursor.getColumnIndex(TOTAL_DUE);
+            int totalPaidColumnIndex = cursor.getColumnIndex(TOTAL_PAID);
+            int paymentStatusColumnIndex = cursor.getColumnIndex(PAYMENT_STATUS);
+            int grandTotalColumnIndex = cursor.getColumnIndex(GRAND_TOTAL);
+            int dateReceivedColumnIndex = cursor.getColumnIndex(DATE_RECEIVED);
+
+            Log.e("ReachHere","REACHING HERE!");
+
+            Log.e("Column Indexes",
+                    "ORDER_ID: " + orderIDColumnIndex +
+                            ", CUSTOMER_ID: " + clientIDColumnIndex +
+                            ", WASHER_ID: " + washerIDColumnIndex +
+                            ", ORDER_CLIENT_ID: " + courier1IDColumnIndex +
+                            ", TOTAL_COURIER1: " + totalCourier1ColumnIndex +
+                            ", DATE_COURIER1: " + dateCourier1ColumnIndex +
+                            ", ORDER_COURIER2_ID: " + courier2IDColumnIndex +
+                            ", TOTAL_COURIER2: " + totalCourier2ColumnIndex +
+                            ", DATE_COURIER2: " + dateCourier2ColumnIndex +
+                            ", TOTAL_DUE: " + totalDueColumnIndex +
+                            ", TOTAL_PAID: " + totalPaidColumnIndex +
+                            ", PAYMENT_STATUS: " + paymentStatusColumnIndex +
+                            ", GRAND_TOTAL: " + grandTotalColumnIndex +
+                            ", DATE_RECEIVED: " + dateReceivedColumnIndex);
+
+            Log.e("ReachHere2","REACHING HERE!2");
+
+
+            // Check if the column indexes are valid
+            if (orderIDColumnIndex != -1 && clientIDColumnIndex != -1 && washerIDColumnIndex != -1 &&
+                    courier1IDColumnIndex != -1 && totalCourier1ColumnIndex != -1 &&
+                    dateCourier1ColumnIndex != -1 && courier2IDColumnIndex != -1 &&
+                    totalCourier2ColumnIndex != -1 && dateCourier2ColumnIndex != -1 &&
+                    totalDueColumnIndex != -1 && totalPaidColumnIndex != -1 &&
+                    paymentStatusColumnIndex != -1 && grandTotalColumnIndex != -1 &&
+                    dateReceivedColumnIndex != -1) {
+
+                // Create a new Order instance using the constructor
+                Order order = new Order(
+                        cursor.getInt(orderIDColumnIndex),
+                        getClient(cursor.getInt(clientIDColumnIndex)),
+                        getWasher(cursor.getInt(washerIDColumnIndex)),
+                        getCourier(cursor.getInt(courier1IDColumnIndex)),
+                        cursor.getString(dateCourier1ColumnIndex),
+                        getCourier(cursor.getInt(courier2IDColumnIndex)),
+                        cursor.getString(dateCourier2ColumnIndex),
+                        cursor.getDouble(totalDueColumnIndex),
+                        cursor.getDouble(totalPaidColumnIndex),
+                        cursor.getInt(paymentStatusColumnIndex) != 0,
+                        cursor.getDouble(grandTotalColumnIndex),
+                        cursor.getString(dateReceivedColumnIndex)
+                );
+
+                pendingDeliveries.add(order);
+            } else {
+                // Handle invalid column indexes, log an error, or throw an exception
+            }
+        }
+
+        // Close the cursor and database
+        cursor.close();
+        db.close();
+
+//        for (Order order : pendingDeliveries) {
+//            Log.e("Order Details",
+//                    "OrderID: " + order.getOrderID() +
+//                            ", ClientID: " + order.getClient().getCustomerID() +
+//                            ", WasherID: " + order.getWasher().getWasherID() +
+//                            ", Courier1ID: " + order.getCourier1().getCourierID() +
+//                            ", DateCourier1: " + order.getDateCourier1() +
+//                            ", Courier2ID: " + order.getCourier2().getCourierID() +
+//                            ", DateCourier2: " + order.getDateCourier2() +
+//                            ", TotalDue: " + order.getTotalDue() +
+//                            ", TotalPaid: " + order.getTotalPaid() +
+//                            ", PaymentStatus: " + order.getPaymentStatus() +
+//                            ", GrandTotal: " + order.getGrandTotal() +
+//                            ", DateReceived: " + order.getDateReceived());
+//        }
+
+        return pendingDeliveries;
+    }
+
+    public boolean insertDummyOrder() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        boolean isInserted = false;
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put(ORDER_ID, 1);
+            values.put(ORDER_CLIENT_ID, 1);
+            values.put(ORDER_WASHER_ID, 1);
+            values.put(ORDER_COURIER1_ID, 1);
+            values.put(TOTAL_COURIER1, 50);
+            values.put(DATE_COURIER1, "2022-01-12");
+            values.put(ORDER_COURIER2_ID, 2);  // Replace with an actual courier ID
+            values.put(TOTAL_COURIER2, 50);
+            values.put(DATE_COURIER2, "2022-01-13");
+            values.put(TOTAL_DUE, 20);
+            values.put(TOTAL_PAID, 0);
+            values.put(PAYMENT_STATUS, 0);  // 0 for false
+            values.put(GRAND_TOTAL, 0);
+            values.put(DATE_RECEIVED, "2022-01-14");
+
+            long newRowId = db.insert("ORDER_TABLE", null, values);
+
+            // Check if the insertion was successful
+            isInserted = newRowId != -1;
+        } catch (Exception e) {
+            Log.e("Database", "Error inserting dummy order: " + e.getMessage());
+        } finally {
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
+        }
+
+        return isInserted;
+    }
+
+
 
 
 }
