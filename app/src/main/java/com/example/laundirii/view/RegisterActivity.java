@@ -214,11 +214,11 @@ public class RegisterActivity extends AppCompatActivity {
             case 0:
                 addressLayout.setHint("Address");
                 generalErrorText.setText("");
-                lastNameLayout.setVisibility(View.VISIBLE);
                 firstNameLayout.setHint("First Name");
                 phoneLayout.setHint("Phone No.");
                 addressLayout.setVisibility(View.VISIBLE);
                 lastName.setError(null);
+                lastNameLayout.setHint("Last Name");
                 break;
                 // Courier
             case 1:
@@ -226,7 +226,7 @@ public class RegisterActivity extends AppCompatActivity {
                 firstNameLayout.setHint("First Name");
                 addressLayout.setVisibility(View.VISIBLE);
                 addressLayout.setHint("Plate No.");
-                lastNameLayout.setVisibility(View.VISIBLE);
+                lastNameLayout.setHint("Last Name");
                 break;
                 // Washer
             case 2:
@@ -235,7 +235,7 @@ public class RegisterActivity extends AppCompatActivity {
                 lastName.setError(null);
                 address.setError(null);
                 firstNameLayout.setHint("Shop Name");
-                lastNameLayout.setVisibility(View.GONE);
+                lastNameLayout.setHint("Rate per Kg.");
                 break;
         }
     }
@@ -288,7 +288,8 @@ public class RegisterActivity extends AppCompatActivity {
                         break;
                     }
                     case 2: {
-                        boolean success = registerController.registerWasher(uname, pword, fname, addr, phone, 0, this);
+                        double ratePerKg = Double.parseDouble(lname);
+                        boolean success = registerController.registerWasher(uname, pword, fname, addr, phone, 0,ratePerKg,this);
                         break;
                     }
                 }
