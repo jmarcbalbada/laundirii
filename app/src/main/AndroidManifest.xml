@@ -13,14 +13,9 @@
         android:theme="@style/Theme.LaunDirii"
         tools:targetApi="31">
         <activity
-            android:name=".view.client_dashboard_ui.ClientDashboardActivity"
+            android:name=".view.ui.washer_dashboard_ui"
             android:exported="false"
-            android:label="@string/title_activity_client_dashboard"
-            android:theme="@style/Theme.LaunDirii.NoActionBar" />
-        <activity
-            android:name=".view.courier_dashboard_ui.CourierDashboardActivity"
-            android:exported="false"
-            android:label="@string/title_activity_courier_dashboard"
+            android:label="@string/title_activity_washer_dashboard_ui"
             android:theme="@style/Theme.LaunDirii.NoActionBar" />
         <activity
             android:name=".view.RegisterActivity"
