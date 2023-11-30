@@ -6,15 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.laundirii.R;
 import com.example.laundirii.controller.RegisterAndLoginController;
+import com.example.laundirii.view.ui.washer_dashboard_ui;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class LoginActivity extends AppCompatActivity {
@@ -79,6 +78,8 @@ public class LoginActivity extends AppCompatActivity {
                         if(loginController.loginWasher(username,password,LoginActivity.this))
                         {
                             Toast.makeText(getApplicationContext(), "Logging in as Washer", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginActivity.this, washer_dashboard_ui.class);
+                            startActivity(intent);
                         }
                         else
                         {

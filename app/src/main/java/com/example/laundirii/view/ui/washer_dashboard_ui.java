@@ -1,4 +1,4 @@
-package com.example.laundirii.view;
+package com.example.laundirii.view.ui;
 
 import android.os.Bundle;
 import android.view.View;
