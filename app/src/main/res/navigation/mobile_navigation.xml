@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/cour_nav_home">
 
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/cour_nav_home"
         android:name="com.example.laundirii.view.courier_dashboard_ui.courier_dashboard_home.CourierDashboardHomeFragment"
-        android:label="@string/menu_home"
+        android:label="@string/courier_home"
         tools:layout="@layout/courier_dashboard_fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/cour_nav_transaction"
         android:name="com.example.laundirii.view.courier_dashboard_ui.courier_dashboard_history.CourierDashboardHistoryFragment"
-        android:label="@string/menu_transaction"
+        android:label="@string/courier_transaction"
         tools:layout="@layout/courier_dashboard_fragment_history" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/cour_nav_logout"
         android:name="com.example.laundirii.view.courier_dashboard_ui.courier_dashboard_slideshow.CourierSlideshowFragment"
-        android:label="@string/menu_logout"
+        android:label="@string/courier_logout"
         tools:layout="@layout/courier_dashboard_fragment_slideshow" />
 </navigation>
