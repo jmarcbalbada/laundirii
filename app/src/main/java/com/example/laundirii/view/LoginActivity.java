@@ -59,6 +59,8 @@ public class LoginActivity extends AppCompatActivity {
                         if(loginController.loginClient(username,password,LoginActivity.this))
                         {
                             Toast.makeText(getApplicationContext(), "Logging in as Client", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginActivity.this, ClientDashboardActivity.class);
+                            startActivity(intent);
                         }
                         else
                         {
