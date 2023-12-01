@@ -10,7 +10,7 @@
 
     <include
         android:id="@+id/app_bar_washer_dashboard_ui"
-        layout="@layout/app_bar_washer_dashboard_ui"
+        layout="@layout/app_bar_washer_dashboard"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
