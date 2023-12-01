@@ -637,13 +637,20 @@ public class Connect extends SQLiteOpenHelper {
     public List<Order> getPendingDeliveriesOnCourier(int courierID) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<Order> pendingDeliveries = new ArrayList<>();
+        // "SELECT * FROM ORDER_TABLE WHERE ORDER_COURIER1_ID = " + courierID + " OR ORDER_COURIER2_ID = " + courierID
+        // " AND PAYMENT_STATUS = 0"
+
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM ORDER_TABLE WHERE ORDER_COURIER1_ID = ? OR ORDER_COURIER2_ID = ? AND PAYMENT_STATUS = 0",
+                new String[]{String.valueOf(courierID), String.valueOf(courierID)}
+        );
 
         // Query the Order table for pending deliveries for the specified courier
-        Log.e("SQL Query", "SELECT * FROM ORDER_TABLE WHERE ORDER_COURIER1_ID = " + courierID + " AND PAYMENT_STATUS = 0");
-        Cursor cursor = db.rawQuery(
-                "SELECT * FROM ORDER_TABLE WHERE ORDER_COURIER1_ID = ? AND PAYMENT_STATUS = 0",
-                new String[]{String.valueOf(courierID)}
-        );
+//        Log.e("SQL Query", "SELECT * FROM ORDER_TABLE WHERE ORDER_COURIER1_ID = " + courierID + " AND PAYMENT_STATUS = 0");
+//        Cursor cursor = db.rawQuery(
+//                "SELECT * FROM ORDER_TABLE WHERE ORDER_COURIER1_ID = ? AND PAYMENT_STATUS = 0",
+//                new String[]{String.valueOf(courierID)}
+//        );
         Log.e("Cursor Count", String.valueOf(cursor.getCount()));
 
         while (cursor.moveToNext()) {

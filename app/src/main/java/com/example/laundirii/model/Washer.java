@@ -10,6 +10,7 @@ public class Washer {
     private String shopLocation;
     private String contactNo;
     private double ratePerKg;
+
     private boolean status;
     Connect dbHelper;
 

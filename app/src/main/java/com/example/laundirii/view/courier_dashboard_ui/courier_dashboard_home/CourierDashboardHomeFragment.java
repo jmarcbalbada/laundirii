@@ -80,11 +80,11 @@ public class CourierDashboardHomeFragment extends Fragment {
         Log.e("AdapterItemCount", String.valueOf(pendingOrdersAdapter.getCount()));
 
         // Optional: If you want to handle item clicks, you can set an OnItemClickListener
-//        lv_pendingOrders.setOnItemClickListener((parent, view, position, id) -> {
-//            // Handle item click here
-//            Order selectedOrder = (Order) parent.getItemAtPosition(position);
-//            // Do something with the selected order
-//        });
+        lv_pendingOrders.setOnItemClickListener((parent, view, position, id) -> {
+            // Handle item click here
+            Order selectedOrder = (Order) parent.getItemAtPosition(position);
+            // Do something with the selected order
+        });
     }
 
     @Override

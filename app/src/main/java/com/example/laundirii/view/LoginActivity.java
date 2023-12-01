@@ -41,9 +41,9 @@ public class LoginActivity extends AppCompatActivity {
         test = findViewById(R.id.labelSignin);
         loginController = new RegisterAndLoginController();
         signup = findViewById(R.id.signupText);
-        //DashboardController dashboardController = new DashboardController();
-        //boolean inserted = dashboardController.insertDummyValuesOnOrder(this);
-        //Log.e("DUMMY", inserted + "");
+//        DashboardController dashboardController = new DashboardController();
+//        boolean inserted = dashboardController.insertDummyValuesOnOrder(this);
+//        Log.e("DUMMY", inserted + "");
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
