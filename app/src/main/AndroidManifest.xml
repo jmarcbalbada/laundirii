@@ -23,6 +23,11 @@
             android:label="@string/title_activity_courier_dashboard"
             android:theme="@style/Theme.LaunDirii.NoActionBar" />
         <activity
+            android:name=".view.washer_dashboard_ui.WasherDashboardActivity"
+            android:exported="false"
+            android:label="@string/title_activity_washer_dashboard"
+            android:theme="@style/Theme.LaunDirii.NoActionBar" />
+        <activity
             android:name=".view.RegisterActivity"
             android:exported="false" />
         <activity

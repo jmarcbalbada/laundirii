@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.laundirii.databinding.ActivityWasherDashboardUiBinding;
 
-public class Washer_dashboard_ui extends AppCompatActivity {
+public class WasherDashboardActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityWasherDashboardUiBinding binding;
