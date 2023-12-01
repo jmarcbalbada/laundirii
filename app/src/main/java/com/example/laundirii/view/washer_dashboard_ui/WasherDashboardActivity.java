@@ -29,8 +29,8 @@ public class WasherDashboardActivity extends AppCompatActivity {
         binding = ActivityWasherDashboardUiBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.appBarWasherDashboardUi.toolbar);
-        binding.appBarWasherDashboardUi.fab.setOnClickListener(new View.OnClickListener() {
+        setSupportActionBar(binding.appBarWasherDashboard.toolbar);
+        binding.appBarWasherDashboard.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -42,7 +42,7 @@ public class WasherDashboardActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.washer_history_fragment, R.id.washer_pendingrequest_fragment, R.id.washer_logs_fragment)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_washer_dashboard_ui);
