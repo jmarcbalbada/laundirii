@@ -2,8 +2,11 @@ package com.example.laundirii.view.courier_dashboard_ui.courier_dashboard_home;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -20,7 +24,9 @@ import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.databinding.CourierDashboardFragmentHomeBinding;
 import com.example.laundirii.model.Courier;
 import com.example.laundirii.model.Order;
+import com.example.laundirii.model.Phase1Order;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CourierDashboardHomeFragment extends Fragment {
@@ -61,30 +67,66 @@ public class CourierDashboardHomeFragment extends Fragment {
             displayPendingOrders();
         }catch (Exception e)
         {
-            Log.e("ATERROR", e.getMessage().toString());
+            Log.e("displayPendingErrors", e.getMessage().toString());
         }
         return root;
     }
 
     public void displayPendingOrders() {
-        List<Order> orderList = dashboardController.getPendingDeliveriesOnCourier(courier.getCourierID(), this.getActivity());
+        if(!courier.getStatus())
+        {
+            Phase1Order pendingDelivery = dashboardController.getPendingDeliveryOnCourier(courier.getCourierID(), this.getActivity());
+            List<Phase1Order> listPendingDelivery = new ArrayList<Phase1Order>();
+            listPendingDelivery.add(pendingDelivery);
+            Log.e("pendingDeliveryHome", pendingDelivery.toString());
+            pendingOrdersAdapter = new ArrayAdapter<Phase1Order>(this.getContext(), android.R.layout.simple_list_item_1, listPendingDelivery);
 
-        Log.e("OrderListSize", String.valueOf(orderList.size()));
+            Log.e("listPendingSize", String.valueOf(listPendingDelivery.size()));
+            lv_pendingOrders.setAdapter(pendingOrdersAdapter);
+            Log.e("AdapterItemValue", pendingOrdersAdapter.getItem(1).toString());
+            Log.e("AdapterItemCount", String.valueOf(pendingOrdersAdapter.getCount()));
+        }else {
+            View root = binding.getRoot();
+            lv_pendingOrders.setVisibility(View.GONE);
+            TextView textView = new TextView(getContext());
 
-        // Create an ArrayAdapter for your Order objects
-        pendingOrdersAdapter = new ArrayAdapter<Order>(this.getContext(), android.R.layout.simple_list_item_1, orderList);
+            textView.setText("No pending delivery for now!");
+            Log.e("TextView Value", textView.getText().toString());
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24); // Set the text size, adjust as needed
+            int currentNightMode = getResources().getConfiguration().uiMode
+                    & Configuration.UI_MODE_NIGHT_MASK;
+            if(currentNightMode == Configuration.UI_MODE_NIGHT_YES)
+            {
+                textView.setTextColor(Color.WHITE);
+            }else {
+                textView.setTextColor(Color.BLACK);
+            }
 
-        // Set the adapter to your ListView
-        lv_pendingOrders.setAdapter(pendingOrdersAdapter);
-        Log.e("AdapterItemValue", pendingOrdersAdapter.getItem(1).toString());
-        Log.e("AdapterItemCount", String.valueOf(pendingOrdersAdapter.getCount()));
+            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT
+            );
 
-        // Optional: If you want to handle item clicks, you can set an OnItemClickListener
-//        lv_pendingOrders.setOnItemClickListener((parent, view, position, id) -> {
-//            // Handle item click here
-//            Order selectedOrder = (Order) parent.getItemAtPosition(position);
-//            // Do something with the selected order
-//        });
+            params.topToBottom = R.id.text_home;
+            params.topMargin = -1700;
+            params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
+            params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+            params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+
+            textView.setLayoutParams(params);
+
+            // Add the TextView to your layout
+            ViewGroup rootView = (ViewGroup) root.getRootView();
+
+            if (rootView != null) {
+                rootView.addView(textView);
+                Log.e("TextViewAdded", "TextView added successfully");
+            } else {
+                Log.e("RootViewNull", "RootView is null");
+            }
+
+        }
+
     }
 
     @Override

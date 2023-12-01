@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.laundirii.R;
 import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.controller.RegisterAndLoginController;
+import com.example.laundirii.model.Client;
 import com.example.laundirii.model.Courier;
 import com.example.laundirii.view.client_dashboard_ui.ClientDashboardActivity;
 import com.example.laundirii.view.courier_dashboard_ui.CourierDashboardActivity;
@@ -46,6 +47,10 @@ public class LoginActivity extends AppCompatActivity {
         //boolean inserted = dashboardController.insertDummyValuesOnOrder(this);
         //Log.e("DUMMY", inserted + "");
 
+        DashboardController dashboardController = new DashboardController();
+        boolean inserted = dashboardController.insertDummyPhase1Order(this);
+        Log.e("DUMMY", inserted + "");
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,6 +72,26 @@ public class LoginActivity extends AppCompatActivity {
                     case 0:
                         if(loginController.loginClient(username,password,LoginActivity.this))
                         {
+                            DashboardController dashboardController = new DashboardController();
+                            Client client = dashboardController.getClient(username,LoginActivity.this);
+                            Log.e("CLIENT LOGIN", client.getCustomerID() + ", " + client.getUsername() + ","
+                                    + client.getPassword() + ", " + client.getName() + ", " + client.getContactNo() + ","
+                                    + client.getAddress() + "," + client.getPaymentInfo());
+                            // Get SharedPreferences instance
+                            SharedPreferences sharedPreferences = getSharedPreferences("LoginClientPreferences", Context.MODE_PRIVATE);
+
+//                          // Create an editor to modify SharedPreferences
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                            editor.putInt("clientID", client.getCustomerID());
+                            editor.putString("clientUsername", client.getUsername());
+                            editor.putString("clientPassword", client.getPassword());
+                            editor.putString("clientName", client.getName());
+                            editor.putString("clientContactNo", client.getContactNo());
+                            editor.putString("clientAddress", client.getAddress());
+                            editor.putInt("clientPaymentInfo", client.getPaymentInfo());
+                            editor.apply();
+
                             Toast.makeText(getApplicationContext(), "Logging in as Client", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, ClientDashboardActivity.class);
                             startActivity(intent);
