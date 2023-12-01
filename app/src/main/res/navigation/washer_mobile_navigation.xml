@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/washer_history_fragment">
+
+    <fragment
+        android:id="@+id/washer_history_fragment"
+        android:name="com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_history.WasherDashboardHistoryFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/washer_dashboard_fragment_history" />
+
+    <fragment
+        android:id="@+id/washer_pendingrequest_fragment"
+        android:name="com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_pendingrequest.WasherDashboardPendingrequestFragment"
+        android:label="@string/menu_gallery"
+        tools:layout="@layout/washer_dashboard_fragment_pendingrequest" />
+
+    <fragment
+        android:id="@+id/washer_logs_fragment"
+        android:name="com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_logs.WasherDashboardLogsFragment"
+        android:label="@string/menu_slideshow"
+        tools:layout="@layout/washer_dashboard_fragment_logs" />
+</navigation>
