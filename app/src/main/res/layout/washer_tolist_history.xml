@@ -8,10 +8,22 @@
 
     <!-- Your client item UI components go here -->
     <TextView
+        android:id="@+id/textViewOrderId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order ID" />
+
+    <TextView
         android:id="@+id/textViewClientName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Client Name" />
+
+    <TextView
+        android:id="@+id/textViewCourierStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Courier Status" />
 
     <!-- Add other TextViews or UI components as needed -->
 

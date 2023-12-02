@@ -159,4 +159,36 @@ public class Courier {
                 + "Contact No: " + contactNo + "\n"
                 + "Plate No: " + contactNo + "\n";
     }
+
+    public void setCourierID(int courierID) {
+        this.courierID = courierID;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setContactNo(String contactNo) {
+        this.contactNo = contactNo;
+    }
+
+    public void setPlateNo(String plateNo) {
+        this.plateNo = plateNo;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 }

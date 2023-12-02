@@ -16,7 +16,9 @@ import com.example.laundirii.model.Order;
 import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.model.Washer;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Connect extends SQLiteOpenHelper {
@@ -1077,6 +1079,37 @@ public class Connect extends SQLiteOpenHelper {
 
         return pendingDelivery;
     }
+    public Cursor queryfunction (String query,String selection1){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String [] placeholder = {selection1};
+        return db.rawQuery(query, placeholder);
+    }
+    public List<Phase1Order> WasherGetPendingOrdersToReceive(int washerID,Context context){
+        Cursor cursor = queryfunction("SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ?", Integer.toString(washerID));
+        List<Phase1Order> OrderToReceiveList = new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do{
+                Phase1Order addOrder = new Phase1Order();
+                addOrder.setOrderID(cursor.getInt(0));
+                addOrder.setClientID(cursor.getInt(1));
+                addOrder.setWasherID(cursor.getInt(3));
+                addOrder.setCourierID(cursor.getInt(4));
+                addOrder.setCourierStatus(cursor.getInt(5));
+                addOrder.setTotalCourierAmount(cursor.getFloat(6));
+                addOrder.setDateCourier(cursor.getString(7));
+                addOrder.setTotalDue(cursor.getFloat(8));
+                addOrder.setTotalPaid(cursor.getFloat(10));
+                addOrder.setPaymentStatus(0);
+                addOrder.setDateReceived(cursor.getString(12));
+
+                OrderToReceiveList.add(addOrder);
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        this.getReadableDatabase().close();
+
+        return OrderToReceiveList;
+    }
 
     // Get all Washers in Book Service Query Washer
     public List<Washer> getAllWashers()
@@ -1152,17 +1185,17 @@ public class Connect extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(PHASE1_ORDER_ID, 2);
-        values.put(PHASE1_ORDER_CLIENT_ID, 1);
-        values.put(PHASE1_ORDER_WASHER_ID, 2);
+        values.put(PHASE1_ORDER_ID, 1);
+        values.put(PHASE1_ORDER_CLIENT_ID, 2);
+        values.put(PHASE1_ORDER_WASHER_ID, 1);
         values.put(PHASE1_ORDER_COURIER_ID, 4);
         values.put(PHASE1_COURIER_STATUS, 0);
         values.put(PHASE1_TOTAL_COURIER_AMOUNT, 50.0);
-        values.put(PHASE1_DATE_COURIER, "");
+        values.put(PHASE1_DATE_COURIER,new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         values.put(PHASE1_TOTAL_DUE, 0.0);
         values.put(PHASE1_TOTAL_PAID, 0.0);
         values.put(PHASE1_PAYMENT_STATUS, 0);
-        values.put(PHASE1_DATE_RECEIVED, "");
+        values.put(PHASE1_DATE_RECEIVED, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
         long result = db.insert("PHASE1_ORDER", null, values);
 

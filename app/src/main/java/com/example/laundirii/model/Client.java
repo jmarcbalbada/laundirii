@@ -117,4 +117,35 @@ public class Client {
                 + "Address: " + address;
     }
 
+    public void setCustomerID(int customerID) {
+        this.customerID = customerID;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setContactNo(String contactNo) {
+        this.contactNo = contactNo;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPaymentInfo(int paymentInfo) {
+        this.paymentInfo = paymentInfo;
+    }
+
+    public void setDbHelper(Connect dbHelper) {
+        this.dbHelper = dbHelper;
+    }
 }

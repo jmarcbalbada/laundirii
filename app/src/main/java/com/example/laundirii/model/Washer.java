@@ -120,4 +120,39 @@ public class Washer {
                 + "Rate per kg.: " + ratePerKg + "\n";
     }
 
+    public void setWasherID(int washerID) {
+        this.washerID = washerID;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+    public void setShopLocation(String shopLocation) {
+        this.shopLocation = shopLocation;
+    }
+
+    public void setContactNo(String contactNo) {
+        this.contactNo = contactNo;
+    }
+
+    public void setRatePerKg(double ratePerKg) {
+        this.ratePerKg = ratePerKg;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 }

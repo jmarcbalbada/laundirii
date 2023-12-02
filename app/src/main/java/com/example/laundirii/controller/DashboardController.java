@@ -110,4 +110,8 @@ public class DashboardController {
 //    {
 //        return order.insertDummyValuesOnOrder(context);
 //    }
+
+    public List<Phase1Order> WasherListofOrdersToReceive(int washerID,Context context){
+        return phase1Order.WasherGetPendingOrdersToReceive(washerID, context);
+    }
 }

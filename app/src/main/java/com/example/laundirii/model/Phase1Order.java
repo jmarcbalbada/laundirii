@@ -12,6 +12,15 @@ public class Phase1Order {
     private Client client;
     private Washer washer;
     private Courier courier;
+
+    public Connect getDbHelper() {
+        return dbHelper;
+    }
+
+    public void setDbHelper(Connect dbHelper) {
+        this.dbHelper = dbHelper;
+    }
+
     private int courierStatus;
     private double totalCourierAmount;
     private String dateCourier;
@@ -125,6 +134,9 @@ public class Phase1Order {
         this.orderID = orderID;
     }
 
+    public String getClientName(){
+        return client.getName();
+    }
     public Client getClient() {
         return client;
     }
@@ -203,5 +215,21 @@ public class Phase1Order {
 
     public void setDateReceived(String dateReceived) {
         this.dateReceived = dateReceived;
+    }
+
+
+    public void setCourierID(int courierID){
+        courier.setCourierID(courierID);
+    }
+    public void setClientID(int clientID){
+        client.setCustomerID(clientID);
+    }
+    public void setWasherID(int washerID)
+    {
+        washer.setWasherID(washerID);
+    }
+    public List<Phase1Order> WasherGetPendingOrdersToReceive(int washerID, Context context){
+        dbHelper = new Connect(context);
+        return dbHelper.WasherGetPendingOrdersToReceive(washerID, context);
     }
 }
