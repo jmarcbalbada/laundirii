@@ -64,10 +64,10 @@ public class Phase1Order {
         return dbHelper.getPendingDeliveryOnClient(clientID);
     }
 
-    public List<Phase1Order> getHistoryList(int clientID, Context context)
+    public List<Phase1Order> getHistoryList(String username, Context context)
     {
         dbHelper = new Connect(context);
-        return dbHelper.getHistoryList(clientID);
+        return dbHelper.getHistoryList(username);
     }
 
 

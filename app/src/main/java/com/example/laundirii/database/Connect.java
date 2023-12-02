@@ -756,19 +756,69 @@ public class Connect extends SQLiteOpenHelper {
         return pendingDeliveries;
     }
 
-    public List<Phase1Order> getHistoryList(int clientID) {
-        SQLiteDatabase db = this.getReadableDatabase();
+    // can be used with Client, Courier and Washer as History
+
+    public List<Phase1Order> getHistoryList(String username) {
         List<Phase1Order> pendingDeliveries = new ArrayList<>();
+
+        // generalized getHistory for all Actor
+        // 0 - Client , 1 - Courier , 2 - Washer
+        int typeOfUser = 0; // by default
+        int ID = 0;
+        Log.e("INSIDE HISTORY", "USER" + typeOfUser + "" + "ID" + ID);
+        if(checkClientByUsername(username))
+        {
+            typeOfUser = 0;
+            Client client = getClient(username);
+            ID = client.getCustomerID();
+        }else if (checkCourierByUsername(username))
+        {
+            typeOfUser = 1;
+            Courier courier = getCourier(username);
+            ID = courier.getCourierID();
+        }else if (checkWasherByUsername(username))
+        {
+            typeOfUser = 2;
+            Washer washer = getWasher(username);
+            ID = washer.getWasherID();
+        }else {
+            typeOfUser = -1;
+        }
+
+        Log.e("INSIDE HISTORY", "USER" + typeOfUser + "" + "ID" + ID);
+
+        String query = "";
+        switch(typeOfUser)
+        {
+            // Query Client
+            case 0:
+                query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_CLIENT_ID = ? ";
+                break;
+                // Query Courier
+            case 1:
+                query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_COURIER_ID = ? ";
+                break;
+                // Query Washer
+            case 2:
+                query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? ";
+                break;
+        }
+
+        Log.e("INSIDE HISTORY QUERY", query);
 //
 //        // Query the PHASE1_ORDER table for pending deliveries for the specified client
-        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_CLIENT_ID = ? ";
-        String[] selectionArgs = {String.valueOf(clientID)};
+        //String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_CLIENT_ID = ? ";
+
+        String[] selectionArgs = {String.valueOf(ID)};
+        Log.e("SELECTIONARGS", selectionArgs[0]);
+
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, selectionArgs);
         try{
-
             while (cursor.moveToNext()) {
                 // Extract column indexes
                 int orderIdIndex = cursor.getColumnIndex(PHASE1_ORDER_ID);
+                int clientIdIndex = cursor.getColumnIndex(PHASE1_ORDER_CLIENT_ID);
                 int washerIdIndex = cursor.getColumnIndex(PHASE1_ORDER_WASHER_ID);
                 int courierIdIndex = cursor.getColumnIndex(PHASE1_ORDER_COURIER_ID);
                 int courierStatusIndex = cursor.getColumnIndex(PHASE1_COURIER_STATUS);
@@ -789,7 +839,7 @@ public class Connect extends SQLiteOpenHelper {
                     // Create a new Phase1Order instance using the constructo
                     Phase1Order pendingOrder = new Phase1Order(
                             cursor.getInt(orderIdIndex),
-                            getClient(clientID),
+                            getClient(cursor.getInt(clientIdIndex)),
                             getWasher(cursor.getInt(washerIdIndex)),
                             getCourier(cursor.getInt(courierIdIndex)),
                             cursor.getInt(courierStatusIndex),
@@ -815,8 +865,8 @@ public class Connect extends SQLiteOpenHelper {
         {
             // Close the cursor and database
             cursor.close();
-            db.close();
         }
+
         return pendingDeliveries;
     }
 

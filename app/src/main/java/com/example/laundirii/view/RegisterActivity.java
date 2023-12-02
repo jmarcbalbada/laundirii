@@ -284,7 +284,7 @@ public class RegisterActivity extends AppCompatActivity {
                         break;
                     }
                     case 1: {
-                        boolean success = registerController.registerCourier(uname, pword, fname + " " + lname, phone, addr, 1, this);
+                        boolean success = registerController.registerCourier(uname, pword, fname + " " + lname, phone, addr, 0, this);
                         break;
                     }
                     case 2: {
