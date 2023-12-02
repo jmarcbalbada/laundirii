@@ -9,9 +9,9 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/courier_home" />
         <item
-            android:id="@+id/cour_nav_transaction"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/courier_transaction" />
+            android:id="@+id/cour_nav_history"
+            android:icon="@android:drawable/ic_menu_recent_history"
+            android:title="@string/courier_history" />
         <item
             android:id="@+id/cour_nav_logout"
             android:icon="@drawable/ic_menu_slideshow"

@@ -26,8 +26,8 @@ public class HistoryFragment extends Fragment {
     private ClientFragmentHistoryBinding binding;
     private Client client;
     SharedPreferences clientInfoPreferences;
-    private ListView lv_pendingOrders;
-    private ArrayAdapter pendingClientOrdersAdapter;
+    private ListView lv_historyList;
+    private ArrayAdapter historyClientOrdersAdapter;
     private DashboardController dashboardController;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -41,7 +41,7 @@ public class HistoryFragment extends Fragment {
         clientInfoPreferences = this.getActivity().getSharedPreferences("LoginClientPreferences",0);
         String clientUsername = clientInfoPreferences.getString("clientUsername", "");
         client = dashboardController.getClient(clientUsername,this.getActivity());
-        lv_pendingOrders = (ListView) root.findViewById(R.id.history_transaction);
+        lv_historyList = (ListView) root.findViewById(R.id.history_transaction);
         displayHistory();
         return root;
     }
@@ -49,9 +49,9 @@ public class HistoryFragment extends Fragment {
     public void displayHistory()
     {
         List<Phase1Order> listHistory = new ArrayList<>();
-        listHistory = dashboardController.getHistoryList(client.getCustomerID(), this.getActivity());
-        pendingClientOrdersAdapter = new ArrayAdapter<Phase1Order>(this.getContext(), android.R.layout.simple_list_item_1, listHistory);
-        lv_pendingOrders.setAdapter(pendingClientOrdersAdapter);
+        listHistory = dashboardController.getHistoryList(client.getUsername(), this.getActivity());
+        historyClientOrdersAdapter = new ArrayAdapter<Phase1Order>(this.getContext(), android.R.layout.simple_list_item_1, listHistory);
+        lv_historyList.setAdapter(historyClientOrdersAdapter);
     }
 
     @Override

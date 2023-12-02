@@ -3,11 +3,9 @@ package com.example.laundirii.view.courier_dashboard_ui;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.laundirii.R;
 import com.example.laundirii.controller.DashboardController;
@@ -51,7 +49,7 @@ public class CourierDashboardActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.cour_nav_home, R.id.cour_nav_transaction, R.id.cour_nav_logout)
+                R.id.cour_nav_home, R.id.cour_nav_history, R.id.cour_nav_logout)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_courier_dashboard);

@@ -12,9 +12,9 @@
         tools:layout="@layout/courier_dashboard_fragment_home" />
 
     <fragment
-        android:id="@+id/cour_nav_transaction"
+        android:id="@+id/cour_nav_history"
         android:name="com.example.laundirii.view.courier_dashboard_ui.courier_dashboard_history.CourierDashboardHistoryFragment"
-        android:label="@string/courier_transaction"
+        android:label="@string/courier_history"
         tools:layout="@layout/courier_dashboard_fragment_history" />
 
     <fragment
