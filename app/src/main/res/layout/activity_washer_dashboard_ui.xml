@@ -9,7 +9,7 @@
     tools:openDrawer="start">
 
     <include
-        android:id="@+id/app_bar_washer_dashboard_ui"
+        android:id="@+id/app_bar_washer_dashboard"
         layout="@layout/app_bar_washer_dashboard"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -21,5 +21,5 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_washer_dashboard_ui"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/washer_activity_main_drawer" />
 </androidx.drawerlayout.widget.DrawerLayout>

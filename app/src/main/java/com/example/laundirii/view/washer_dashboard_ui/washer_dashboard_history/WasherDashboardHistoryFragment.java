@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.laundirii.R;
 import com.example.laundirii.databinding.WasherDashboardFragmentHistoryBinding;
 
 public class WasherDashboardHistoryFragment extends Fragment {
@@ -23,10 +24,10 @@ public class WasherDashboardHistoryFragment extends Fragment {
 
         binding = WasherDashboardFragmentHistoryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        final TextView textView = binding.textHome;
+        final TextView textView = binding.washerTextHistory;
         washerDashboardHistoryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
+
     }
 
     @Override

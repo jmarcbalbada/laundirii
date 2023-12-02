@@ -39,4 +39,7 @@
     <string name="courier_home">Home</string>
     <string name="courier_transaction">Transaction</string>
     <string name="courier_logout">Logout</string>
+    <string name="washer_menu_pendingrequest">Pending Request\n</string>
+    <string name="washer_menu_logs">Logs</string>
+    <string name="washer_menu_history">History</string>
 </resources>

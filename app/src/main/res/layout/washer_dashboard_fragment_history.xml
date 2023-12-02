@@ -7,7 +7,7 @@
     tools:context=".view.washer_dashboard_ui.washer_dashboard_history.WasherDashboardHistoryFragment">
 
     <TextView
-        android:id="@+id/text_home"
+        android:id="@+id/washer_text_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -31,7 +31,6 @@
         tools:layout_editor_absoluteX="206dp"
         tools:layout_editor_absoluteY="92dp"
         tools:listitem="@layout/washer_tolist_history" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
