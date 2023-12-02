@@ -24,9 +24,10 @@ public class WasherDashboardHistoryFragment extends Fragment {
 
         binding = WasherDashboardFragmentHistoryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        TextView textView = root.findViewById(R.id.washer_text_history);
+        final TextView textView = binding.washerTextHistory;
+        washerDashboardHistoryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
+
     }
 
     @Override
