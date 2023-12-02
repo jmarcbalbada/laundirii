@@ -61,6 +61,12 @@ public class Client {
         return dbHelper.checkClientByUsername(username);
     }
 
+    public Client getClient(String username, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.getClient(username);
+    }
+
     // REGISTER
     public boolean insertClient(String username, String password, String name, String contactNo, String address, int paymentInfo, Context context)
     {

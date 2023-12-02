@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.laundirii.R;
 import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.controller.RegisterAndLoginController;
+import com.example.laundirii.model.Client;
 import com.example.laundirii.model.Courier;
 import com.example.laundirii.view.client_dashboard_ui.ClientDashboardActivity;
 import com.example.laundirii.view.courier_dashboard_ui.CourierDashboardActivity;
@@ -46,6 +47,10 @@ public class LoginActivity extends AppCompatActivity {
         //boolean inserted = dashboardController.insertDummyValuesOnOrder(this);
         //Log.e("DUMMY", inserted + "");
 
+//        DashboardController dashboardController = new DashboardController();
+//        boolean inserted = dashboardController.insertDummyPhase1Order(this);
+//        Log.e("DUMMY", inserted + "");
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,6 +72,16 @@ public class LoginActivity extends AppCompatActivity {
                     case 0:
                         if(loginController.loginClient(username,password,LoginActivity.this))
                         {
+                            DashboardController dashboardController = new DashboardController();
+                            Client client = dashboardController.getClient(username,LoginActivity.this);
+                            // Get SharedPreferences instance
+                            SharedPreferences sharedPreferences = getSharedPreferences("LoginClientPreferences", Context.MODE_PRIVATE);
+
+//                          // Create an editor to modify SharedPreferences
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("clientUsername", client.getUsername());
+                            editor.apply();
+
                             Toast.makeText(getApplicationContext(), "Logging in as Client", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, ClientDashboardActivity.class);
                             startActivity(intent);
@@ -81,22 +96,12 @@ public class LoginActivity extends AppCompatActivity {
                         {
                             DashboardController dashboardController = new DashboardController();
                             Courier courier = dashboardController.getCourier(username,LoginActivity.this);
-                            Log.e("COURIER LOGIN", courier.getCourierID() + ", " + courier.getUsername() + ","
-                            + courier.getPassword() + ", " + courier.getName() + ", " + courier.getContactNo() + ","
-                            + courier.getPlateNo() + "," + courier.getStatus());
                             // Get SharedPreferences instance
                             SharedPreferences sharedPreferences = getSharedPreferences("LoginCourierPreferences", Context.MODE_PRIVATE);
 
 //                          // Create an editor to modify SharedPreferences
                             SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                            editor.putInt("courierID", courier.getCourierID());
                             editor.putString("courierUsername", courier.getUsername());
-                            editor.putString("courierPassword", courier.getPassword());
-                            editor.putString("courierName", courier.getName());
-                            editor.putString("courierContactNo", courier.getContactNo());
-                            editor.putString("courierPlateNo", courier.getPlateNo());
-                            editor.putBoolean("courierStatus", courier.getStatus());
                             editor.apply();
 
                             Toast.makeText(getApplicationContext(), "Logging in as Courier", Toast.LENGTH_SHORT).show();

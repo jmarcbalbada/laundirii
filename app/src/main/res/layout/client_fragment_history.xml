@@ -18,7 +18,7 @@
             <ListView
                 android:id="@+id/history_transaction"
                 android:layout_width="409dp"
-                android:layout_height="200dp"
+                android:layout_height="645dp"
                 android:layout_marginTop="8dp" />
 
         </LinearLayout>

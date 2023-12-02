@@ -1,10 +1,15 @@
 package com.example.laundirii.view.client_dashboard_ui;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.widget.TextView;
 
 import com.example.laundirii.R;
+import com.example.laundirii.controller.DashboardController;
+import com.example.laundirii.model.Client;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -21,6 +26,9 @@ public class ClientDashboardActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityClientDashboardBinding binding;
+    private Client client;
+    private TextView navClientText, navPhoneNoText;
+    private DashboardController dashboardController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +57,29 @@ public class ClientDashboardActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_client_dashboard);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        dashboardController = new DashboardController();
+
+        // initialize
+        View headerView = binding.navView.getHeaderView(0);
+        navClientText = headerView.findViewById(R.id.navClientName);
+        navPhoneNoText = headerView.findViewById(R.id.navClientPhoneNo);
+        setClient();
+
+        // instantiate navigation bar values
+        navClientText.setText("Good day, " + client.getName() + "!");
+        navPhoneNoText.setText("Contact No: " + client.getContactNo());
+    }
+
+    private void setClient()
+    {
+        // Retrieve shared preferences
+        SharedPreferences sharedPreferences = getSharedPreferences("LoginClientPreferences", Context.MODE_PRIVATE);
+        // Retrieve values from SharedPreferences
+        String clientUsername = sharedPreferences.getString("clientUsername", "");
+
+        // Now, you can use these values as needed in CourierDashboardActivity
+        client = dashboardController.getClient(clientUsername, this);
     }
 
     @Override

@@ -160,17 +160,17 @@ public class Order {
         return this.dateReceived;
     }
 
-    public List<Order> getPendingDeliveriesOnCourier(int courierID, Context context)
-    {
-        dbHelper = new Connect(context);
-        return dbHelper.getPendingDeliveriesOnCourier(courierID);
-    }
+//    public List<Order> getPendingDeliveriesOnCourier(int courierID, Context context)
+//    {
+//        dbHelper = new Connect(context);
+//        return dbHelper.getPendingDeliveriesOnCourier(courierID);
+//    }
 
-    public boolean insertDummyValuesOnOrder(Context context)
-    {
-        dbHelper = new Connect(context);
-        return dbHelper.insertDummyOrder();
-    }
+//    public boolean insertDummyValuesOnOrder(Context context)
+//    {
+//        dbHelper = new Connect(context);
+//        return dbHelper.insertDummyOrder();
+//    }
 
 
     public String CourierOrdertoString(Order order)

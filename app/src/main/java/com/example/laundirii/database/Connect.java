@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import com.example.laundirii.model.Client;
 import com.example.laundirii.model.Courier;
 import com.example.laundirii.model.Order;
+import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.model.Washer;
 
 import java.util.ArrayList;
@@ -50,20 +51,46 @@ public class Connect extends SQLiteOpenHelper {
     public static final String RATE_PER_KG = "RATE_PER_KG";
 
     // ORDER
-    public static final String ORDER_ID = "ORDER_ID";
-    public static final String ORDER_CLIENT_ID = "ORDER_CLIENT_ID";
-    public static final String ORDER_WASHER_ID = "ORDER_WASHER_ID";
-    public static final String ORDER_COURIER1_ID = "ORDER_COURIER1_ID";
-    public static final String TOTAL_COURIER1 = "TOTAL_COURIER1";
-    public static final String DATE_COURIER1 = "DATE_COURIER1";
-    public static final String ORDER_COURIER2_ID = "ORDER_COURIER2_ID";
-    public static final String TOTAL_COURIER2 = "TOTAL_COURIER2";
-    public static final String DATE_COURIER2 = "DATE_COURIER2";
-    public static final String TOTAL_DUE = "TOTAL_DUE";
-    public static final String TOTAL_PAID = "TOTAL_PAID";
-    public static final String PAYMENT_STATUS = "PAYMENT_STATUS";
-    public static final String GRAND_TOTAL = "GRAND_TOTAL";
-    public static final String DATE_RECEIVED = "DATE_RECEIVED";
+//    public static final String ORDER_ID = "ORDER_ID";
+//    public static final String ORDER_CLIENT_ID = "ORDER_CLIENT_ID";
+//    public static final String ORDER_WASHER_ID = "ORDER_WASHER_ID";
+//    public static final String ORDER_COURIER1_ID = "ORDER_COURIER1_ID";
+//    public static final String TOTAL_COURIER1 = "TOTAL_COURIER1";
+//    public static final String DATE_COURIER1 = "DATE_COURIER1";
+//    public static final String ORDER_COURIER2_ID = "ORDER_COURIER2_ID";
+//    public static final String TOTAL_COURIER2 = "TOTAL_COURIER2";
+//    public static final String DATE_COURIER2 = "DATE_COURIER2";
+//    public static final String TOTAL_DUE = "TOTAL_DUE";
+//    public static final String TOTAL_PAID = "TOTAL_PAID";
+//    public static final String PAYMENT_STATUS = "PAYMENT_STATUS";
+//    public static final String GRAND_TOTAL = "GRAND_TOTAL";
+//    public static final String DATE_RECEIVED = "DATE_RECEIVED";
+
+    // PHASE 1 ORDER
+    public static final String PHASE1_ORDER_ID = "PHASE1_ORDER_ID";
+    public static final String PHASE1_ORDER_CLIENT_ID = "PHASE1_ORDER_CLIENT_ID";
+    public static final String PHASE1_ORDER_WASHER_ID = "PHASE1_ORDER_WASHER_ID";
+    public static final String PHASE1_ORDER_COURIER_ID = "PHASE1_ORDER_COURIER_ID";
+    public static final String PHASE1_COURIER_STATUS = "PHASE1_COURIER_STATUS";
+    public static final String PHASE1_TOTAL_COURIER_AMOUNT = "PHASE1_TOTAL_COURIER_AMOUNT";
+    public static final String PHASE1_DATE_COURIER = "PHASE1_DATE_COURIER";
+    public static final String PHASE1_TOTAL_DUE = "PHASE1_TOTAL_DUE";
+    public static final String PHASE1_TOTAL_PAID = "PHASE1_TOTAL_PAID";
+    public static final String PHASE1_PAYMENT_STATUS = "PHASE1_PAYMENT_STATUS";
+    public static final String PHASE1_DATE_RECEIVED = "PHASE1_DATE_RECEIVED";
+
+    // PHASE 2 -  COURIER PICKUP ORDER
+    public static final String PHASE2_ORDER_ID = "PHASE2_ORDER_ID";
+    public static final String PHASE2_ORDER_CLIENT_ID = "PHASE2_ORDER_CLIENT_ID";
+    public static final String PHASE2_ORDER_WASHER_ID = "PHASE2_ORDER_WASHER_ID";
+    public static final String PHASE2_ORDER_COURIER_ID = "PHASE2_ORDER_COURIER_ID";
+    public static final String PHASE2_COURIER_STATUS = "PHASE2_COURIER_STATUS";
+    public static final String PHASE2_TOTAL_COURIER_AMOUNT = "PHASE2_TOTAL_COURIER_AMOUNT";
+    public static final String PHASE2_DATE_COURIER = "PHASE2_DATE_COURIER";
+    public static final String PHASE2_TOTAL_DUE = "PHASE2_TOTAL_DUE";
+    public static final String PHASE2_TOTAL_PAID = "PHASE2_TOTAL_PAID";
+    public static final String PHASE2_PAYMENT_STATUS = "PHASE2_PAYMENT_STATUS";
+    public static final String PHASE2_DATE_RECEIVED = "PHASE2_DATE_RECEIVED";
 
     // FEEDBACK
     public static final String FEEDBACK_ID = "FEEDBACK_ID";
@@ -86,21 +113,48 @@ public class Connect extends SQLiteOpenHelper {
         String createWasherTableStatement = "CREATE TABLE WASHER (WASHER_ID INTEGER PRIMARY KEY, " +
                 "WASHER_USERNAME TEXT NOT NULL, WASHER_PASSWORD TEXT NOT NULL, SHOP_NAME TEXT, " +
                 "SHOP_LOCATION TEXT, WASHER_CONTACT_NO TEXT, WASHER_STATUS INTEGER, RATE_PER_KG REAL);";
-        String createOrderTableStatement = "CREATE TABLE ORDER_TABLE (" +
-                "ORDER_ID INTEGER PRIMARY KEY, " +
-                "ORDER_CLIENT_ID INTEGER, " +
-                "ORDER_WASHER_ID INTEGER, " +
-                "ORDER_COURIER1_ID INTEGER, " +
-                "TOTAL_COURIER1 REAL, " +
-                "DATE_COURIER1 TEXT, " +
-                "ORDER_COURIER2_ID INTEGER, " +
-                "TOTAL_COURIER2 REAL, " +
-                "DATE_COURIER2 TEXT, " +
-                "TOTAL_DUE REAL, " +
-                "TOTAL_PAID REAL, " +
-                "PAYMENT_STATUS INTEGER, " +
-                "GRAND_TOTAL REAL, " +
-                "DATE_RECEIVED TEXT" +
+//        String createOrderTableStatement = "CREATE TABLE ORDER_TABLE (" +
+//                "ORDER_ID INTEGER PRIMARY KEY, " +
+//                "ORDER_CLIENT_ID INTEGER, " +
+//                "ORDER_WASHER_ID INTEGER, " +
+//                "ORDER_COURIER1_ID INTEGER, " +
+//                "TOTAL_COURIER1 REAL, " +
+//                "DATE_COURIER1 TEXT, " +
+//                "ORDER_COURIER2_ID INTEGER, " +
+//                "TOTAL_COURIER2 REAL, " +
+//                "DATE_COURIER2 TEXT, " +
+//                "TOTAL_DUE REAL, " +
+//                "TOTAL_PAID REAL, " +
+//                "PAYMENT_STATUS INTEGER, " +
+//                "GRAND_TOTAL REAL, " +
+//                "DATE_RECEIVED TEXT" +
+//                ");";
+        String createPhase1OrderTableStatement = "CREATE TABLE PHASE1_ORDER (" +
+                "PHASE1_ORDER_ID INTEGER PRIMARY KEY, " +
+                "PHASE1_ORDER_CLIENT_ID INTEGER, " +
+                "PHASE1_ORDER_WASHER_ID INTEGER, " +
+                "PHASE1_ORDER_COURIER_ID INTEGER, " +
+                "PHASE1_COURIER_STATUS INTEGER, " +
+                "PHASE1_TOTAL_COURIER_AMOUNT REAL, " +
+                "PHASE1_DATE_COURIER TEXT, " +
+                "PHASE1_TOTAL_DUE REAL, " +
+                "PHASE1_TOTAL_PAID REAL, " +
+                "PHASE1_PAYMENT_STATUS INTEGER, " +
+                "PHASE1_DATE_RECEIVED TEXT" +
+                ");";
+
+        String createPhase2OrderTableStatement = "CREATE TABLE PHASE2COURIERPICKUP_ORDER (" +
+                "PHASE2_ORDER_ID INTEGER PRIMARY KEY, " +
+                "PHASE2_ORDER_CLIENT_ID INTEGER, " +
+                "PHASE2_ORDER_WASHER_ID INTEGER, " +
+                "PHASE2_ORDER_COURIER_ID INTEGER, " +
+                "PHASE2_COURIER_STATUS INTEGER, " +
+                "PHASE2_TOTAL_COURIER_AMOUNT REAL, " +
+                "PHASE2_DATE_COURIER TEXT, " +
+                "PHASE2_TOTAL_DUE REAL, " +
+                "PHASE2_TOTAL_PAID REAL, " +
+                "PHASE2_PAYMENT_STATUS INTEGER, " +
+                "PHASE2_DATE_RECEIVED TEXT" +
                 ");";
         String createFeedbackTableStatement = "CREATE TABLE FEEDBACK (" +
                 "FEEDBACK_ID INTEGER PRIMARY KEY, " +
@@ -109,7 +163,9 @@ public class Connect extends SQLiteOpenHelper {
                 "RATING INTEGER" +
                 ");";
         db.execSQL(createFeedbackTableStatement);
-        db.execSQL(createOrderTableStatement);
+        db.execSQL(createPhase1OrderTableStatement);
+        db.execSQL(createPhase2OrderTableStatement);
+//        db.execSQL(createOrderTableStatement);
         db.execSQL(createClientTableStatement);
         db.execSQL(createCourierTableStatement);
         db.execSQL(createWasherTableStatement);
@@ -122,6 +178,7 @@ public class Connect extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS WASHER");
         db.execSQL("DROP TABLE IF EXISTS ORDER_TABLE");
         db.execSQL("DROP TABLE IF EXISTS FEEDBACK");
+        db.execSQL("DROP TABLE IF EXISTS PHASE1_ORDER");
         onCreate(db);
     }
 
@@ -633,82 +690,183 @@ public class Connect extends SQLiteOpenHelper {
         return washer;
     }
 
-    // QUERY PENDING DELIVERIES WHERE PAYMENT STATUS = FALSE
-    public List<Order> getPendingDeliveriesOnCourier(int courierID) {
+    // pending client
+
+    public List<Phase1Order> getPendingDeliveryOnClient(int clientID) {
         SQLiteDatabase db = this.getReadableDatabase();
-        List<Order> pendingDeliveries = new ArrayList<>();
+        List<Phase1Order> pendingDeliveries = new ArrayList<>();
+//
+//        // Query the PHASE1_ORDER table for pending deliveries for the specified client
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_CLIENT_ID = ? " +
+                "AND (PHASE1_DATE_COURIER = '' OR PHASE1_DATE_RECEIVED = '')";
+        String[] selectionArgs = {String.valueOf(clientID)};
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        try{
 
-        // Query the Order table for pending deliveries for the specified courier
-        Log.e("SQL Query", "SELECT * FROM ORDER_TABLE WHERE ORDER_COURIER1_ID = " + courierID + " AND PAYMENT_STATUS = 0");
-        Cursor cursor = db.rawQuery(
-                "SELECT * FROM ORDER_TABLE WHERE ORDER_COURIER1_ID = ? AND PAYMENT_STATUS = 0",
-                new String[]{String.valueOf(courierID)}
-        );
-        Log.e("Cursor Count", String.valueOf(cursor.getCount()));
+            while (cursor.moveToNext()) {
+                // Extract column indexes
+                int orderIdIndex = cursor.getColumnIndex(PHASE1_ORDER_ID);
+                int washerIdIndex = cursor.getColumnIndex(PHASE1_ORDER_WASHER_ID);
+                int courierIdIndex = cursor.getColumnIndex(PHASE1_ORDER_COURIER_ID);
+                int courierStatusIndex = cursor.getColumnIndex(PHASE1_COURIER_STATUS);
+                int totalCourierAmountIndex = cursor.getColumnIndex(PHASE1_TOTAL_COURIER_AMOUNT);
+                int dateCourierIndex = cursor.getColumnIndex(PHASE1_DATE_COURIER);
+                int totalDueIndex = cursor.getColumnIndex(PHASE1_TOTAL_DUE);
+                int totalPaidIndex = cursor.getColumnIndex(PHASE1_TOTAL_PAID);
+                int paymentStatusIndex = cursor.getColumnIndex(PHASE1_PAYMENT_STATUS);
+                int dateReceivedIndex = cursor.getColumnIndex(PHASE1_DATE_RECEIVED);
 
-        while (cursor.moveToNext()) {
-            int orderIDColumnIndex = cursor.getColumnIndex(ORDER_ID);
-            int clientIDColumnIndex = cursor.getColumnIndex(ORDER_CLIENT_ID);
-            int washerIDColumnIndex = cursor.getColumnIndex(ORDER_WASHER_ID);
-            int courier1IDColumnIndex = cursor.getColumnIndex(ORDER_COURIER1_ID);
-            int totalCourier1ColumnIndex = cursor.getColumnIndex(TOTAL_COURIER1);
-            int dateCourier1ColumnIndex = cursor.getColumnIndex(DATE_COURIER1);
-            int courier2IDColumnIndex = cursor.getColumnIndex(ORDER_COURIER2_ID);
-            int totalCourier2ColumnIndex = cursor.getColumnIndex(TOTAL_COURIER2);
-            int dateCourier2ColumnIndex = cursor.getColumnIndex(DATE_COURIER2);
-            int totalDueColumnIndex = cursor.getColumnIndex(TOTAL_DUE);
-            int totalPaidColumnIndex = cursor.getColumnIndex(TOTAL_PAID);
-            int paymentStatusColumnIndex = cursor.getColumnIndex(PAYMENT_STATUS);
-            int grandTotalColumnIndex = cursor.getColumnIndex(GRAND_TOTAL);
-            int dateReceivedColumnIndex = cursor.getColumnIndex(DATE_RECEIVED);
+                // Check if the column indexes are valid
+                if (orderIdIndex != -1 && washerIdIndex != -1 && courierIdIndex != -1 &&
+                        courierStatusIndex != -1 && totalCourierAmountIndex != -1 &&
+                        dateCourierIndex != -1 && totalDueIndex != -1 &&
+                        totalPaidIndex != -1 && paymentStatusIndex != -1 &&
+                        dateReceivedIndex != -1) {
 
-            Log.e("ReachHere","REACHING HERE!");
+                    // Create a new Phase1Order instance using the constructor
+                    Phase1Order pendingOrder = new Phase1Order(
+                            cursor.getInt(orderIdIndex),
+                            getClient(clientID),
+                            getWasher(cursor.getInt(washerIdIndex)),
+                            getCourier(cursor.getInt(courierIdIndex)),
+                            cursor.getInt(courierStatusIndex),
+                            cursor.getDouble(totalCourierAmountIndex),
+                            cursor.getString(dateCourierIndex),
+                            cursor.getDouble(totalDueIndex),
+                            cursor.getDouble(totalPaidIndex),
+                            cursor.getInt(paymentStatusIndex),
+                            cursor.getString(dateReceivedIndex)
+                    );
 
-            Log.e("Column Indexes",
-                    "ORDER_ID: " + orderIDColumnIndex +
-                            ", CUSTOMER_ID: " + clientIDColumnIndex +
-                            ", WASHER_ID: " + washerIDColumnIndex +
-                            ", ORDER_CLIENT_ID: " + courier1IDColumnIndex +
-                            ", TOTAL_COURIER1: " + totalCourier1ColumnIndex +
-                            ", DATE_COURIER1: " + dateCourier1ColumnIndex +
-                            ", ORDER_COURIER2_ID: " + courier2IDColumnIndex +
-                            ", TOTAL_COURIER2: " + totalCourier2ColumnIndex +
-                            ", DATE_COURIER2: " + dateCourier2ColumnIndex +
-                            ", TOTAL_DUE: " + totalDueColumnIndex +
-                            ", TOTAL_PAID: " + totalPaidColumnIndex +
-                            ", PAYMENT_STATUS: " + paymentStatusColumnIndex +
-                            ", GRAND_TOTAL: " + grandTotalColumnIndex +
-                            ", DATE_RECEIVED: " + dateReceivedColumnIndex);
+                    // Add the order to the list of pending deliveries
+                    pendingDeliveries.add(pendingOrder);
+                } else {
+                    // Handle invalid column indexes, log an error, or throw an exception
+                }
+            }
+        }catch(Exception e)
+        {
+            Log.e("DATABASE ERROR", e.getMessage().toString());
+        }finally
+        {
+            // Close the cursor and database
+            cursor.close();
+            db.close();
+        }
+        return pendingDeliveries;
+    }
 
-            Log.e("ReachHere2","REACHING HERE!2");
+    public List<Phase1Order> getHistoryList(int clientID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Phase1Order> pendingDeliveries = new ArrayList<>();
+//
+//        // Query the PHASE1_ORDER table for pending deliveries for the specified client
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_CLIENT_ID = ? ";
+        String[] selectionArgs = {String.valueOf(clientID)};
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        try{
+
+            while (cursor.moveToNext()) {
+                // Extract column indexes
+                int orderIdIndex = cursor.getColumnIndex(PHASE1_ORDER_ID);
+                int washerIdIndex = cursor.getColumnIndex(PHASE1_ORDER_WASHER_ID);
+                int courierIdIndex = cursor.getColumnIndex(PHASE1_ORDER_COURIER_ID);
+                int courierStatusIndex = cursor.getColumnIndex(PHASE1_COURIER_STATUS);
+                int totalCourierAmountIndex = cursor.getColumnIndex(PHASE1_TOTAL_COURIER_AMOUNT);
+                int dateCourierIndex = cursor.getColumnIndex(PHASE1_DATE_COURIER);
+                int totalDueIndex = cursor.getColumnIndex(PHASE1_TOTAL_DUE);
+                int totalPaidIndex = cursor.getColumnIndex(PHASE1_TOTAL_PAID);
+                int paymentStatusIndex = cursor.getColumnIndex(PHASE1_PAYMENT_STATUS);
+                int dateReceivedIndex = cursor.getColumnIndex(PHASE1_DATE_RECEIVED);
+
+                // Check if the column indexes are valid
+                if (orderIdIndex != -1 && washerIdIndex != -1 && courierIdIndex != -1 &&
+                        courierStatusIndex != -1 && totalCourierAmountIndex != -1 &&
+                        dateCourierIndex != -1 && totalDueIndex != -1 &&
+                        totalPaidIndex != -1 && paymentStatusIndex != -1 &&
+                        dateReceivedIndex != -1) {
+
+                    // Create a new Phase1Order instance using the constructo
+                    Phase1Order pendingOrder = new Phase1Order(
+                            cursor.getInt(orderIdIndex),
+                            getClient(clientID),
+                            getWasher(cursor.getInt(washerIdIndex)),
+                            getCourier(cursor.getInt(courierIdIndex)),
+                            cursor.getInt(courierStatusIndex),
+                            cursor.getDouble(totalCourierAmountIndex),
+                            cursor.getString(dateCourierIndex),
+                            cursor.getDouble(totalDueIndex),
+                            cursor.getDouble(totalPaidIndex),
+                            cursor.getInt(paymentStatusIndex),
+                            cursor.getString(dateReceivedIndex)
+                    );
+                    Log.e("DATABASE PHASE1ORDER", pendingOrder.toString());
+
+                    // Add the order to the list of pending deliveries
+                    pendingDeliveries.add(pendingOrder);
+                } else {
+                    // Handle invalid column indexes, log an error, or throw an exception
+                }
+            }
+        }catch(Exception e)
+        {
+            Log.e("DATABASE ERROR", e.getMessage().toString());
+        }finally
+        {
+            // Close the cursor and database
+            cursor.close();
+            db.close();
+        }
+        return pendingDeliveries;
+    }
 
 
-            // Check if the column indexes are valid
-            if (orderIDColumnIndex != -1 && clientIDColumnIndex != -1 && washerIDColumnIndex != -1 &&
-                    courier1IDColumnIndex != -1 && totalCourier1ColumnIndex != -1 &&
-                    dateCourier1ColumnIndex != -1 && courier2IDColumnIndex != -1 &&
-                    totalCourier2ColumnIndex != -1 && dateCourier2ColumnIndex != -1 &&
-                    totalDueColumnIndex != -1 && totalPaidColumnIndex != -1 &&
-                    paymentStatusColumnIndex != -1 && grandTotalColumnIndex != -1 &&
-                    dateReceivedColumnIndex != -1) {
 
-                // Create a new Order instance using the constructor
-                Order order = new Order(
-                        cursor.getInt(orderIDColumnIndex),
-                        getClient(cursor.getInt(clientIDColumnIndex)),
-                        getWasher(cursor.getInt(washerIDColumnIndex)),
-                        getCourier(cursor.getInt(courier1IDColumnIndex)),
-                        cursor.getString(dateCourier1ColumnIndex),
-                        getCourier(cursor.getInt(courier2IDColumnIndex)),
-                        cursor.getString(dateCourier2ColumnIndex),
-                        cursor.getDouble(totalDueColumnIndex),
-                        cursor.getDouble(totalPaidColumnIndex),
-                        cursor.getInt(paymentStatusColumnIndex) != 0,
-                        cursor.getDouble(grandTotalColumnIndex),
-                        cursor.getString(dateReceivedColumnIndex)
+    public Phase1Order getPendingDeliveryOnCourier(int courierID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Phase1Order pendingDelivery = null;
+
+        // Query the PHASE1_ORDER table for pending deliveries for the specified courier
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_COURIER_ID = ? AND PHASE1_COURIER_STATUS = 0";
+        String[] selectionArgs = {String.valueOf(courierID)};
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+
+        if (cursor.moveToFirst()) {
+            // Check if the column index is valid before accessing the cursor
+            int orderIdIndex = cursor.getColumnIndex(PHASE1_ORDER_ID);
+            int clientIdIndex = cursor.getColumnIndex(PHASE1_ORDER_CLIENT_ID);
+            int washerIdIndex = cursor.getColumnIndex(PHASE1_ORDER_WASHER_ID);
+            int courierIdIndex = cursor.getColumnIndex(PHASE1_ORDER_COURIER_ID);
+            int courierStatusIndex = cursor.getColumnIndex(PHASE1_COURIER_STATUS);
+            int totalCourierAmountIndex = cursor.getColumnIndex(PHASE1_TOTAL_COURIER_AMOUNT);
+            int dateCourierIndex = cursor.getColumnIndex(PHASE1_DATE_COURIER);
+            int totalDueIndex = cursor.getColumnIndex(PHASE1_TOTAL_DUE);
+            int totalPaidIndex = cursor.getColumnIndex(PHASE1_TOTAL_PAID);
+            int paymentStatusIndex = cursor.getColumnIndex(PHASE1_PAYMENT_STATUS);
+            int dateReceivedIndex = cursor.getColumnIndex(PHASE1_DATE_RECEIVED);
+
+            if (orderIdIndex != -1 && clientIdIndex != -1 && washerIdIndex != -1 &&
+                    courierIdIndex != -1 && courierStatusIndex != -1 &&
+                    totalCourierAmountIndex != -1 && dateCourierIndex != -1 &&
+                    totalDueIndex != -1 && totalPaidIndex != -1 &&
+                    paymentStatusIndex != -1 && dateReceivedIndex != -1) {
+
+                pendingDelivery = new Phase1Order(
+                        cursor.getInt(orderIdIndex),
+                        getClient(cursor.getInt(clientIdIndex)),
+                        getWasher(cursor.getInt(washerIdIndex)),
+                        getCourier(cursor.getInt(courierIdIndex)),
+                        cursor.getInt(courierStatusIndex),
+                        cursor.getDouble(totalCourierAmountIndex),
+                        cursor.getString(dateCourierIndex),
+                        cursor.getDouble(totalDueIndex),
+                        cursor.getDouble(totalPaidIndex),
+                        cursor.getInt(paymentStatusIndex),
+                        cursor.getString(dateReceivedIndex)
                 );
 
-                pendingDeliveries.add(order);
+                Log.e("pendingDelivery", pendingDelivery.toString());
             } else {
                 // Handle invalid column indexes, log an error, or throw an exception
             }
@@ -718,60 +876,201 @@ public class Connect extends SQLiteOpenHelper {
         cursor.close();
         db.close();
 
-//        for (Order order : pendingDeliveries) {
-//            Log.e("Order Details",
-//                    "OrderID: " + order.getOrderID() +
-//                            ", ClientID: " + order.getClient().getCustomerID() +
-//                            ", WasherID: " + order.getWasher().getWasherID() +
-//                            ", Courier1ID: " + order.getCourier1().getCourierID() +
-//                            ", DateCourier1: " + order.getDateCourier1() +
-//                            ", Courier2ID: " + order.getCourier2().getCourierID() +
-//                            ", DateCourier2: " + order.getDateCourier2() +
-//                            ", TotalDue: " + order.getTotalDue() +
-//                            ", TotalPaid: " + order.getTotalPaid() +
-//                            ", PaymentStatus: " + order.getPaymentStatus() +
-//                            ", GrandTotal: " + order.getGrandTotal() +
-//                            ", DateReceived: " + order.getDateReceived());
-//        }
-
-        return pendingDeliveries;
+        return pendingDelivery;
     }
 
-    public boolean insertDummyOrder() {
+    public boolean insertDummyPhase1Order() {
         SQLiteDatabase db = this.getWritableDatabase();
-        boolean isInserted = false;
 
-        try {
-            ContentValues values = new ContentValues();
-            values.put(ORDER_ID, 1);
-            values.put(ORDER_CLIENT_ID, 1);
-            values.put(ORDER_WASHER_ID, 1);
-            values.put(ORDER_COURIER1_ID, 1);
-            values.put(TOTAL_COURIER1, 50);
-            values.put(DATE_COURIER1, "2022-01-12");
-            values.put(ORDER_COURIER2_ID, 2);  // Replace with an actual courier ID
-            values.put(TOTAL_COURIER2, 50);
-            values.put(DATE_COURIER2, "2022-01-13");
-            values.put(TOTAL_DUE, 20);
-            values.put(TOTAL_PAID, 0);
-            values.put(PAYMENT_STATUS, 0);  // 0 for false
-            values.put(GRAND_TOTAL, 0);
-            values.put(DATE_RECEIVED, "2022-01-14");
+        ContentValues values = new ContentValues();
+        values.put(PHASE1_ORDER_ID, 2);
+        values.put(PHASE1_ORDER_CLIENT_ID, 1);
+        values.put(PHASE1_ORDER_WASHER_ID, 2);
+        values.put(PHASE1_ORDER_COURIER_ID, 4);
+        values.put(PHASE1_COURIER_STATUS, 0);
+        values.put(PHASE1_TOTAL_COURIER_AMOUNT, 50.0);
+        values.put(PHASE1_DATE_COURIER, "");
+        values.put(PHASE1_TOTAL_DUE, 0.0);
+        values.put(PHASE1_TOTAL_PAID, 0.0);
+        values.put(PHASE1_PAYMENT_STATUS, 0);
+        values.put(PHASE1_DATE_RECEIVED, "");
 
-            long newRowId = db.insert("ORDER_TABLE", null, values);
+        long result = db.insert("PHASE1_ORDER", null, values);
 
-            // Check if the insertion was successful
-            isInserted = newRowId != -1;
-        } catch (Exception e) {
-            Log.e("Database", "Error inserting dummy order: " + e.getMessage());
-        } finally {
-            if (db != null && db.isOpen()) {
-                db.close();
-            }
-        }
+        // Close the database
+        db.close();
 
-        return isInserted;
+        // Check if the insertion was successful
+        return result != -1;
     }
+
+    public boolean insertDummyPhase2Order() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(PHASE2_ORDER_ID, 1);
+        values.put(PHASE2_ORDER_CLIENT_ID, 1);
+        values.put(PHASE2_ORDER_WASHER_ID, 1);
+        values.put(PHASE2_ORDER_COURIER_ID, 1);
+        values.put(PHASE2_COURIER_STATUS, 0);
+        values.put(PHASE2_TOTAL_COURIER_AMOUNT, 50.0);
+        values.put(PHASE2_DATE_COURIER, "2023-12-2023");
+        values.put(PHASE2_TOTAL_DUE, 0.0);
+        values.put(PHASE2_TOTAL_PAID, 0.0);
+        values.put(PHASE2_PAYMENT_STATUS, 0);
+        values.put(PHASE2_DATE_RECEIVED, "2023-13-2023");
+
+        long result = db.insert("PHASE2COURIERPICKUP_ORDER", null, values);
+
+        // Close the database
+        db.close();
+
+        // Check if the insertion was successful
+        return result != -1;
+    }
+
+
+
+
+    // QUERY PENDING DELIVERIES WHERE PAYMENT STATUS = FALSE
+//    public List<Order> getPendingDeliveriesOnCourier(int courierID) {
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        List<Order> pendingDeliveries = new ArrayList<>();
+//
+//        // Query the Order table for pending deliveries for the specified courier
+//        Log.e("SQL Query", "SELECT * FROM ORDER_TABLE WHERE ORDER_COURIER1_ID = " + courierID + " AND PAYMENT_STATUS = 0");
+//        Cursor cursor = db.rawQuery(
+//                "SELECT * FROM ORDER_TABLE WHERE ORDER_COURIER1_ID = ? AND PAYMENT_STATUS = 0",
+//                new String[]{String.valueOf(courierID)}
+//        );
+//        Log.e("Cursor Count", String.valueOf(cursor.getCount()));
+//
+//        while (cursor.moveToNext()) {
+//            int orderIDColumnIndex = cursor.getColumnIndex(ORDER_ID);
+//            int clientIDColumnIndex = cursor.getColumnIndex(ORDER_CLIENT_ID);
+//            int washerIDColumnIndex = cursor.getColumnIndex(ORDER_WASHER_ID);
+//            int courier1IDColumnIndex = cursor.getColumnIndex(ORDER_COURIER1_ID);
+//            int totalCourier1ColumnIndex = cursor.getColumnIndex(TOTAL_COURIER1);
+//            int dateCourier1ColumnIndex = cursor.getColumnIndex(DATE_COURIER1);
+//            int courier2IDColumnIndex = cursor.getColumnIndex(ORDER_COURIER2_ID);
+//            int totalCourier2ColumnIndex = cursor.getColumnIndex(TOTAL_COURIER2);
+//            int dateCourier2ColumnIndex = cursor.getColumnIndex(DATE_COURIER2);
+//            int totalDueColumnIndex = cursor.getColumnIndex(TOTAL_DUE);
+//            int totalPaidColumnIndex = cursor.getColumnIndex(TOTAL_PAID);
+//            int paymentStatusColumnIndex = cursor.getColumnIndex(PAYMENT_STATUS);
+//            int grandTotalColumnIndex = cursor.getColumnIndex(GRAND_TOTAL);
+//            int dateReceivedColumnIndex = cursor.getColumnIndex(DATE_RECEIVED);
+//
+//            Log.e("ReachHere","REACHING HERE!");
+//
+//            Log.e("Column Indexes",
+//                    "ORDER_ID: " + orderIDColumnIndex +
+//                            ", CUSTOMER_ID: " + clientIDColumnIndex +
+//                            ", WASHER_ID: " + washerIDColumnIndex +
+//                            ", ORDER_CLIENT_ID: " + courier1IDColumnIndex +
+//                            ", TOTAL_COURIER1: " + totalCourier1ColumnIndex +
+//                            ", DATE_COURIER1: " + dateCourier1ColumnIndex +
+//                            ", ORDER_COURIER2_ID: " + courier2IDColumnIndex +
+//                            ", TOTAL_COURIER2: " + totalCourier2ColumnIndex +
+//                            ", DATE_COURIER2: " + dateCourier2ColumnIndex +
+//                            ", TOTAL_DUE: " + totalDueColumnIndex +
+//                            ", TOTAL_PAID: " + totalPaidColumnIndex +
+//                            ", PAYMENT_STATUS: " + paymentStatusColumnIndex +
+//                            ", GRAND_TOTAL: " + grandTotalColumnIndex +
+//                            ", DATE_RECEIVED: " + dateReceivedColumnIndex);
+//
+//            Log.e("ReachHere2","REACHING HERE!2");
+//
+//
+//            // Check if the column indexes are valid
+//            if (orderIDColumnIndex != -1 && clientIDColumnIndex != -1 && washerIDColumnIndex != -1 &&
+//                    courier1IDColumnIndex != -1 && totalCourier1ColumnIndex != -1 &&
+//                    dateCourier1ColumnIndex != -1 && courier2IDColumnIndex != -1 &&
+//                    totalCourier2ColumnIndex != -1 && dateCourier2ColumnIndex != -1 &&
+//                    totalDueColumnIndex != -1 && totalPaidColumnIndex != -1 &&
+//                    paymentStatusColumnIndex != -1 && grandTotalColumnIndex != -1 &&
+//                    dateReceivedColumnIndex != -1) {
+//
+//                // Create a new Order instance using the constructor
+//                Order order = new Order(
+//                        cursor.getInt(orderIDColumnIndex),
+//                        getClient(cursor.getInt(clientIDColumnIndex)),
+//                        getWasher(cursor.getInt(washerIDColumnIndex)),
+//                        getCourier(cursor.getInt(courier1IDColumnIndex)),
+//                        cursor.getString(dateCourier1ColumnIndex),
+//                        getCourier(cursor.getInt(courier2IDColumnIndex)),
+//                        cursor.getString(dateCourier2ColumnIndex),
+//                        cursor.getDouble(totalDueColumnIndex),
+//                        cursor.getDouble(totalPaidColumnIndex),
+//                        cursor.getInt(paymentStatusColumnIndex) != 0,
+//                        cursor.getDouble(grandTotalColumnIndex),
+//                        cursor.getString(dateReceivedColumnIndex)
+//                );
+//
+//                pendingDeliveries.add(order);
+//            } else {
+//                // Handle invalid column indexes, log an error, or throw an exception
+//            }
+//        }
+//
+//        // Close the cursor and database
+//        cursor.close();
+//        db.close();
+//
+////        for (Order order : pendingDeliveries) {
+////            Log.e("Order Details",
+////                    "OrderID: " + order.getOrderID() +
+////                            ", ClientID: " + order.getClient().getCustomerID() +
+////                            ", WasherID: " + order.getWasher().getWasherID() +
+////                            ", Courier1ID: " + order.getCourier1().getCourierID() +
+////                            ", DateCourier1: " + order.getDateCourier1() +
+////                            ", Courier2ID: " + order.getCourier2().getCourierID() +
+////                            ", DateCourier2: " + order.getDateCourier2() +
+////                            ", TotalDue: " + order.getTotalDue() +
+////                            ", TotalPaid: " + order.getTotalPaid() +
+////                            ", PaymentStatus: " + order.getPaymentStatus() +
+////                            ", GrandTotal: " + order.getGrandTotal() +
+////                            ", DateReceived: " + order.getDateReceived());
+////        }
+//
+//        return pendingDeliveries;
+//    }
+
+//    public boolean insertDummyOrder() {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        boolean isInserted = false;
+//
+//        try {
+//            ContentValues values = new ContentValues();
+//            values.put(ORDER_ID, 1);
+//            values.put(ORDER_CLIENT_ID, 1);
+//            values.put(ORDER_WASHER_ID, 1);
+//            values.put(ORDER_COURIER1_ID, 1);
+//            values.put(TOTAL_COURIER1, 50);
+//            values.put(DATE_COURIER1, "2022-01-12");
+//            values.put(ORDER_COURIER2_ID, 2);  // Replace with an actual courier ID
+//            values.put(TOTAL_COURIER2, 50);
+//            values.put(DATE_COURIER2, "2022-01-13");
+//            values.put(TOTAL_DUE, 20);
+//            values.put(TOTAL_PAID, 0);
+//            values.put(PAYMENT_STATUS, 0);  // 0 for false
+//            values.put(GRAND_TOTAL, 0);
+//            values.put(DATE_RECEIVED, "2022-01-14");
+//
+//            long newRowId = db.insert("ORDER_TABLE", null, values);
+//
+//            // Check if the insertion was successful
+//            isInserted = newRowId != -1;
+//        } catch (Exception e) {
+//            Log.e("Database", "Error inserting dummy order: " + e.getMessage());
+//        } finally {
+//            if (db != null && db.isOpen()) {
+//                db.close();
+//            }
+//        }
+//
+//        return isInserted;
+//    }
 
 
 
