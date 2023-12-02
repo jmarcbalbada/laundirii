@@ -3,11 +3,14 @@ package com.example.laundirii.view.courier_dashboard_ui;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.laundirii.R;
+import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.databinding.ActivityCourierDashboardBinding;
 import com.example.laundirii.model.Courier;
 import com.google.android.material.snackbar.Snackbar;
@@ -24,15 +27,14 @@ public class CourierDashboardActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityCourierDashboardBinding binding;
+    private DashboardController dashboardController;
     private Courier courier;
-    public Context context;
     private TextView navCourierNameText;
     private TextView navPhoneNoText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
         binding = ActivityCourierDashboardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -71,18 +73,12 @@ public class CourierDashboardActivity extends AppCompatActivity {
     {
         // Retrieve shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences("LoginCourierPreferences", Context.MODE_PRIVATE);
-
-        // Retrieve values from SharedPreferences
-        int courierID = sharedPreferences.getInt("courierID", -1);
         String courierUsername = sharedPreferences.getString("courierUsername", "");
-        String courierPassword = sharedPreferences.getString("courierPassword", "");
-        String courierName = sharedPreferences.getString("courierName", "");
-        String courierContactNo = sharedPreferences.getString("courierContactNo", "");
-        String courierPlateNo = sharedPreferences.getString("courierPlateNo", "");
-        boolean courierStatus = sharedPreferences.getBoolean("courierStatus", false);
 
-        // Now, you can use these values as needed in CourierDashboardActivity
-        courier = new Courier(courierID,courierUsername,courierPassword,courierName,courierContactNo,courierPlateNo,courierStatus);
+        dashboardController = new DashboardController();
+
+        // fetch courier
+        courier = dashboardController.getCourier(courierUsername, this);
     }
 
     @Override
@@ -99,8 +95,4 @@ public class CourierDashboardActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    public Context getContext()
-    {
-        return this.context;
-    }
 }

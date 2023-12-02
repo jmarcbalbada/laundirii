@@ -47,9 +47,9 @@ public class LoginActivity extends AppCompatActivity {
         //boolean inserted = dashboardController.insertDummyValuesOnOrder(this);
         //Log.e("DUMMY", inserted + "");
 
-        DashboardController dashboardController = new DashboardController();
-        boolean inserted = dashboardController.insertDummyPhase1Order(this);
-        Log.e("DUMMY", inserted + "");
+//        DashboardController dashboardController = new DashboardController();
+//        boolean inserted = dashboardController.insertDummyPhase1Order(this);
+//        Log.e("DUMMY", inserted + "");
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,22 +74,12 @@ public class LoginActivity extends AppCompatActivity {
                         {
                             DashboardController dashboardController = new DashboardController();
                             Client client = dashboardController.getClient(username,LoginActivity.this);
-                            Log.e("CLIENT LOGIN", client.getCustomerID() + ", " + client.getUsername() + ","
-                                    + client.getPassword() + ", " + client.getName() + ", " + client.getContactNo() + ","
-                                    + client.getAddress() + "," + client.getPaymentInfo());
                             // Get SharedPreferences instance
                             SharedPreferences sharedPreferences = getSharedPreferences("LoginClientPreferences", Context.MODE_PRIVATE);
 
 //                          // Create an editor to modify SharedPreferences
                             SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                            editor.putInt("clientID", client.getCustomerID());
                             editor.putString("clientUsername", client.getUsername());
-                            editor.putString("clientPassword", client.getPassword());
-                            editor.putString("clientName", client.getName());
-                            editor.putString("clientContactNo", client.getContactNo());
-                            editor.putString("clientAddress", client.getAddress());
-                            editor.putInt("clientPaymentInfo", client.getPaymentInfo());
                             editor.apply();
 
                             Toast.makeText(getApplicationContext(), "Logging in as Client", Toast.LENGTH_SHORT).show();
@@ -106,22 +96,12 @@ public class LoginActivity extends AppCompatActivity {
                         {
                             DashboardController dashboardController = new DashboardController();
                             Courier courier = dashboardController.getCourier(username,LoginActivity.this);
-                            Log.e("COURIER LOGIN", courier.getCourierID() + ", " + courier.getUsername() + ","
-                            + courier.getPassword() + ", " + courier.getName() + ", " + courier.getContactNo() + ","
-                            + courier.getPlateNo() + "," + courier.getStatus());
                             // Get SharedPreferences instance
                             SharedPreferences sharedPreferences = getSharedPreferences("LoginCourierPreferences", Context.MODE_PRIVATE);
 
 //                          // Create an editor to modify SharedPreferences
                             SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                            editor.putInt("courierID", courier.getCourierID());
                             editor.putString("courierUsername", courier.getUsername());
-                            editor.putString("courierPassword", courier.getPassword());
-                            editor.putString("courierName", courier.getName());
-                            editor.putString("courierContactNo", courier.getContactNo());
-                            editor.putString("courierPlateNo", courier.getPlateNo());
-                            editor.putBoolean("courierStatus", courier.getStatus());
                             editor.apply();
 
                             Toast.makeText(getApplicationContext(), "Logging in as Courier", Toast.LENGTH_SHORT).show();

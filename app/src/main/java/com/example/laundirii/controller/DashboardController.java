@@ -56,6 +56,17 @@ public class DashboardController {
         return phase1Order.getPendingDeliveryOnCourier(courierID, context);
     }
 
+    public List<Phase1Order> getPendingDeliveryOnClient(int clientID, Context context)
+    {
+        return phase1Order.getPendingDeliveryOnClient(clientID,context);
+    }
+
+    public List<Phase1Order> getHistoryList(int clientID, Context context)
+    {
+        return phase1Order.getHistoryList(clientID,context);
+    }
+
+
     public boolean insertDummyPhase1Order(Context context)
     {
         return phase1Order.insertDummyPhase1Order(context);

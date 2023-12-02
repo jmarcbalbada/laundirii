@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.example.laundirii.database.Connect;
 
+import java.util.List;
+
 public class Phase1Order {
 
     private int orderID;
@@ -37,7 +39,17 @@ public class Phase1Order {
 
     public Phase1Order()
     {
-
+        orderID = -1;
+        client = new Client();
+        washer = new Washer();
+        courier = new Courier();
+        courierStatus = 0;
+        totalCourierAmount = 0;
+        dateCourier = "";
+        totalDue = 0;
+        totalPaid = 0;
+        paymentStatus = -1;
+        dateReceived = "";
     }
 
     public Phase1Order getPendingDeliveryOnCourier(int courierID, Context context)
@@ -45,6 +57,19 @@ public class Phase1Order {
         dbHelper = new Connect(context);
         return dbHelper.getPendingDeliveryOnCourier(courierID);
     }
+
+    public List<Phase1Order> getPendingDeliveryOnClient(int clientID, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.getPendingDeliveryOnClient(clientID);
+    }
+
+    public List<Phase1Order> getHistoryList(int clientID, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.getHistoryList(clientID);
+    }
+
 
     public boolean insertDummyPhase1Order(Context context)
     {

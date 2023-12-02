@@ -11,11 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -25,6 +27,7 @@ import com.example.laundirii.databinding.CourierDashboardFragmentHomeBinding;
 import com.example.laundirii.model.Courier;
 import com.example.laundirii.model.Order;
 import com.example.laundirii.model.Phase1Order;
+import com.example.laundirii.view.courier_dashboard_ui.CourierDashboardActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +35,6 @@ import java.util.List;
 public class CourierDashboardHomeFragment extends Fragment {
 
     private CourierDashboardFragmentHomeBinding binding;
-
     private ArrayAdapter pendingOrdersAdapter;
     private ListView lv_pendingOrders;
     public DashboardController dashboardController;
@@ -48,21 +50,13 @@ public class CourierDashboardHomeFragment extends Fragment {
         View root = binding.getRoot();
         dashboardController = new DashboardController();
         lv_pendingOrders = (ListView) root.findViewById(R.id.lv_pendingDelivery);
+
+        // fetch courier
         courierInfoPreferences = this.getActivity().getSharedPreferences("LoginCourierPreferences", 0);
-
-        int courierID = courierInfoPreferences.getInt("courierID", -1);
         String courierUsername = courierInfoPreferences.getString("courierUsername", "");
-        String courierPassword = courierInfoPreferences.getString("courierPassword", "");
-        String courierName = courierInfoPreferences.getString("courierName", "");
-        String courierContactNo = courierInfoPreferences.getString("courierContactNo", "");
-        String courierPlateNo = courierInfoPreferences.getString("courierPlateNo", "");
-        boolean courierStatus = courierInfoPreferences.getBoolean("courierStatus", false);
+        courier = dashboardController.getCourier(courierUsername, this.getActivity());
 
-//         Now, you can use these values as needed in CourierDashboardActivity
-        courier = new Courier(courierID,courierUsername,courierPassword,courierName,courierContactNo,courierPlateNo,courierStatus);
-        Log.e("COURIER FRAGMENT", courier.getCourierID() + ", " + courier.getUsername() + ","
-                + courier.getPassword() + ", " + courier.getName() + ", " + courier.getContactNo() + ","
-                + courier.getPlateNo() + "," + courier.getStatus());
+        // display pending orders
         try{
             displayPendingOrders();
         }catch (Exception e)
@@ -73,19 +67,18 @@ public class CourierDashboardHomeFragment extends Fragment {
     }
 
     public void displayPendingOrders() {
+        // display pending order
         if(!courier.getStatus())
         {
             Phase1Order pendingDelivery = dashboardController.getPendingDeliveryOnCourier(courier.getCourierID(), this.getActivity());
             List<Phase1Order> listPendingDelivery = new ArrayList<Phase1Order>();
             listPendingDelivery.add(pendingDelivery);
-            Log.e("pendingDeliveryHome", pendingDelivery.toString());
             pendingOrdersAdapter = new ArrayAdapter<Phase1Order>(this.getContext(), android.R.layout.simple_list_item_1, listPendingDelivery);
-
-            Log.e("listPendingSize", String.valueOf(listPendingDelivery.size()));
             lv_pendingOrders.setAdapter(pendingOrdersAdapter);
-            Log.e("AdapterItemValue", pendingOrdersAdapter.getItem(1).toString());
-            Log.e("AdapterItemCount", String.valueOf(pendingOrdersAdapter.getCount()));
-        }else {
+        }
+        else
+        {
+            // display No pending delivery by creating textview
             View root = binding.getRoot();
             lv_pendingOrders.setVisibility(View.GONE);
             TextView textView = new TextView(getContext());
