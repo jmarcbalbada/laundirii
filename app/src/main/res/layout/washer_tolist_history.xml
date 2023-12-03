@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_marginTop="50dp"
     android:padding="16dp">
 
     <!-- Your client item UI components go here -->
@@ -23,7 +22,7 @@
     <TextView
         android:id="@+id/textViewCourierStatus"
         android:layout_width="wrap_content"
-        android:layout_height="64dp"
+        android:layout_height="wrap_content"
         android:text="Courier Status" />
 
     <!-- Add other TextViews or UI components as needed -->

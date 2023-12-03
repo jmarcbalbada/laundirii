@@ -61,6 +61,7 @@ public class WasherDashboardPendingrequestAdapter extends RecyclerView.Adapter<W
             textViewCourierStatus = itemView.findViewById(R.id.textViewCourierStatus);
             // Initialize other TextViews or UI components as needed
         }
+
     }
 
 

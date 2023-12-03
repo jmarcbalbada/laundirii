@@ -39,9 +39,9 @@ public class WasherDashboardPendingrequestFragment extends Fragment {
 
         binding = WasherDashboardFragmentPendingrequestBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        TextView textView = binding.textGallery;
-        washerDashboardPendingrequestViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+//
+//        TextView textView = binding.textGallery;
+//        washerDashboardPendingrequestViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
 
         // Find your RecyclerView in the layout

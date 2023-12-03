@@ -1086,7 +1086,8 @@ public class Connect extends SQLiteOpenHelper {
         return db.rawQuery(query,null);
     }
     public List<Phase1Order> WasherGetPendingOrdersToReceive(int washerID,Context context){
-        Cursor cursor = queryfunction("SELECT * FROM PHASE1_ORDER;", "");
+
+        Cursor cursor = queryfunction("SELECT * FROM PHASE1_ORDER ;", "");
         List<Phase1Order> OrderToReceiveList = new ArrayList<>();
         if(cursor.moveToFirst()){
             do{
@@ -1100,7 +1101,7 @@ public class Connect extends SQLiteOpenHelper {
                 addOrder.setDateCourier(cursor.getString(6));
                 addOrder.setTotalDue(cursor.getFloat(7));
                 addOrder.setTotalPaid(cursor.getFloat(8));
-                addOrder.setPaymentStatus(0);
+                addOrder.setPaymentStatus(cursor.getInt(9));
                 addOrder.setDateReceived(cursor.getString(10));
 
                 OrderToReceiveList.add(addOrder);
