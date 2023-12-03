@@ -74,6 +74,18 @@ public class Courier {
         return courier;
     }
 
+    public boolean updateCourierStatusOnConnect(int courierID, int status, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.updateCourierStatus(courierID, status);
+    }
+
+    public int getCourierStatusOnDb(int courierID, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.getCourierStatus(courierID);
+    }
+
     // GETTERS AND SETTERS
 
     public int getCourierID()
@@ -111,10 +123,39 @@ public class Courier {
         return this.status;
     }
 
+    public void setCourierID(int courierID) {
+        this.courierID = courierID;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setContactNo(String contactNo) {
+        this.contactNo = contactNo;
+    }
+
+    public void setPlateNo(String plateNo) {
+        this.plateNo = plateNo;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
     @Override
     public String toString()
     {
-        return "Name: " + name + "\n"
+        return "Courier ID: " + courierID + "\n"
+                + "Name: " + name + "\n"
                 + "Contact No: " + contactNo + "\n"
                 + "Plate No: " + contactNo + "\n";
     }

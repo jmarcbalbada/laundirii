@@ -66,6 +66,36 @@ public class DashboardController {
         return phase1Order.getHistoryList(username,context);
     }
 
+    public List<Phase1Order> getPendingRequestOnCourier(Context context)
+    {
+        return phase1Order.getPendingRequestOnCourier(context);
+    }
+
+    public List<Washer> getAvailableWashers(Context context)
+    {
+        return phase1Order.getAvailableWashers(context);
+    }
+
+    public boolean acceptPendingRequestOnCourier(int courierID, int orderID, Context context)
+    {
+        return phase1Order.acceptPendingRequestOnCourier(courierID,orderID,context);
+    }
+
+    public boolean updateCourierStatus(int courierID, int status, Context context)
+    {
+        return courier.updateCourierStatusOnConnect(courierID,status, context);
+    }
+
+    public int getCourierStatusOnDb(int courierID, Context context)
+    {
+        return courier.getCourierStatusOnDb(courierID,context);
+    }
+
+    public boolean insertPhase1Order(int clientID, int washerID, Context context)
+    {
+        return phase1Order.insertPhase1Order(clientID,washerID,context);
+    }
+
     public boolean insertDummyPhase1Order(Context context)
     {
         return phase1Order.insertDummyPhase1Order(context);

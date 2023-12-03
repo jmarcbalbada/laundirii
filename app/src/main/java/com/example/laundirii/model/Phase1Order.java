@@ -70,6 +70,29 @@ public class Phase1Order {
         return dbHelper.getHistoryList(username);
     }
 
+    public List<Phase1Order> getPendingRequestOnCourier(Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.getPendingRequestOnCourier();
+    }
+
+    public List<Washer> getAvailableWashers(Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.getAllWashers();
+    }
+
+    public boolean insertPhase1Order(int clientID, int washerID, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.insertPhase1Order(clientID, washerID);
+    }
+
+    public boolean acceptPendingRequestOnCourier(int courierID, int orderID, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.acceptPendingRequestOnCourier(courierID, orderID);
+    }
 
     public boolean insertDummyPhase1Order(Context context)
     {
@@ -81,16 +104,16 @@ public class Phase1Order {
     @Override
     public String toString() {
         String paymentStat = paymentStatus == 0 ? "Unpaid" : "Paid";
-        return "PICKUP from Client to Washer:" + "\n" +
-                "Order ID =\t" + orderID + "\n" +
-                "Client =\t" + client.getName() + "\n" +
-                "Client Address =\t" + client.getAddress() + "\n" +
-                "Washer =\t" + washer.getShopName() + "\n" +
-                "Washer Address =\t" + washer.getShopLocation() + "\n" +
-                "Courier =\t" + courier.getName() + "\n" +
-                "Total Due =\t" + this.totalDue + "\n" +
-                "Total Paid =\t" + this.totalPaid + "\n" +
-                "Payment Status =\t" + paymentStat + "\n";
+        return "PICKUP from Client to Washer" + "\n" +
+                "Order ID:\t" + orderID + "\n" +
+                "Client:\t" + client.getName() + "\n" +
+                "Client Address:\t" + client.getAddress() + "\n" +
+                "Washer:\t" + washer.getShopName() + "\n" +
+                "Washer Address:\t" + washer.getShopLocation() + "\n" +
+                "Courier:\t" + courier.getName() + "\n" +
+                "Total Due:\t" + this.totalDue + "\n" +
+                "Total Paid:\t" + this.totalPaid + "\n" +
+                "Payment Status:\t" + paymentStat + "\n";
     }
 
     // getters and setters

@@ -18,14 +18,9 @@ public class WasherDashboardPendingrequestFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        WasherDashboardPendingrequestViewModel washerDashboardPendingrequestViewModel =
-                new ViewModelProvider(this).get(WasherDashboardPendingrequestViewModel.class);
 
         binding = WasherDashboardFragmentPendingrequestBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        final TextView textView = binding.textGallery;
-        washerDashboardPendingrequestViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

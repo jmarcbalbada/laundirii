@@ -114,9 +114,10 @@ public class Washer {
     @Override
     public String toString()
     {
-        return "Shop name: " + shopName + "\n"
+        return "\nShop Name: " + shopName + "\n"
                 + "Contact No: " + contactNo + "\n"
-                + "Shop Location: " + shopLocation + "\n";
+                + "Shop Location: " + shopLocation + "\n"
+                + "Rate per kg.: " + ratePerKg + "\n";
     }
 
 }

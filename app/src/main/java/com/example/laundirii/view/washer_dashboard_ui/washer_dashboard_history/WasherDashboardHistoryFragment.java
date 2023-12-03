@@ -19,13 +19,9 @@ public class WasherDashboardHistoryFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        WasherDashboardHistoryViewModel washerDashboardHistoryViewModel =
-                new ViewModelProvider(this).get(WasherDashboardHistoryViewModel.class);
 
         binding = WasherDashboardFragmentHistoryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        final TextView textView = binding.washerTextHistory;
-        washerDashboardHistoryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
 
     }
