@@ -51,8 +51,8 @@ public class WasherDashboardPendingrequestFragment extends Fragment {
         // fetch courier
         washerInfoPreferences = this.getActivity().getSharedPreferences("LoginCourierPreferences", 0);
         String washerUsername = washerInfoPreferences.getString("washerUsername", "");
-        washer = dashboardController.geteWasher(washerUsername, this.getActivity());
-        List<Phase1Order> orders = dashboardController.WasherListofOrdersToReceive(1, getContext());
+        washer = dashboardController.getWasher(washerUsername, this.getActivity());
+        List<Phase1Order> orders = dashboardController.getPendingDeliveriesOnWasher(1, getContext());
 
         washerDashboardPendingrequestAdapter = new WasherDashboardPendingrequestAdapter(orders);
         recyclerView.setAdapter(washerDashboardPendingrequestAdapter);

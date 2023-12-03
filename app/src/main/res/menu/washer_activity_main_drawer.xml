@@ -5,16 +5,17 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/washer_history_fragment"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/washer_menu_history" />
-        <item
             android:id="@+id/washer_pendingrequest_fragment"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/washer_ic_launcher_pendingrequest_nav"
             android:title="@string/washer_menu_pendingrequest" />
         <item
+            android:id="@+id/washer_history_fragment"
+            android:icon="@drawable/washer_ic_launcher_history_nav"
+            android:title="@string/washer_menu_history" />
+
+        <item
             android:id="@+id/washer_logs_fragment"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/washer_ic_launcher_logs_nav"
             android:title="@string/washer_menu_logs" />
     </group>
 </menu>

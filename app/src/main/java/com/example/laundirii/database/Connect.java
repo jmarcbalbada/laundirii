@@ -1080,12 +1080,7 @@ public class Connect extends SQLiteOpenHelper {
 
         return pendingDelivery;
     }
-    public Cursor queryfunction (String query,String selection1){
-        SQLiteDatabase db = this.getReadableDatabase();
-        String [] placeholder = {selection1};
-        return db.rawQuery(query,placeholder);
-    }
-    public List<Phase1Order> WasherGetPendingOrdersToReceive(int washerID,Context context){
+    public List<Phase1Order> getPendingDeliveriesOnWasher(int washerID,Context context){
 
         Cursor cursor = queryfunction("SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ?;", Integer.toString(washerID));
         List<Phase1Order> OrderToReceiveList = new ArrayList<>();
@@ -1112,6 +1107,12 @@ public class Connect extends SQLiteOpenHelper {
 
         return OrderToReceiveList;
     }
+    public Cursor queryfunction (String query,String selection1){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String [] placeholder = {selection1};
+        return db.rawQuery(query,placeholder);
+    }
+
 
     // Get all Washers in Book Service Query Washer
     public List<Washer> getAllWashers()

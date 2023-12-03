@@ -51,7 +51,7 @@ public class DashboardController {
         Courier fetchCourier = courier.getCourier(username,context);
         return fetchCourier;
     }
-    public Washer geteWasher(String username, Context context)
+    public Washer getWasher(String username, Context context)
     {
         Washer fetchCourier = courier.getWasher(username,context);
         return fetchCourier;
@@ -118,8 +118,8 @@ public class DashboardController {
 //        return order.insertDummyValuesOnOrder(context);
 //    }
 
-    public List<Phase1Order> WasherListofOrdersToReceive(int washerID,Context context){
-        return phase1Order.WasherGetPendingOrdersToReceive(washerID, context);
+    public List<Phase1Order> getPendingDeliveriesOnWasher(int washerID,Context context){
+        return phase1Order.getPendingDeliveriesOnWasher(washerID, context);
     }
 
 }

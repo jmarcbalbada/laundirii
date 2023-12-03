@@ -120,9 +120,9 @@ public class LoginActivity extends AppCompatActivity {
                         if(loginController.loginWasher(username,password,LoginActivity.this))
                         {
                             DashboardController dashboardController = new DashboardController();
-                            Washer washer = dashboardController.geteWasher(username,LoginActivity.this);
+                            Washer washer = dashboardController.getWasher(username,LoginActivity.this);
                             // Get SharedPreferences instance
-                            SharedPreferences sharedPreferences = getSharedPreferences("LoginCourierPreferences", Context.MODE_PRIVATE);
+                            SharedPreferences sharedPreferences = getSharedPreferences("LoginWasherPreferences", Context.MODE_PRIVATE);
 
 //                          // Create an editor to modify SharedPreferences
                             SharedPreferences.Editor editor = sharedPreferences.edit();

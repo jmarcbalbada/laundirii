@@ -240,8 +240,8 @@ public class Phase1Order implements Serializable {
     {
         washer.setWasherID(washerID);
     }
-    public List<Phase1Order> WasherGetPendingOrdersToReceive(int washerID, Context context){
+    public List<Phase1Order> getPendingDeliveriesOnWasher(int washerID, Context context){
         dbHelper = new Connect(context);
-        return dbHelper.WasherGetPendingOrdersToReceive(washerID, context);
+        return dbHelper.getPendingDeliveriesOnWasher(washerID, context);
     }
 }
