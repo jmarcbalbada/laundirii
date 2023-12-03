@@ -1,6 +1,7 @@
 package com.example.laundirii.view.client_dashboard_ui.client_dashboard_current;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -11,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -25,6 +28,9 @@ import com.example.laundirii.databinding.ClientFragmentCurrentBinding;
 import com.example.laundirii.model.Client;
 import com.example.laundirii.model.Courier;
 import com.example.laundirii.model.Phase1Order;
+import com.example.laundirii.view.LoginActivity;
+import com.example.laundirii.view.client_dashboard_ui.BookServiceActivity;
+import com.example.laundirii.view.client_dashboard_ui.ClientDashboardActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +43,10 @@ public class CurrentFragment extends Fragment {
     private ListView lv_pendingOrders;
     private ArrayAdapter pendingClientOrdersAdapter;
     private DashboardController dashboardController;
+    private Button bookServiceButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        CurrentViewModel currentViewModel =
-                new ViewModelProvider(this).get(CurrentViewModel.class);
 
         binding = ClientFragmentCurrentBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -50,7 +55,17 @@ public class CurrentFragment extends Fragment {
         String clientUsername = clientInfoPreferences.getString("clientUsername", "");
         client = dashboardController.getClient(clientUsername,this.getActivity());
         lv_pendingOrders = (ListView) root.findViewById(R.id.current_transaction);
+        bookServiceButton = root.findViewById(R.id.btn_book_service);
         displayPendingOrders();
+
+        bookServiceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Book Service", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CurrentFragment.this.getContext(), BookServiceActivity.class);
+                startActivity(intent);
+            }
+        });
         return root;
     }
 
@@ -59,10 +74,7 @@ public class CurrentFragment extends Fragment {
         listPendingOrders = dashboardController.getPendingDeliveryOnClient(client.getCustomerID(), this.getActivity());
         pendingClientOrdersAdapter = new ArrayAdapter<Phase1Order>(this.getContext(), android.R.layout.simple_list_item_1, listPendingOrders);
         lv_pendingOrders.setAdapter(pendingClientOrdersAdapter);
-
     }
-
-
 
     @Override
     public void onDestroyView() {

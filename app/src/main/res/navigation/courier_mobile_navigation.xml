@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/cour_nav_logout"
-        android:name="com.example.laundirii.view.courier_dashboard_ui.courier_dashboard_slideshow.CourierSlideshowFragment"
-        android:label="@string/courier_logout"
-        tools:layout="@layout/courier_dashboard_fragment_slideshow" />
+        android:name="com.example.laundirii.view.courier_dashboard_ui.courier_dashboard_pending_request.CourierPendingRequestFragment"
+        android:label="@string/courier_pending_request"
+        tools:layout="@layout/courier_dashboard_fragment_pending_request" />
 </navigation>

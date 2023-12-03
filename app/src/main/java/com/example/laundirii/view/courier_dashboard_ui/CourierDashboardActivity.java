@@ -3,8 +3,10 @@ package com.example.laundirii.view.courier_dashboard_ui;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.laundirii.R;
@@ -77,6 +79,7 @@ public class CourierDashboardActivity extends AppCompatActivity {
 
         // fetch courier
         courier = dashboardController.getCourier(courierUsername, this);
+        Log.e("DashboardCourier", courier.toString());
     }
 
     @Override

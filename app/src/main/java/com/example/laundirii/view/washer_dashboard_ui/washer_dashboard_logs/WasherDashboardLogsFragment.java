@@ -18,14 +18,9 @@ public class WasherDashboardLogsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        WasherDashboardLogsViewModel washerDashboardLogsViewModel =
-                new ViewModelProvider(this).get(WasherDashboardLogsViewModel.class);
 
         binding = WasherDashboardFragmentLogsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        final TextView textView = binding.textSlideshow;
-        washerDashboardLogsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

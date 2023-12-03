@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,8 +44,6 @@ public class CourierDashboardHomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        CourierDashboardHomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(CourierDashboardHomeViewModel.class);
 
         binding = CourierDashboardFragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -68,6 +67,9 @@ public class CourierDashboardHomeFragment extends Fragment {
 
     public void displayPendingOrders() {
         // display pending order
+//        boolean isActive = courier.getCourierStatusOnDb(courier.getCourierID(),this.getActivity()) == 1 ? true : false;
+//        courier.setStatus(isActive);
+//        Log.e("Courier Status", courier.getStatus() + "");
         if(!courier.getStatus())
         {
             Phase1Order pendingDelivery = dashboardController.getPendingDeliveryOnCourier(courier.getCourierID(), this.getActivity());
@@ -117,10 +119,11 @@ public class CourierDashboardHomeFragment extends Fragment {
             } else {
                 Log.e("RootViewNull", "RootView is null");
             }
-
         }
-
     }
+
+
+
 
     @Override
     public void onDestroyView() {

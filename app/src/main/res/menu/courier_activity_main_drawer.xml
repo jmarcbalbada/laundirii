@@ -6,7 +6,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/cour_nav_home"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@android:drawable/star_on"
             android:title="@string/courier_home" />
         <item
             android:id="@+id/cour_nav_history"
@@ -14,7 +14,7 @@
             android:title="@string/courier_history" />
         <item
             android:id="@+id/cour_nav_logout"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/courier_logout" />
+            android:icon="@android:drawable/ic_menu_search"
+            android:title="@string/courier_pending_request" />
     </group>
 </menu>

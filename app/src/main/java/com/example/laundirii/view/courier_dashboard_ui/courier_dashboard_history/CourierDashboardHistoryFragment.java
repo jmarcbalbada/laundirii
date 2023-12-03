@@ -34,8 +34,6 @@ public class CourierDashboardHistoryFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        CourierDashboardHistoryViewModel historyViewModel =
-                new ViewModelProvider(this).get(CourierDashboardHistoryViewModel.class);
 
         binding = CourierDashboardFragmentHistoryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
