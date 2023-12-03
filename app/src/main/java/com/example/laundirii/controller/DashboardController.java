@@ -53,8 +53,7 @@ public class DashboardController {
     }
     public Washer getWasher(String username, Context context)
     {
-        Washer fetchCourier = courier.getWasher(username,context);
-        return fetchCourier;
+        return washer.getWasher(username,context);
     }
 
 

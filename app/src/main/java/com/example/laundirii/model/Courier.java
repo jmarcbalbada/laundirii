@@ -75,12 +75,6 @@ public class Courier implements Serializable {
         Courier courier = dbHelper.getCourier(username);
         return courier;
     }
-    public Washer getWasher(String username, Context context)
-    {
-        dbHelper = new Connect(context);
-        Washer courier = dbHelper.getWasher(username);
-        return courier;
-    }
 
     public boolean updateCourierStatusOnConnect(int courierID, int status, Context context)
     {

@@ -1,4 +1,4 @@
-package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_pendingrequest;
+package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_history;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -11,27 +11,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.laundirii.R;
 import com.example.laundirii.model.Phase1Order;
+import com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_pendingrequest.WasherDashboardPendingrequestConfirmation;
 
 import java.util.List;
 
-public class WasherDashboardPendingrequestAdapter extends RecyclerView.Adapter<WasherDashboardPendingrequestAdapter.OrdersViewHolder> {
-
+public class WasherDashboardHistoryAdapter extends RecyclerView.Adapter<WasherDashboardHistoryAdapter.PedingViewHolder> {
     private List<Phase1Order> orders;
 
-    public WasherDashboardPendingrequestAdapter(List<Phase1Order> orders) {
+    public WasherDashboardHistoryAdapter(List<Phase1Order> orders) {
         this.orders = orders;
     }
 
     @NonNull
     @Override
-    public OrdersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public WasherDashboardHistoryAdapter.PedingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.washer_tolist_pendingdeliveryrequest, parent, false);
-        return new OrdersViewHolder(view);
+        return new PedingViewHolder(view);
     }
 
-
     @Override
-    public void onBindViewHolder(@NonNull OrdersViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WasherDashboardHistoryAdapter.PedingViewHolder holder, int position) {
         Phase1Order order = orders.get(position);
         // Bind your Phase1Order data to the ViewHolder
         // Bind other data as needed
@@ -47,7 +46,6 @@ public class WasherDashboardPendingrequestAdapter extends RecyclerView.Adapter<W
                 view.getContext().startActivity(intent);
             }
         });
-
     }
 
     @Override
@@ -55,25 +53,21 @@ public class WasherDashboardPendingrequestAdapter extends RecyclerView.Adapter<W
         return orders.size();
     }
 
-    public void washerMarkReceivedFromCourier(){
-
+    public void washerMarkReceivedFromCourier() {
+        // Implement the functionality as needed
     }
 
-    public static class OrdersViewHolder extends RecyclerView.ViewHolder {
+    public static class PedingViewHolder extends RecyclerView.ViewHolder {
         TextView textViewClientName;
         TextView textViewOrderId;
         TextView textViewCourierStatus;
 
-        public OrdersViewHolder(@NonNull View itemView) {
+        public PedingViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewOrderId = itemView.findViewById(R.id.textViewOrderId);
             textViewClientName = itemView.findViewById(R.id.textViewClientName);
             textViewCourierStatus = itemView.findViewById(R.id.textViewCourierStatus);
             // Initialize other TextViews or UI components as needed
         }
-
     }
-
-
 }
-

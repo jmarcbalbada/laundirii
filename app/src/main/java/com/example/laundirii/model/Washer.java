@@ -1,5 +1,6 @@
 package com.example.laundirii.model;
 import android.content.Context;
+import android.util.Log;
 
 import com.example.laundirii.database.Connect;
 
@@ -91,6 +92,12 @@ public class Washer implements Serializable {
     public boolean getStatus()
     {
         return this.status;
+    }
+
+    public Washer getWasher(String username, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.getWasher(username);
     }
 
     public boolean loginWasher(String username, String password, Context context)
