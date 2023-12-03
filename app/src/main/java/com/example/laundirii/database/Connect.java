@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class Connect extends SQLiteOpenHelper {
     /* Fields on tables*/
@@ -1082,25 +1083,25 @@ public class Connect extends SQLiteOpenHelper {
     public Cursor queryfunction (String query,String selection1){
         SQLiteDatabase db = this.getReadableDatabase();
         String [] placeholder = {selection1};
-        return db.rawQuery(query, placeholder);
+        return db.rawQuery(query,null);
     }
     public List<Phase1Order> WasherGetPendingOrdersToReceive(int washerID,Context context){
-        Cursor cursor = queryfunction("SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ?", Integer.toString(washerID));
+        Cursor cursor = queryfunction("SELECT * FROM PHASE1_ORDER;", "");
         List<Phase1Order> OrderToReceiveList = new ArrayList<>();
         if(cursor.moveToFirst()){
             do{
                 Phase1Order addOrder = new Phase1Order();
                 addOrder.setOrderID(cursor.getInt(0));
                 addOrder.setClientID(cursor.getInt(1));
-                addOrder.setWasherID(cursor.getInt(3));
-                addOrder.setCourierID(cursor.getInt(4));
-                addOrder.setCourierStatus(cursor.getInt(5));
-                addOrder.setTotalCourierAmount(cursor.getFloat(6));
-                addOrder.setDateCourier(cursor.getString(7));
-                addOrder.setTotalDue(cursor.getFloat(8));
-                addOrder.setTotalPaid(cursor.getFloat(10));
+                addOrder.setWasherID(cursor.getInt(2));
+                addOrder.setCourierID(cursor.getInt(3));
+                addOrder.setCourierStatus(cursor.getInt(4));
+                addOrder.setTotalCourierAmount(cursor.getFloat(5));
+                addOrder.setDateCourier(cursor.getString(6));
+                addOrder.setTotalDue(cursor.getFloat(7));
+                addOrder.setTotalPaid(cursor.getFloat(8));
                 addOrder.setPaymentStatus(0);
-                addOrder.setDateReceived(cursor.getString(12));
+                addOrder.setDateReceived(cursor.getString(10));
 
                 OrderToReceiveList.add(addOrder);
             }while(cursor.moveToNext());
@@ -1183,12 +1184,13 @@ public class Connect extends SQLiteOpenHelper {
 
     public boolean insertDummyPhase1Order() {
         SQLiteDatabase db = this.getWritableDatabase();
-
+        Random rand = new Random();
+        rand.ints(10);
         ContentValues values = new ContentValues();
-        values.put(PHASE1_ORDER_ID, 1);
-        values.put(PHASE1_ORDER_CLIENT_ID, 2);
+        values.put(PHASE1_ORDER_ID, rand.nextInt(20));
+        values.put(PHASE1_ORDER_CLIENT_ID, rand.nextInt(20));
         values.put(PHASE1_ORDER_WASHER_ID, 1);
-        values.put(PHASE1_ORDER_COURIER_ID, 4);
+        values.put(PHASE1_ORDER_COURIER_ID, rand.nextInt(20));
         values.put(PHASE1_COURIER_STATUS, 0);
         values.put(PHASE1_TOTAL_COURIER_AMOUNT, 50.0);
         values.put(PHASE1_DATE_COURIER,new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));

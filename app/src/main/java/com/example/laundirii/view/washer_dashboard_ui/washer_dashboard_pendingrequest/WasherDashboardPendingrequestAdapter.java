@@ -13,7 +13,7 @@ import com.example.laundirii.model.Phase1Order;
 
 import java.util.List;
 
-public class WasherDashboardPendingrequestAdapter extends RecyclerView.Adapter<WasherDashboardPendingrequestAdapter.WasherDashboardPendingrequestViewHolder> {
+public class WasherDashboardPendingrequestAdapter extends RecyclerView.Adapter<WasherDashboardPendingrequestAdapter.OrdersViewHolder> {
 
     private List<Phase1Order> orders;
 
@@ -23,14 +23,14 @@ public class WasherDashboardPendingrequestAdapter extends RecyclerView.Adapter<W
 
     @NonNull
     @Override
-    public WasherDashboardPendingrequestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.washer_dashboard_fragment_pendingrequest, parent, false);
-        return new WasherDashboardPendingrequestViewHolder(view);
+    public OrdersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.washer_tolist_history, parent, false);
+        return new OrdersViewHolder(view);
     }
 
 
     @Override
-    public void onBindViewHolder(@NonNull WasherDashboardPendingrequestViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OrdersViewHolder holder, int position) {
         Phase1Order order = orders.get(position);
         // Bind your Phase1Order data to the ViewHolder
         // Bind other data as needed
@@ -45,12 +45,16 @@ public class WasherDashboardPendingrequestAdapter extends RecyclerView.Adapter<W
         return orders.size();
     }
 
-    public static class WasherDashboardPendingrequestViewHolder extends RecyclerView.ViewHolder {
+    public void washerMarkReceivedFromCourier(){
+
+    }
+
+    public static class OrdersViewHolder extends RecyclerView.ViewHolder {
         TextView textViewClientName;
         TextView textViewOrderId;
         TextView textViewCourierStatus;
 
-        public WasherDashboardPendingrequestViewHolder(@NonNull View itemView) {
+        public OrdersViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewOrderId = itemView.findViewById(R.id.textViewOrderId);
             textViewClientName = itemView.findViewById(R.id.textViewClientName);

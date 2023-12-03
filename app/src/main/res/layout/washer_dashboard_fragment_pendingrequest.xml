@@ -23,12 +23,18 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/washer_pendingrequest_tolist_recyclerviewer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:layout_editor_absoluteX="206dp"
-        tools:layout_editor_absoluteY="92dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/washer_tolist_history" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

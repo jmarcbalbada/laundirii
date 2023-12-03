@@ -8,6 +8,7 @@ import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.model.Washer;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,4 +115,5 @@ public class DashboardController {
     public List<Phase1Order> WasherListofOrdersToReceive(int washerID,Context context){
         return phase1Order.WasherGetPendingOrdersToReceive(washerID, context);
     }
+
 }
