@@ -51,6 +51,12 @@ public class DashboardController {
         Courier fetchCourier = courier.getCourier(username,context);
         return fetchCourier;
     }
+    public Washer geteWasher(String username, Context context)
+    {
+        Washer fetchCourier = courier.getWasher(username,context);
+        return fetchCourier;
+    }
+
 
     public Phase1Order getPendingDeliveryOnCourier(int courierID, Context context)
     {

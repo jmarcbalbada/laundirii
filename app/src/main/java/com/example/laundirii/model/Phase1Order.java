@@ -4,9 +4,10 @@ import android.content.Context;
 
 import com.example.laundirii.database.Connect;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Phase1Order {
+public class Phase1Order implements Serializable {
 
     private int orderID;
     private Client client;
@@ -225,6 +226,17 @@ public class Phase1Order {
         client.setCustomerID(clientID);
     }
     public void setWasherID(int washerID)
+    {
+        washer.setWasherID(washerID);
+    }
+
+    public void getCourierID(int courierID){
+        courier.setCourierID(courierID);
+    }
+    public int getClientID(){
+        return client.getCustomerID();
+    }
+    public void getWasherID(int washerID)
     {
         washer.setWasherID(washerID);
     }

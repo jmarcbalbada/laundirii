@@ -3,7 +3,9 @@ import android.content.Context;
 
 import com.example.laundirii.database.Connect;
 
-public class Courier {
+import java.io.Serializable;
+
+public class Courier implements Serializable {
 
     private int courierID;
     private String username;
@@ -71,6 +73,12 @@ public class Courier {
     {
         dbHelper = new Connect(context);
         Courier courier = dbHelper.getCourier(username);
+        return courier;
+    }
+    public Washer getWasher(String username, Context context)
+    {
+        dbHelper = new Connect(context);
+        Washer courier = dbHelper.getWasher(username);
         return courier;
     }
 

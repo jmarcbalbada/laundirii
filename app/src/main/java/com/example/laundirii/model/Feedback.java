@@ -1,6 +1,8 @@
 package com.example.laundirii.model;
 
-public class Feedback {
+import java.io.Serializable;
+
+public class Feedback implements Serializable {
 
     private int feedbackID;
     private Order order;

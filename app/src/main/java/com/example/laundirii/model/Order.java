@@ -5,9 +5,10 @@ import android.content.Context;
 import com.example.laundirii.database.Connect;
 import com.example.laundirii.view.courier_dashboard_ui.CourierDashboardActivity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Order {
+public class Order implements Serializable {
     private int orderID;
     private Client client;
     private Washer washer;

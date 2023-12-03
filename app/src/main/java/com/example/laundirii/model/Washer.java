@@ -2,7 +2,10 @@ package com.example.laundirii.model;
 import android.content.Context;
 
 import com.example.laundirii.database.Connect;
-public class Washer {
+
+import java.io.Serializable;
+
+public class Washer implements Serializable {
     private int washerID;
     private String username;
     private String password;

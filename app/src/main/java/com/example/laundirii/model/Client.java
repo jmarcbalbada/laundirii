@@ -5,7 +5,9 @@ import android.content.Context;
 import com.example.laundirii.database.Connect;
 import com.example.laundirii.view.LoginActivity;
 
-public class Client {
+import java.io.Serializable;
+
+public class Client implements Serializable {
     private int customerID;
     private String username;
     private String password;

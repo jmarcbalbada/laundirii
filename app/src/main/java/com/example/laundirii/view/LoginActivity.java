@@ -19,6 +19,7 @@ import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.controller.RegisterAndLoginController;
 import com.example.laundirii.model.Client;
 import com.example.laundirii.model.Courier;
+import com.example.laundirii.model.Washer;
 import com.example.laundirii.view.client_dashboard_ui.ClientDashboardActivity;
 import com.example.laundirii.view.courier_dashboard_ui.CourierDashboardActivity;
 import com.example.laundirii.view.washer_dashboard_ui.WasherDashboardActivity;
@@ -118,6 +119,16 @@ public class LoginActivity extends AppCompatActivity {
                     case 2:
                         if(loginController.loginWasher(username,password,LoginActivity.this))
                         {
+                            DashboardController dashboardController = new DashboardController();
+                            Washer washer = dashboardController.geteWasher(username,LoginActivity.this);
+                            // Get SharedPreferences instance
+                            SharedPreferences sharedPreferences = getSharedPreferences("LoginCourierPreferences", Context.MODE_PRIVATE);
+
+//                          // Create an editor to modify SharedPreferences
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("washerUsername", washer.getUsername());
+                            editor.apply();
+
                             Toast.makeText(getApplicationContext(), "Logging in as Washer", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, WasherDashboardActivity.class);
                             startActivity(intent);

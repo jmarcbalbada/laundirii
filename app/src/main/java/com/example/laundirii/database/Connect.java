@@ -1083,11 +1083,11 @@ public class Connect extends SQLiteOpenHelper {
     public Cursor queryfunction (String query,String selection1){
         SQLiteDatabase db = this.getReadableDatabase();
         String [] placeholder = {selection1};
-        return db.rawQuery(query,null);
+        return db.rawQuery(query,placeholder);
     }
     public List<Phase1Order> WasherGetPendingOrdersToReceive(int washerID,Context context){
 
-        Cursor cursor = queryfunction("SELECT * FROM PHASE1_ORDER ;", "");
+        Cursor cursor = queryfunction("SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ?;", Integer.toString(washerID));
         List<Phase1Order> OrderToReceiveList = new ArrayList<>();
         if(cursor.moveToFirst()){
             do{
