@@ -94,11 +94,11 @@ public class Phase1Order {
         return dbHelper.acceptPendingRequestOnCourier(courierID, orderID);
     }
 
-    public boolean insertDummyPhase1Order(Context context)
-    {
-        dbHelper = new Connect(context);
-        return dbHelper.insertDummyPhase1Order();
-    }
+//    public boolean insertDummyPhase1Order(Context context)
+//    {
+//        dbHelper = new Connect(context);
+//        return dbHelper.insertDummyPhase1Order();
+//    }
 
 
     @Override
