@@ -700,6 +700,10 @@ public class Connect extends SQLiteOpenHelper {
 //        // Query the PHASE1_ORDER table for pending deliveries for the specified client
         String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_CLIENT_ID = ? " +
                 "AND (PHASE1_DATE_COURIER = '' OR PHASE1_DATE_RECEIVED = '')";
+
+//        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_CLIENT_ID = ? " +
+//                "AND PHASE1_COURIER_STATUS = 0";
+
         String[] selectionArgs = {String.valueOf(clientID)};
         Cursor cursor = db.rawQuery(query, selectionArgs);
         try{
@@ -709,7 +713,16 @@ public class Connect extends SQLiteOpenHelper {
                 int orderIdIndex = cursor.getColumnIndex(PHASE1_ORDER_ID);
                 int washerIdIndex = cursor.getColumnIndex(PHASE1_ORDER_WASHER_ID);
                 int courierIdIndex = cursor.getColumnIndex(PHASE1_ORDER_COURIER_ID);
-                Courier courier = getCourier(courierIdIndex);
+                Courier courier;
+                if(cursor.getInt(courierIdIndex) == -1)
+                {
+                    courier = new Courier();
+                }
+                else
+                {
+                    courier = getCourier(cursor.getInt(courierIdIndex));
+                }
+
                 Log.e("COURIERINDEX", cursor.getInt(courierIdIndex) + "");
                 int courierStatusIndex = cursor.getColumnIndex(PHASE1_COURIER_STATUS);
                 int totalCourierAmountIndex = cursor.getColumnIndex(PHASE1_TOTAL_COURIER_AMOUNT);

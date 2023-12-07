@@ -80,11 +80,11 @@ public class Courier {
         return dbHelper.updateCourierStatus(courierID, status);
     }
 
-    public int getCourierStatusOnDb(int courierID, Context context)
-    {
-        dbHelper = new Connect(context);
-        return dbHelper.getCourierStatus(courierID);
-    }
+//    public int getCourierStatusOnDb(int courierID, Context context)
+//    {
+//        dbHelper = new Connect(context);
+//        return dbHelper.getCourierStatus(courierID);
+//    }
 
     // GETTERS AND SETTERS
 

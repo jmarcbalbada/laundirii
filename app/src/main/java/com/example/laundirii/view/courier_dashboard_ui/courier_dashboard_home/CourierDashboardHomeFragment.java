@@ -75,6 +75,7 @@ public class CourierDashboardHomeFragment extends Fragment {
             Phase1Order pendingDelivery = dashboardController.getPendingDeliveryOnCourier(courier.getCourierID(), this.getActivity());
             List<Phase1Order> listPendingDelivery = new ArrayList<Phase1Order>();
             listPendingDelivery.add(pendingDelivery);
+            Log.e("LISTPENDINGDELIVERY", listPendingDelivery.size() + "");
             pendingOrdersAdapter = new ArrayAdapter<Phase1Order>(this.getContext(), android.R.layout.simple_list_item_1, listPendingDelivery);
             lv_pendingOrders.setAdapter(pendingOrdersAdapter);
         }

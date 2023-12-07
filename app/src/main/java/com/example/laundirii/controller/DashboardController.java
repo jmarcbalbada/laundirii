@@ -86,20 +86,20 @@ public class DashboardController {
         return courier.updateCourierStatusOnConnect(courierID,status, context);
     }
 
-    public int getCourierStatusOnDb(int courierID, Context context)
-    {
-        return courier.getCourierStatusOnDb(courierID,context);
-    }
+//    public int getCourierStatusOnDb(int courierID, Context context)
+//    {
+//        return courier.getCourierStatusOnDb(courierID,context);
+//    }
 
     public boolean insertPhase1Order(int clientID, int washerID, Context context)
     {
         return phase1Order.insertPhase1Order(clientID,washerID,context);
     }
 
-    public boolean insertDummyPhase1Order(Context context)
-    {
-        return phase1Order.insertDummyPhase1Order(context);
-    }
+//    public boolean insertDummyPhase1Order(Context context)
+//    {
+//        return phase1Order.insertDummyPhase1Order(context);
+//    }
 
 //    public List<Order> getPendingDeliveriesOnCourier(int courierID, Context context)
 //    {

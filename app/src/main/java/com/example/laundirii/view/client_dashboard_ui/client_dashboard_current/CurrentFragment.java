@@ -54,6 +54,7 @@ public class CurrentFragment extends Fragment {
         clientInfoPreferences = this.getActivity().getSharedPreferences("LoginClientPreferences",0);
         String clientUsername = clientInfoPreferences.getString("clientUsername", "");
         client = dashboardController.getClient(clientUsername,this.getActivity());
+        Log.e("thisClient", client.toString());
         lv_pendingOrders = (ListView) root.findViewById(R.id.current_transaction);
         bookServiceButton = root.findViewById(R.id.btn_book_service);
         displayPendingOrders();
@@ -72,6 +73,7 @@ public class CurrentFragment extends Fragment {
     public void displayPendingOrders() {
         List<Phase1Order> listPendingOrders = new ArrayList<>();
         listPendingOrders = dashboardController.getPendingDeliveryOnClient(client.getCustomerID(), this.getActivity());
+        Log.e("listPendingOrders", listPendingOrders.size() + "");
         pendingClientOrdersAdapter = new ArrayAdapter<Phase1Order>(this.getContext(), android.R.layout.simple_list_item_1, listPendingOrders);
         lv_pendingOrders.setAdapter(pendingClientOrdersAdapter);
     }
