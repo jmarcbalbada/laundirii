@@ -17,5 +17,9 @@
             android:id="@+id/washer_logs_fragment"
             android:icon="@drawable/washer_ic_launcher_logs_nav"
             android:title="@string/washer_menu_logs" />
+        <item
+            android:id="@+id/washer_nav_notification"
+            android:icon="@android:drawable/star_big_on"
+            android:title="@string/washer_menu_notification" />
     </group>
 </menu>

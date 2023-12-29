@@ -95,9 +95,9 @@ public class DashboardController {
 //        return courier.getCourierStatusOnDb(courierID,context);
 //    }
 
-    public boolean insertPhase1Order(int clientID, int washerID, Context context)
+    public boolean insertPhase1Order(int clientID, int washerID,int initialLoad, Context context)
     {
-        return phase1Order.insertPhase1Order(clientID,washerID,context);
+        return phase1Order.insertPhase1Order(clientID,washerID,initialLoad,context);
     }
 
 //    public boolean insertDummyPhase1Order(Context context)

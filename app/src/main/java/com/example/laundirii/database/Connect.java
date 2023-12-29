@@ -82,6 +82,10 @@ public class Connect extends SQLiteOpenHelper {
     public static final String PHASE1_TOTAL_PAID = "PHASE1_TOTAL_PAID";
     public static final String PHASE1_PAYMENT_STATUS = "PHASE1_PAYMENT_STATUS";
     public static final String PHASE1_DATE_RECEIVED = "PHASE1_DATE_RECEIVED";
+    public static final String PHASE1_INITIAL_LOAD = "PHASE1_INITIAL_LOAD";
+    public static final String PHASE1_ORDER_STATUS = "PHASE1_ORDER_STATUS";
+    public static final String PHASE1_DATE_PLACED = "PHASE1_DATE_PLACED";
+
 
     // PHASE 2 -  COURIER PICKUP ORDER
     public static final String PHASE2_ORDER_ID = "PHASE2_ORDER_ID";
@@ -144,7 +148,10 @@ public class Connect extends SQLiteOpenHelper {
                 "PHASE1_TOTAL_DUE REAL, " +
                 "PHASE1_TOTAL_PAID REAL, " +
                 "PHASE1_PAYMENT_STATUS INTEGER, " +
-                "PHASE1_DATE_RECEIVED TEXT" +
+                "PHASE1_DATE_RECEIVED TEXT," +
+                "PHASE1_INITIAL_LOAD INTEGER," +
+                "PHASE1_ORDER_STATUS INTEGER," +
+                "PHASE1_DATE_PLACED TEXT" +
                 ");";
 
         String createPhase2OrderTableStatement = "CREATE TABLE PHASE2COURIERPICKUP_ORDER (" +
@@ -734,6 +741,9 @@ public class Connect extends SQLiteOpenHelper {
                 int totalPaidIndex = cursor.getColumnIndex(PHASE1_TOTAL_PAID);
                 int paymentStatusIndex = cursor.getColumnIndex(PHASE1_PAYMENT_STATUS);
                 int dateReceivedIndex = cursor.getColumnIndex(PHASE1_DATE_RECEIVED);
+                int initialLoadIndex = cursor.getColumnIndex(PHASE1_INITIAL_LOAD);
+                int orderStatusIndex = cursor.getColumnIndex(PHASE1_ORDER_STATUS);
+                int datePlacedIndex = cursor.getColumnIndex(PHASE1_DATE_PLACED);
 
                 // Check if the column indexes are valid
                 if (orderIdIndex != -1 && washerIdIndex != -1 && courierIdIndex != -1 &&
@@ -755,7 +765,10 @@ public class Connect extends SQLiteOpenHelper {
                             cursor.getDouble(totalDueIndex),
                             cursor.getDouble(totalPaidIndex),
                             cursor.getInt(paymentStatusIndex),
-                            cursor.getString(dateReceivedIndex)
+                            cursor.getString(dateReceivedIndex),
+                            cursor.getInt(initialLoadIndex),
+                            cursor.getInt(orderStatusIndex),
+                            cursor.getString(datePlacedIndex)
                     );
 
                     Log.e("InsidePending", pendingOrder.getCourier().toString());
@@ -850,6 +863,9 @@ public class Connect extends SQLiteOpenHelper {
                 int totalPaidIndex = cursor.getColumnIndex(PHASE1_TOTAL_PAID);
                 int paymentStatusIndex = cursor.getColumnIndex(PHASE1_PAYMENT_STATUS);
                 int dateReceivedIndex = cursor.getColumnIndex(PHASE1_DATE_RECEIVED);
+                int initialLoadIndex = cursor.getColumnIndex(PHASE1_INITIAL_LOAD);
+                int orderStatusIndex = cursor.getColumnIndex(PHASE1_ORDER_STATUS);
+                int datePlacedIndex = cursor.getColumnIndex(PHASE1_DATE_PLACED);
 
                 // Check if the column indexes are valid
                 if (orderIdIndex != -1 && washerIdIndex != -1 && courierIdIndex != -1 &&
@@ -870,7 +886,10 @@ public class Connect extends SQLiteOpenHelper {
                             cursor.getDouble(totalDueIndex),
                             cursor.getDouble(totalPaidIndex),
                             cursor.getInt(paymentStatusIndex),
-                            cursor.getString(dateReceivedIndex)
+                            cursor.getString(dateReceivedIndex),
+                            cursor.getInt(initialLoadIndex),
+                            cursor.getInt(orderStatusIndex),
+                            cursor.getString(datePlacedIndex)
                     );
                     Log.e("DATABASE PHASE1ORDER", pendingOrder.toString());
 
@@ -979,6 +998,9 @@ public class Connect extends SQLiteOpenHelper {
                 int totalPaidIndex = cursor.getColumnIndex(PHASE1_TOTAL_PAID);
                 int paymentStatusIndex = cursor.getColumnIndex(PHASE1_PAYMENT_STATUS);
                 int dateReceivedIndex = cursor.getColumnIndex(PHASE1_DATE_RECEIVED);
+                int initialLoadIndex = cursor.getColumnIndex(PHASE1_INITIAL_LOAD);
+                int orderStatusIndex = cursor.getColumnIndex(PHASE1_ORDER_STATUS);
+                int datePlacedIndex = cursor.getColumnIndex(PHASE1_DATE_PLACED);
 
                 // Check if the column indexes are valid
                 if (orderIdIndex != -1 && washerIdIndex != -1 && courierIdIndex != -1 &&
@@ -1000,7 +1022,10 @@ public class Connect extends SQLiteOpenHelper {
                             cursor.getDouble(totalDueIndex),
                             cursor.getDouble(totalPaidIndex),
                             cursor.getInt(paymentStatusIndex),
-                            cursor.getString(dateReceivedIndex)
+                            cursor.getString(dateReceivedIndex),
+                            cursor.getInt(initialLoadIndex),
+                            cursor.getInt(orderStatusIndex),
+                            cursor.getString(datePlacedIndex)
                     );
 
                     Log.e("CourierInsidePending", pendingOrder.getCourier().toString());
@@ -1047,6 +1072,9 @@ public class Connect extends SQLiteOpenHelper {
             int totalPaidIndex = cursor.getColumnIndex(PHASE1_TOTAL_PAID);
             int paymentStatusIndex = cursor.getColumnIndex(PHASE1_PAYMENT_STATUS);
             int dateReceivedIndex = cursor.getColumnIndex(PHASE1_DATE_RECEIVED);
+            int initialLoadIndex = cursor.getColumnIndex(PHASE1_INITIAL_LOAD);
+            int orderStatusIndex = cursor.getColumnIndex(PHASE1_ORDER_STATUS);
+            int datePlacedIndex = cursor.getColumnIndex(PHASE1_DATE_PLACED);
 
             if (orderIdIndex != -1 && clientIdIndex != -1 && washerIdIndex != -1 &&
                     courierIdIndex != -1 && courierStatusIndex != -1 &&
@@ -1065,7 +1093,10 @@ public class Connect extends SQLiteOpenHelper {
                         cursor.getDouble(totalDueIndex),
                         cursor.getDouble(totalPaidIndex),
                         cursor.getInt(paymentStatusIndex),
-                        cursor.getString(dateReceivedIndex)
+                        cursor.getString(dateReceivedIndex),
+                        cursor.getInt(initialLoadIndex),
+                        cursor.getInt(orderStatusIndex),
+                        cursor.getString(datePlacedIndex)
                 );
 
                 Log.e("pendingDelivery", pendingDelivery.toString());
@@ -1162,14 +1193,12 @@ public class Connect extends SQLiteOpenHelper {
         return retrieveWashers;
     }
 
-    public boolean insertPhase1Order(int clientID, int washerID)
-    {
+    public boolean insertPhase1Order(int clientID, int washerID, int initialLoad) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put(PHASE1_ORDER_CLIENT_ID, clientID);
         values.put(PHASE1_ORDER_WASHER_ID, washerID);
-        values.put(PHASE1_ORDER_COURIER_ID, -1);
         values.put(PHASE1_COURIER_STATUS, 0);
         values.put(PHASE1_TOTAL_COURIER_AMOUNT, 50.0);
         values.put(PHASE1_DATE_COURIER, "");
@@ -1177,6 +1206,13 @@ public class Connect extends SQLiteOpenHelper {
         values.put(PHASE1_TOTAL_PAID, 0.0);
         values.put(PHASE1_PAYMENT_STATUS, 0);
         values.put(PHASE1_DATE_RECEIVED, "");
+        values.put(PHASE1_INITIAL_LOAD, initialLoad);
+        values.put(PHASE1_ORDER_STATUS, 0);
+
+        // Set PHASE1_DATE_PLACED to the current date
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentDate = dateFormat.format(new Date());
+        values.put(PHASE1_DATE_PLACED, currentDate);
 
         long result = db.insert("PHASE1_ORDER", null, values);
 

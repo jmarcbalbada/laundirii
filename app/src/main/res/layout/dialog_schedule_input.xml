@@ -7,26 +7,17 @@
 
     <!-- Date EditText -->
 
-    <Spinner
-        android:id="@+id/spinnerMonth"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:prompt="@string/select_month"
-        android:entries="@array/months"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please enter initial values of your laundry!"/>
 
     <EditText
-        android:id="@+id/editTextDate"
+        android:id="@+id/editTextInitialLoad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Day"
-        android:inputType="time"/>
-
-    <EditText
-        android:id="@+id/editTextTime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Time"
+        android:hint="Initial Load"
         android:inputType="time"/>
 
 </LinearLayout>

@@ -24,16 +24,21 @@ public class Phase1Order implements Serializable {
 
     private int courierStatus;
     private double totalCourierAmount;
+    // date randomly assigned
     private String dateCourier;
     private double totalDue;
     private double totalPaid;
     private int paymentStatus;
+    //actual date received from courier to washer
     private String dateReceived;
+    private int initialLoad;
+    private int phase1OrderStatus; // -1 - Invalid/Cancelled , 0 - Pending, 1 - Active
+    private String datePlaced;
     private Connect dbHelper;
 
     public Phase1Order(int orderID, Client client, Washer washer, Courier courier,
                        int courierStatus, double totalCourierAmount, String dateCourier,
-                       double totalDue, double totalPaid, int paymentStatus, String dateReceived) {
+                       double totalDue, double totalPaid, int paymentStatus, String dateReceived, int initialLoad, int phase1OrderStatus, String datePlaced) {
         this.orderID = orderID;
         this.client = client;
         this.washer = washer;
@@ -45,6 +50,9 @@ public class Phase1Order implements Serializable {
         this.totalPaid = totalPaid;
         this.paymentStatus = paymentStatus;
         this.dateReceived = dateReceived;
+        this.initialLoad = initialLoad;
+        this.phase1OrderStatus = phase1OrderStatus;
+        this.datePlaced = datePlaced;
     }
 
     public Phase1Order()
@@ -60,6 +68,9 @@ public class Phase1Order implements Serializable {
         totalPaid = 0;
         paymentStatus = -1;
         dateReceived = "";
+        initialLoad = 0;
+        phase1OrderStatus = 0;
+        datePlaced = "";
     }
 
     public Phase1Order getPendingDeliveryOnCourier(int courierID, Context context)
@@ -92,10 +103,10 @@ public class Phase1Order implements Serializable {
         return dbHelper.getAllWashers();
     }
 
-    public boolean insertPhase1Order(int clientID, int washerID, Context context)
+    public boolean insertPhase1Order(int clientID, int washerID, int initialLoad, Context context)
     {
         dbHelper = new Connect(context);
-        return dbHelper.insertPhase1Order(clientID, washerID);
+        return dbHelper.insertPhase1Order(clientID, washerID, initialLoad);
     }
 
     public boolean acceptPendingRequestOnCourier(int courierID, int orderID, Context context)
@@ -123,6 +134,8 @@ public class Phase1Order implements Serializable {
                 "Courier:\t" + courier.getName() + "\n" +
                 "Total Due:\t" + this.totalDue + "\n" +
                 "Total Paid:\t" + this.totalPaid + "\n" +
+                "Initial Load:\t" + this.initialLoad + " kg\n" +
+                "Date Placed:\t" + this.datePlaced + "\n" +
                 "Payment Status:\t" + paymentStat + "\n";
     }
 
@@ -156,6 +169,30 @@ public class Phase1Order implements Serializable {
 
     public Courier getCourier() {
         return courier;
+    }
+
+    public int getInitialLoad() {
+        return initialLoad;
+    }
+
+    public void setInitialLoad(int initialLoad) {
+        this.initialLoad = initialLoad;
+    }
+
+    public String getDatePlaced() {
+        return datePlaced;
+    }
+
+    public void setDatePlaced(String datePlaced) {
+        this.datePlaced = datePlaced;
+    }
+
+    public int getPhase1OrderStatus() {
+        return phase1OrderStatus;
+    }
+
+    public void setPhase1OrderStatus(int phase1OrderStatus) {
+        this.phase1OrderStatus = phase1OrderStatus;
     }
 
     public void setCourier(Courier courier) {
