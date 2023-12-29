@@ -16,11 +16,14 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            app:layout_anchor="@+id/include"
+            app:layout_anchorGravity="top|center"
             app:popupTheme="@style/Theme.LaunDirii.PopupOverlay" />
-
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_washer_dashboard" />
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_washer_dashboard" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -30,5 +33,7 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="16dp"
         app:srcCompat="@android:drawable/ic_dialog_email" />
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

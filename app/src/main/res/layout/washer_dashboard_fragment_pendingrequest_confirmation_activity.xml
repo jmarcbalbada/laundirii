@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.washer_dashboard_ui.washer_dashboard_pendingrequest.WasherDashboardPendingrequestConfirmation">
+
+    <TextView
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_confirmation_acitivity_cliendIDText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Client ID"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.397" />
+
+    <TextView
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_confirmation_acitivity_courierNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Courier Name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.446" />
+
+    <TextView
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_confirmation_acitivity_clientNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Client Naame"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.518" />
+
+    <TextView
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_confirmation_acitivity_amountDueText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Amount Due: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.574" />
+
+    <Button
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_confirmation_acitivity_receivedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Received"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.658" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

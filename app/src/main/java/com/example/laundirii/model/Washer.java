@@ -1,8 +1,12 @@
 package com.example.laundirii.model;
 import android.content.Context;
+import android.util.Log;
 
 import com.example.laundirii.database.Connect;
-public class Washer {
+
+import java.io.Serializable;
+
+public class Washer implements Serializable {
     private int washerID;
     private String username;
     private String password;
@@ -90,6 +94,12 @@ public class Washer {
         return this.status;
     }
 
+    public Washer getWasher(String username, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.getWasher(username);
+    }
+
     public boolean loginWasher(String username, String password, Context context)
     {
         dbHelper = new Connect(context);
@@ -120,4 +130,39 @@ public class Washer {
                 + "Rate per kg.: " + ratePerKg + "\n";
     }
 
+    public void setWasherID(int washerID) {
+        this.washerID = washerID;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+    public void setShopLocation(String shopLocation) {
+        this.shopLocation = shopLocation;
+    }
+
+    public void setContactNo(String contactNo) {
+        this.contactNo = contactNo;
+    }
+
+    public void setRatePerKg(double ratePerKg) {
+        this.ratePerKg = ratePerKg;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 }

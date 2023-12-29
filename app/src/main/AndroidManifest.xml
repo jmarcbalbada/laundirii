@@ -18,6 +18,9 @@
             android:label="@string/title_activity_book_service"
             android:theme="@style/Theme.LaunDirii" />
         <activity
+            android:name=".view.washer_dashboard_ui.washer_dashboard_pendingrequest.WasherDashboardPendingrequestConfirmation"
+            android:exported="false" />
+        <activity
             android:name=".view.client_dashboard_ui.ClientDashboardActivity"
             android:exported="false"
             android:label="@string/title_activity_client_dashboard"

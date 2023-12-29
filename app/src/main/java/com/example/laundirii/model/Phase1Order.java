@@ -4,14 +4,24 @@ import android.content.Context;
 
 import com.example.laundirii.database.Connect;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Phase1Order {
+public class Phase1Order implements Serializable {
 
     private int orderID;
     private Client client;
     private Washer washer;
     private Courier courier;
+
+    public Connect getDbHelper() {
+        return dbHelper;
+    }
+
+    public void setDbHelper(Connect dbHelper) {
+        this.dbHelper = dbHelper;
+    }
+
     private int courierStatus;
     private double totalCourierAmount;
     private String dateCourier;
@@ -125,6 +135,9 @@ public class Phase1Order {
         this.orderID = orderID;
     }
 
+    public String getClientName(){
+        return client.getName();
+    }
     public Client getClient() {
         return client;
     }
@@ -203,5 +216,32 @@ public class Phase1Order {
 
     public void setDateReceived(String dateReceived) {
         this.dateReceived = dateReceived;
+    }
+
+
+    public void setCourierID(int courierID){
+        courier.setCourierID(courierID);
+    }
+    public void setClientID(int clientID){
+        client.setCustomerID(clientID);
+    }
+    public void setWasherID(int washerID)
+    {
+        washer.setWasherID(washerID);
+    }
+
+    public void getCourierID(int courierID){
+        courier.setCourierID(courierID);
+    }
+    public int getClientID(){
+        return client.getCustomerID();
+    }
+    public void getWasherID(int washerID)
+    {
+        washer.setWasherID(washerID);
+    }
+    public List<Phase1Order> getPendingDeliveriesOnWasher(int washerID, Context context){
+        dbHelper = new Connect(context);
+        return dbHelper.getPendingDeliveriesOnWasher(washerID, context);
     }
 }

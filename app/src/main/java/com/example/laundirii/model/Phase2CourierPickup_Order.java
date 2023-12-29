@@ -2,7 +2,9 @@ package com.example.laundirii.model;
 
 import com.example.laundirii.database.Connect;
 
-public class Phase2CourierPickup_Order {
+import java.io.Serializable;
+
+public class Phase2CourierPickup_Order implements Serializable {
     private int orderID;
     private Client client;
     private Washer washer;

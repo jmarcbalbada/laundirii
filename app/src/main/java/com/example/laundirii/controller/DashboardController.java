@@ -1,13 +1,12 @@
 package com.example.laundirii.controller;
 
-import com.example.laundirii.database.Connect;
+import android.content.Context;
+
 import com.example.laundirii.model.Client;
 import com.example.laundirii.model.Courier;
 import com.example.laundirii.model.Order;
 import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.model.Washer;
-
-import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +49,11 @@ public class DashboardController {
         Courier fetchCourier = courier.getCourier(username,context);
         return fetchCourier;
     }
+    public Washer getWasher(String username, Context context)
+    {
+        return washer.getWasher(username,context);
+    }
+
 
     public Phase1Order getPendingDeliveryOnCourier(int courierID, Context context)
     {
@@ -110,4 +114,15 @@ public class DashboardController {
 //    {
 //        return order.insertDummyValuesOnOrder(context);
 //    }
+
+    public List<Phase1Order> getPendingDeliveriesOnWasher(int washerID,Context context){
+        return phase1Order.getPendingDeliveriesOnWasher(washerID, context);
+    }
+    public List<Phase1Order> getListofOrdersToReceive(int washerID, Context context){
+//        dashboardController.insertDummyPhase1Order(context);
+        List<Phase1Order> e = new ArrayList<Phase1Order>();
+        return e;
+    }
+
+
 }

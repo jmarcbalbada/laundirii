@@ -16,8 +16,11 @@ import com.example.laundirii.model.Order;
 import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.model.Washer;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class Connect extends SQLiteOpenHelper {
     /* Fields on tables*/
@@ -1077,6 +1080,39 @@ public class Connect extends SQLiteOpenHelper {
 
         return pendingDelivery;
     }
+    public List<Phase1Order> getPendingDeliveriesOnWasher(int washerID,Context context){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Log.e("YAWA1",Integer.toString(washerID));
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ?;";
+        String[] selectionArgs = {String.valueOf(washerID)};
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        List<Phase1Order> OrderToReceiveList = new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do{
+                Phase1Order addOrder = new Phase1Order();
+                addOrder.setOrderID(cursor.getInt(0));
+                addOrder.setClientID(cursor.getInt(1));
+                addOrder.setWasherID(cursor.getInt(2));
+                addOrder.setCourierID(cursor.getInt(3));
+                addOrder.setCourierStatus(cursor.getInt(4));
+                addOrder.setTotalCourierAmount(cursor.getFloat(5));
+                addOrder.setDateCourier(cursor.getString(6));
+                addOrder.setTotalDue(cursor.getFloat(7));
+                addOrder.setTotalPaid(cursor.getFloat(8));
+                addOrder.setPaymentStatus(cursor.getInt(9));
+                addOrder.setDateReceived(cursor.getString(10));
+
+                OrderToReceiveList.add(addOrder);
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        this.getReadableDatabase().close();
+
+        return OrderToReceiveList;
+    }
+
 
     // Get all Washers in Book Service Query Washer
     public List<Washer> getAllWashers()
@@ -1150,19 +1186,20 @@ public class Connect extends SQLiteOpenHelper {
 
     public boolean insertDummyPhase1Order() {
         SQLiteDatabase db = this.getWritableDatabase();
-
+        Random rand = new Random();
+        rand.ints(10);
         ContentValues values = new ContentValues();
-        values.put(PHASE1_ORDER_ID, 2);
-        values.put(PHASE1_ORDER_CLIENT_ID, 1);
-        values.put(PHASE1_ORDER_WASHER_ID, 2);
-        values.put(PHASE1_ORDER_COURIER_ID, 4);
+        values.put(PHASE1_ORDER_ID, rand.nextInt(20));
+        values.put(PHASE1_ORDER_CLIENT_ID, rand.nextInt(20));
+        values.put(PHASE1_ORDER_WASHER_ID, 1);
+        values.put(PHASE1_ORDER_COURIER_ID, rand.nextInt(20));
         values.put(PHASE1_COURIER_STATUS, 0);
         values.put(PHASE1_TOTAL_COURIER_AMOUNT, 50.0);
-        values.put(PHASE1_DATE_COURIER, "");
+        values.put(PHASE1_DATE_COURIER,new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         values.put(PHASE1_TOTAL_DUE, 0.0);
         values.put(PHASE1_TOTAL_PAID, 0.0);
         values.put(PHASE1_PAYMENT_STATUS, 0);
-        values.put(PHASE1_DATE_RECEIVED, "");
+        values.put(PHASE1_DATE_RECEIVED, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
         long result = db.insert("PHASE1_ORDER", null, values);
 

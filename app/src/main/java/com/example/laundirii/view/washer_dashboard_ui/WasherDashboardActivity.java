@@ -1,10 +1,16 @@
 package com.example.laundirii.view.washer_dashboard_ui;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.widget.TextView;
 
 import com.example.laundirii.R;
+import com.example.laundirii.controller.DashboardController;
+import com.example.laundirii.model.Courier;
+import com.example.laundirii.model.Washer;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -21,6 +27,10 @@ public class WasherDashboardActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityWasherDashboardUiBinding binding;
+    private DashboardController dashboardController;
+    private Washer washer;
+    private TextView WasherNavNameText;
+    private TextView WashernavPhoneNumberText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +58,24 @@ public class WasherDashboardActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_washer_dashboard_ui);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+
+//        //initialize
+        View headerView = binding.navView.getHeaderView(0);
+        WasherNavNameText = headerView.findViewById(R.id.WasherNavNameText);
+        WashernavPhoneNumberText = headerView.findViewById(R.id.WashernavPhoneNumberText);
+        //shared Preferences
+        SharedPreferences sharedPreferences = getSharedPreferences("LoginWasherPreferences", Context.MODE_PRIVATE);
+        String washerUsername = sharedPreferences.getString("washerUsername", "");
+        //getting washer
+        dashboardController = new DashboardController();
+        this.washer = dashboardController.getWasher(washerUsername, this);
+//        // instantiate navigation bar values
+        WasherNavNameText.setText("Good day, " + washer.getShopName() + "!");
+        WashernavPhoneNumberText.setText("Contact No: " + washer.getContactNo());
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
