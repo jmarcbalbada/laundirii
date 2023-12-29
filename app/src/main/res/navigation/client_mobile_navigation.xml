@@ -16,4 +16,10 @@
         android:name="com.example.laundirii.view.client_dashboard_ui.client_dashboard_history.HistoryFragment"
         android:label="@string/menu_history"
         tools:layout="@layout/client_fragment_history" />
+
+    <fragment
+        android:id="@+id/client_nav_notification"
+        android:name="com.example.laundirii.view.client_dashboard_ui.client_dashboard_notification.ClientNotificationFragment"
+        android:label="@string/client_menu_notification"
+        tools:layout="@layout/client_fragment_notification" />
 </navigation>

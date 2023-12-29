@@ -22,4 +22,11 @@
         android:name="com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_logs.WasherDashboardLogsFragment"
         android:label="@string/washer_menu_logs"
         tools:layout="@layout/washer_dashboard_fragment_logs" />
+
+    <fragment
+        android:id="@+id/washer_nav_notification"
+        android:name="com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_notification.WasherNotificationFragment"
+        android:label="@string/washer_menu_notification"
+        tools:layout="@layout/washer_dashboard_fragment_notification" />
+
 </navigation>
