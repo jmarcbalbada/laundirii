@@ -156,7 +156,7 @@ public class Phase1Order implements Serializable {
     }
     // getting the client all details using washerID that is initiallly set
     public Client getClient(Context context) {
-        setClient(this.client.getClient(this.getClientID(),context));
+        setClient(this.client.getClient(this.client.getCustomerID(),context));
         return this.client;
     }
 
@@ -170,7 +170,7 @@ public class Phase1Order implements Serializable {
     }
     // getting the washer all details using washerID that is initiallly set
     public Washer getWasher(Context context) {
-        setWasher(this.washer.getWasher(washer.getWasherID(),context));
+        setWasher(this.washer.getWasher(this.washer.getWasherID(),context));
         return this.washer;
 
     }

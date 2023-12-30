@@ -1,6 +1,7 @@
 package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_pendingrequest;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,10 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.laundirii.R;
 import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.model.Phase1Order;
+import com.example.laundirii.view.washer_dashboard_ui.WasherDashboardActivity;
 
 public class WasherDashboardPendingrequestConfirmation extends AppCompatActivity {
 
-    DashboardController dashboardController = new DashboardController();
+    DashboardController dashboardController;
     TextView  ClientNameText, orderID,InitialLoad,TotalAmount;
     Button cancelledButton, acceptButton;
 
@@ -25,6 +27,7 @@ public class WasherDashboardPendingrequestConfirmation extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.washer_dashboard_fragment_pendingrequest_confirmation_activity);
+        dashboardController = new DashboardController();
 
         // Locate the button ID
         Phase1Order selectedOrder = (Phase1Order) getIntent().getSerializableExtra("selectedOrder");
@@ -33,6 +36,9 @@ public class WasherDashboardPendingrequestConfirmation extends AppCompatActivity
         TotalAmount = findViewById(R.id.washer_dashboard_fragment_pendingrequest_confirmation_acitivity_totalamount);
         cancelledButton = findViewById(R.id.washer_dashboard_fragment_pendingrequest_confirmation_acitivity_cancelbutton);
         acceptButton = findViewById(R.id.washer_dashboard_fragment_pendingrequest_confirmation_acitivity_acceptbutton);
+
+//        int cxid = selectedOrder.getClient().getCustomerID();
+//        Client c = selectedOrder.getClient().getClient(cxid,getBaseContext());
 
         // Set Value of Buttons and Text
         ClientNameText.setText("Client Name: "+selectedOrder.getClient(getBaseContext()).getName());
@@ -57,7 +63,12 @@ public class WasherDashboardPendingrequestConfirmation extends AppCompatActivity
                         .setTitle("Confirmation")
                         .setMessage("Are you sure you want to show the toast?")
                         .setPositiveButton("Yes", (dialog, which) -> {
+                            // set status to -1
                             selectedOrder.setPhase1OrderStatus(-1,getBaseContext());
+                            //
+                            Intent intent = new Intent(WasherDashboardPendingrequestConfirmation.this, WasherDashboardActivity.class);
+                            startActivity(intent);
+
 
                             // User cancel the book request
                             Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
@@ -99,6 +110,11 @@ public class WasherDashboardPendingrequestConfirmation extends AppCompatActivity
                             selectedOrder.setPhase1OrderStatus(1,getBaseContext());
 
                             Toast.makeText(getApplicationContext(), "Accepted", Toast.LENGTH_SHORT).show();
+
+
+                            Intent intent = new Intent(WasherDashboardPendingrequestConfirmation.this, WasherDashboardActivity.class);
+                            startActivity(intent);
+
                         })
                         .setNegativeButton("No", (dialog, which) -> {
                             // User did not take action
