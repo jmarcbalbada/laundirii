@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 
 import com.example.laundirii.model.Client;
 import com.example.laundirii.model.Courier;
-import com.example.laundirii.model.Order;
 import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.model.Washer;
 
@@ -107,7 +106,7 @@ public class Connect extends SQLiteOpenHelper {
     public static final String RATING = "RATING";
 
     public Connect(@Nullable Context context) {
-        super(context,"laundiri.db",null,1);
+        super(context, "laundiri.db", null, 1);
     }
 
     @Override
@@ -397,7 +396,6 @@ public class Connect extends SQLiteOpenHelper {
 
         return isInserted;
     }
-
 
 
     public boolean checkClientByUsername(String username) {
@@ -716,7 +714,7 @@ public class Connect extends SQLiteOpenHelper {
 
         String[] selectionArgs = {String.valueOf(clientID)};
         Cursor cursor = db.rawQuery(query, selectionArgs);
-        try{
+        try {
 
             while (cursor.moveToNext()) {
                 // Extract column indexes
@@ -724,12 +722,9 @@ public class Connect extends SQLiteOpenHelper {
                 int washerIdIndex = cursor.getColumnIndex(PHASE1_ORDER_WASHER_ID);
                 int courierIdIndex = cursor.getColumnIndex(PHASE1_ORDER_COURIER_ID);
                 Courier courier;
-                if(cursor.getInt(courierIdIndex) == -1)
-                {
+                if (cursor.getInt(courierIdIndex) == -1) {
                     courier = new Courier();
-                }
-                else
-                {
+                } else {
                     courier = getCourier(cursor.getInt(courierIdIndex));
                 }
 
@@ -779,11 +774,9 @@ public class Connect extends SQLiteOpenHelper {
                     // Handle invalid column indexes, log an error, or throw an exception
                 }
             }
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             Log.e("DATABASE ERROR", e.getMessage().toString());
-        }finally
-        {
+        } finally {
             // Close the cursor and database
             cursor.close();
             db.close();
@@ -801,39 +794,35 @@ public class Connect extends SQLiteOpenHelper {
         int typeOfUser = 0; // by default
         int ID = 0;
         Log.e("INSIDE HISTORY", "USER" + typeOfUser + "" + "ID" + ID);
-        if(checkClientByUsername(username))
-        {
+        if (checkClientByUsername(username)) {
             typeOfUser = 0;
             Client client = getClient(username);
             ID = client.getCustomerID();
-        }else if (checkCourierByUsername(username))
-        {
+        } else if (checkCourierByUsername(username)) {
             typeOfUser = 1;
             Courier courier = getCourier(username);
             ID = courier.getCourierID();
-        }else if (checkWasherByUsername(username))
-        {
+        } else if (checkWasherByUsername(username)) {
             typeOfUser = 2;
             Washer washer = getWasher(username);
             ID = washer.getWasherID();
-        }else {
+        } else {
             typeOfUser = -1;
         }
 
         Log.e("INSIDE HISTORY", "USER" + typeOfUser + "" + "ID" + ID);
 
         String query = "";
-        switch(typeOfUser)
-        {
+        switch (typeOfUser) {
             // Query Client
             case 0:
                 query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_CLIENT_ID = ? AND PHASE1_PAYMENT_STATUS = 1";
                 break;
-                // Query Courier
+            // Query Courier
             case 1:
                 query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_COURIER_ID = ? AND PHASE1_PAYMENT_STATUS = 1";
                 break;
-                // Query Washer
+            // Query Washer
             case 2:
                 query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_PAYMENT_STATUS = 1";
                 break;
@@ -849,7 +838,7 @@ public class Connect extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, selectionArgs);
-        try{
+        try {
             while (cursor.moveToNext()) {
                 // Extract column indexes
                 int orderIdIndex = cursor.getColumnIndex(PHASE1_ORDER_ID);
@@ -899,11 +888,9 @@ public class Connect extends SQLiteOpenHelper {
                     // Handle invalid column indexes, log an error, or throw an exception
                 }
             }
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             Log.e("DATABASE ERROR", e.getMessage().toString());
-        }finally
-        {
+        } finally {
             // Close the cursor and database
             cursor.close();
         }
@@ -911,8 +898,7 @@ public class Connect extends SQLiteOpenHelper {
         return pendingDeliveries;
     }
 
-    public boolean acceptPendingRequestOnCourier(int courierID, int orderID)
-    {
+    public boolean acceptPendingRequestOnCourier(int courierID, int orderID) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE PHASE1_ORDER SET PHASE1_ORDER_COURIER_ID = " + courierID +
                 " WHERE PHASE1_ORDER_ID = " + orderID;
@@ -927,47 +913,37 @@ public class Connect extends SQLiteOpenHelper {
         }
     }
 
-    public int getCourierStatus(int courierID)
-    {
+    public int getCourierStatus(int courierID) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT COURIER_STATUS FROM COURIER WHERE COURIER_ID = " + courierID;
         Cursor cursor = db.rawQuery(query, null);
 
-        try
-        {
+        try {
             int courierIdIndex = cursor.getColumnIndex(COURIER_ID);
-            if(cursor.moveToFirst())
-            {
-                if(cursor.getInt(courierIdIndex) != -1)
-                {
+            if (cursor.moveToFirst()) {
+                if (cursor.getInt(courierIdIndex) != -1) {
                     return cursor.getInt(courierIdIndex);
                 }
             }
-        }catch(SQLException e)
-        {
+        } catch (SQLException e) {
             Log.e("getCourierStatus", e.getMessage().toString());
-        }finally
-        {
+        } finally {
             db.close();
         }
 
         return -1;
     }
 
-    public boolean updateCourierStatus(int courierID, int status)
-    {
+    public boolean updateCourierStatus(int courierID, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE COURIER SET COURIER_STATUS = " + status + " WHERE COURIER_ID = " + courierID;
-        try
-        {
+        try {
             db.execSQL(query);
             return true;
-        }catch(SQLException e)
-        {
+        } catch (SQLException e) {
             Log.e("updateCourierStatus", "Error updating database: " + e.getMessage());
             return false;
-        }finally
-        {
+        } finally {
             db.close();
         }
     }
@@ -979,7 +955,7 @@ public class Connect extends SQLiteOpenHelper {
 //        // Query the PHASE1_ORDER table for pending request on courier
         String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_COURIER_ID = -1";
         Cursor cursor = db.rawQuery(query, null);
-        try{
+        try {
 
             while (cursor.moveToNext()) {
                 // Extract column indexes
@@ -1037,11 +1013,9 @@ public class Connect extends SQLiteOpenHelper {
                     // Handle invalid column indexes, log an error, or throw an exception
                 }
             }
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             Log.e("DATABASE ERROR PENDING", e.getMessage().toString());
-        }finally
-        {
+        } finally {
             // Close the cursor and database
             cursor.close();
             db.close();
@@ -1111,17 +1085,17 @@ public class Connect extends SQLiteOpenHelper {
 
         return pendingDelivery;
     }
-    public List<Phase1Order> getPendingDeliveriesOnWasher(int washerID,Context context){
+
+    public List<Phase1Order> getPendingDeliveriesOnWasher(int washerID, Context context) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Log.e("YAWA1",Integer.toString(washerID));
-        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ?;";
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS = 0;";
         String[] selectionArgs = {String.valueOf(washerID)};
 
         Cursor cursor = db.rawQuery(query, selectionArgs);
         List<Phase1Order> OrderToReceiveList = new ArrayList<>();
-        if(cursor.moveToFirst()){
-            do{
+        if (cursor.moveToFirst()) {
+            do {
                 Phase1Order addOrder = new Phase1Order();
                 addOrder.setOrderID(cursor.getInt(0));
                 addOrder.setClientID(cursor.getInt(1));
@@ -1134,9 +1108,11 @@ public class Connect extends SQLiteOpenHelper {
                 addOrder.setTotalPaid(cursor.getFloat(8));
                 addOrder.setPaymentStatus(cursor.getInt(9));
                 addOrder.setDateReceived(cursor.getString(10));
+                addOrder.setInitialLoad(cursor.getInt(11));
+                addOrder.setDatePlaced(cursor.getString(12));
 
                 OrderToReceiveList.add(addOrder);
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
         this.getReadableDatabase().close();
@@ -1146,17 +1122,14 @@ public class Connect extends SQLiteOpenHelper {
 
 
     // Get all Washers in Book Service Query Washer
-    public List<Washer> getAllWashers()
-    {
+    public List<Washer> getAllWashers() {
         SQLiteDatabase db = this.getReadableDatabase();
         List<Washer> retrieveWashers = new ArrayList<>();
 
         String query = "SELECT * FROM WASHER";
         Cursor cursor = db.rawQuery(query, null);
-        try
-        {
-            while(cursor.moveToNext())
-            {
+        try {
+            while (cursor.moveToNext()) {
                 int washerIdIndex = cursor.getColumnIndex(WASHER_ID);
                 int washerUsernameIndex = cursor.getColumnIndex(WASHER_USERNAME);
                 int washerPasswordIndex = cursor.getColumnIndex(WASHER_PASSWORD);
@@ -1167,25 +1140,20 @@ public class Connect extends SQLiteOpenHelper {
                 int washerRatePerKgIndex = cursor.getColumnIndex(RATE_PER_KG);
 
                 // check if valid
-                if(washerIdIndex != -1 && washerUsernameIndex != -1 && washerPasswordIndex != -1
-                    && washerShopNameIndex != -1 && washerShopLocationIndex != -1 &&
-                    washerContactNoIndex != -1 && washerStatusIndex != -1 &&
-                    washerRatePerKgIndex != -1)
-                {
+                if (washerIdIndex != -1 && washerUsernameIndex != -1 && washerPasswordIndex != -1
+                        && washerShopNameIndex != -1 && washerShopLocationIndex != -1 &&
+                        washerContactNoIndex != -1 && washerStatusIndex != -1 &&
+                        washerRatePerKgIndex != -1) {
                     Washer currWasher = getWasher(cursor.getInt(washerIdIndex));
-                    Log.e("CURRWASHER",currWasher.toString());
+                    Log.e("CURRWASHER", currWasher.toString());
                     retrieveWashers.add(currWasher);
-                }
-                else
-                {
+                } else {
 
                 }
             }
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             Log.e("DATABASE ERROR", e.getMessage().toString());
-        }finally
-        {
+        } finally {
             cursor.close();
             db.close();
         }
@@ -1231,7 +1199,7 @@ public class Connect extends SQLiteOpenHelper {
         values.put(PHASE1_ORDER_COURIER_ID, rand.nextInt(20));
         values.put(PHASE1_COURIER_STATUS, 0);
         values.put(PHASE1_TOTAL_COURIER_AMOUNT, 50.0);
-        values.put(PHASE1_DATE_COURIER,new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        values.put(PHASE1_DATE_COURIER, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         values.put(PHASE1_TOTAL_DUE, 0.0);
         values.put(PHASE1_TOTAL_PAID, 0.0);
         values.put(PHASE1_PAYMENT_STATUS, 0);
@@ -1271,6 +1239,31 @@ public class Connect extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    public void setPhase1OrderStatus(int orderID, int phase1OrderStatus) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        // Use execSQL for update operation
+        db.execSQL("UPDATE PHASE1_ORDER SET PHASE1_ORDER_STATUS = ? WHERE PHASE1_ORDER_ID = ? ;",
+                new Object[]{phase1OrderStatus, orderID});
 
+        db.close();
+    }
+
+    public int availableCourier() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor availableCourier = db.rawQuery("SELECT DISTINCT C.COURIER_ID FROM COURIER C JOIN PHASE1_ORDER P ON C.COURIER_ID = P.PHASE1_ORDER_COURIER_ID WHERE P.PHASE1_ORDER_STATUS <> 1 LIMIT 1;", new String[]{});
+        if( availableCourier.moveToFirst() == false){
+            return -1;
+        }
+        Log.e("AVAILME",availableCourier.getInt(0)+": this is id of");
+        return availableCourier.getInt(0);
+    }
+
+    public void setPhase1Courier(int phase1OrderID,int courierID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE PHASE1_ORDER SET PHASE1_ORDER_COURIER_ID = ? WHERE PHASE1_ORDER_ID = ?",
+                new Object[]{courierID, phase1OrderID});
+        db.close();
+    }
 }

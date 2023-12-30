@@ -13,6 +13,7 @@ public class Courier implements Serializable {
     private String name;
     private String contactNo;
     private String plateNo;
+    //courier status to identify if courier wanted to accept bookint
     private boolean status;
     Connect dbHelper;
 
@@ -68,7 +69,12 @@ public class Courier implements Serializable {
         dbHelper = new Connect(context);
         return dbHelper.insertCourier(username,password,name,contactNo,plateNo,courierStatus);
     }
-
+    public Courier getCourier(int courierID, Context context)
+    {
+        dbHelper = new Connect(context);
+        Courier courier = dbHelper.getCourier(courierID);
+        return courier;
+    }
     public Courier getCourier(String username, Context context)
     {
         dbHelper = new Connect(context);
@@ -124,6 +130,11 @@ public class Courier implements Serializable {
     {
         return this.status;
     }
+    // set phase1order courier id to assign a random courier
+    public void setCourierID(int phase1OrderID,int courierID,Context context) {
+        dbHelper = new Connect(context);
+        dbHelper.setPhase1Courier(phase1OrderID,courierID);
+    }
 
     public void setCourierID(int courierID) {
         this.courierID = courierID;
@@ -162,6 +173,10 @@ public class Courier implements Serializable {
                 + "Plate No: " + contactNo + "\n";
     }
 
+    public int availableCourier(Context context){
+        dbHelper = new Connect(context);
+        return dbHelper.availableCourier();
+    }
 //    public void setCourierID(int courierID) {
 //        this.courierID = courierID;
 //    }

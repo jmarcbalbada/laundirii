@@ -7,63 +7,64 @@
     tools:context=".view.washer_dashboard_ui.washer_dashboard_pendingrequest.WasherDashboardPendingrequestConfirmation">
 
     <TextView
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_confirmation_acitivity_cliendIDText"
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_confirmation_acitivity_totalamount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Client ID"
+        android:text="Total Amount: "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.397" />
+        app:layout_constraintVertical_bias="0.528" />
 
     <TextView
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_confirmation_acitivity_courierNameText"
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_confirmation_acitivity_InitialLoad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Courier Name"
+        android:text="Initial Load: "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.446" />
+        app:layout_constraintVertical_bias="0.469" />
 
     <TextView
         android:id="@+id/washer_dashboard_fragment_pendingrequest_confirmation_acitivity_clientNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Client Naame"
+        android:text="Client Name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.518" />
+        app:layout_constraintVertical_bias="0.391" />
 
-    <TextView
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_confirmation_acitivity_amountDueText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Amount Due: "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.574" />
 
     <Button
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_confirmation_acitivity_receivedButton"
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_confirmation_acitivity_acceptbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Received"
+        android:text="Accept"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.711"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.658" />
+        app:layout_constraintVertical_bias="0.666" />
+
+    <Button
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_confirmation_acitivity_cancelbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.281"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.666" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

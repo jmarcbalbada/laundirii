@@ -55,7 +55,7 @@ public class WasherDashboardPendingrequestAdapter extends RecyclerView.Adapter<W
         return orders.size();
     }
 
-    public void washerMarkReceivedFromCourier(){
+    public void washerMarkReceivedFromCourier() {
 
     }
 

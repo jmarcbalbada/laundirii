@@ -3,7 +3,6 @@ package com.example.laundirii.model;
 import android.content.Context;
 
 import com.example.laundirii.database.Connect;
-import com.example.laundirii.view.LoginActivity;
 
 import java.io.Serializable;
 
@@ -67,6 +66,11 @@ public class Client implements Serializable {
     {
         dbHelper = new Connect(context);
         return dbHelper.getClient(username);
+    }
+    public Client getClient(int clientID, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.getClient(clientID);
     }
 
     // REGISTER

@@ -123,6 +123,8 @@ public class DashboardController {
         List<Phase1Order> e = new ArrayList<Phase1Order>();
         return e;
     }
-
+    public int availableCourier(Context context){
+        return courier.availableCourier(context);
+    }
 
 }

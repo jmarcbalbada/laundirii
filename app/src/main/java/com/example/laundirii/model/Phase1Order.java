@@ -151,9 +151,15 @@ public class Phase1Order implements Serializable {
     public String getClientName(){
         return client.getName();
     }
-    public Client getClient() {
+    public Client getClient(){
         return client;
     }
+    // getting the client all details using washerID that is initiallly set
+    public Client getClient(Context context) {
+        setClient(this.client.getClient(this.client.getCustomerID(),context));
+        return this.client;
+    }
+
 
     public void setClient(Client client) {
         this.client = client;
@@ -161,6 +167,12 @@ public class Phase1Order implements Serializable {
 
     public Washer getWasher() {
         return washer;
+    }
+    // getting the washer all details using washerID that is initiallly set
+    public Washer getWasher(Context context) {
+        setWasher(this.washer.getWasher(this.washer.getWasherID(),context));
+        return this.washer;
+
     }
 
     public void setWasher(Washer washer) {
@@ -171,8 +183,13 @@ public class Phase1Order implements Serializable {
         return courier;
     }
 
+    // getting the courier all details using washerID that is initiallly set
+    public Courier getCourier(Context context) {
+        setCourier(this.courier.getCourier(this.courier.getCourierID(),context));
+        return courier;
+    }
     public int getInitialLoad() {
-        return initialLoad;
+        return this.initialLoad;
     }
 
     public void setInitialLoad(int initialLoad) {
@@ -189,6 +206,11 @@ public class Phase1Order implements Serializable {
 
     public int getPhase1OrderStatus() {
         return phase1OrderStatus;
+    }
+    public void setPhase1OrderStatus(int phase1OrderStatus , Context context) {
+        dbHelper = new Connect(context);
+        dbHelper.setPhase1OrderStatus(this.orderID,phase1OrderStatus);
+        return;
     }
 
     public void setPhase1OrderStatus(int phase1OrderStatus) {

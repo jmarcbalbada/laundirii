@@ -2,30 +2,22 @@ package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_pendingr
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.laundirii.R;
 import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.databinding.WasherDashboardFragmentPendingrequestBinding;
-import com.example.laundirii.model.Client;
-import com.example.laundirii.model.Courier;
 import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.model.Washer;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class WasherDashboardPendingrequestFragment extends Fragment {
 
@@ -57,6 +49,11 @@ public class WasherDashboardPendingrequestFragment extends Fragment {
          washerDashboardPendingrequestAdapter = new WasherDashboardPendingrequestAdapter(orders);
         recyclerView.setAdapter(washerDashboardPendingrequestAdapter);
         return root;
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
 
