@@ -132,4 +132,19 @@ public class DashboardController {
         return courier.availableCourier(context);
     }
 
+    public int washerAcceptClientRequest(int phase1OrderID, int availableCourierID, Context baseContext) {
+        return phase1Order.washerAcceptClientRequest(phase1OrderID,availableCourierID,baseContext);
+    }
+
+    public List<Phase1Order> getWasherHistory(int washerID, Context context) {
+        return phase1Order.getWasherHistory(washerID,context);
+    }
+
+    public List<Phase1Order> getWasherReceivedClothes(int washerID, Context context) {
+        return phase1Order.getWasherReceivedClothes(washerID,context);
+    }
+
+    public int washerMarkedClothesAsReceived(int orderID, Context context) {
+        return phase1Order.washerMarkedClothesAsReceived(orderID,context);
+    }
 }

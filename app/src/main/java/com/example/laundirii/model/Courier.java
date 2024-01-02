@@ -131,10 +131,10 @@ public class Courier implements Serializable {
         return this.status;
     }
     // set phase1order courier id to assign a random courier
-    public void setCourierID(int phase1OrderID,int courierID,Context context) {
-        dbHelper = new Connect(context);
-        dbHelper.setPhase1Courier(phase1OrderID,courierID);
-    }
+//    public void setCourierID(int phase1OrderID,int courierID,Context context) {
+//        dbHelper = new Connect(context);
+//        dbHelper.setPhase1Courier(phase1OrderID,courierID);
+//    }
 
     public void setCourierID(int courierID) {
         this.courierID = courierID;

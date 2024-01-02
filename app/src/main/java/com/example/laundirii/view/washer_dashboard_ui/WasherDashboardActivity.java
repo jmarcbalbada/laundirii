@@ -3,25 +3,23 @@ package com.example.laundirii.view.washer_dashboard_ui;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
+import android.view.View;
 import android.widget.TextView;
 
-import com.example.laundirii.R;
-import com.example.laundirii.controller.DashboardController;
-import com.example.laundirii.model.Courier;
-import com.example.laundirii.model.Washer;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.laundirii.R;
+import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.databinding.ActivityWasherDashboardUiBinding;
+import com.example.laundirii.model.Washer;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 public class WasherDashboardActivity extends AppCompatActivity {
 
@@ -52,7 +50,7 @@ public class WasherDashboardActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.washer_history_fragment, R.id.washer_pendingrequest_fragment, R.id.washer_logs_fragment)
+                R.id.washer_history_fragment, R.id.washer_pendingrequest_fragment, R.id.washer_nav_notification,R.id.washer_received_clothes_fragment)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_washer_dashboard_ui);

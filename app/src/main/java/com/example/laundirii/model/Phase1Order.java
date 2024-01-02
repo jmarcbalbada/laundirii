@@ -335,4 +335,25 @@ public class Phase1Order implements Serializable {
         dbHelper = new Connect(context);
         return dbHelper.getPendingDeliveriesOnWasher(washerID, context);
     }
+
+    public int washerAcceptClientRequest(int phase1OrderID, int availableCourierID, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        return dbHelper.washerAcceptClientRequest(phase1OrderID,availableCourierID);
+    }
+
+    public  List<Phase1Order> getWasherHistory(int washerID, Context context) {
+        dbHelper = new Connect(context);
+        return dbHelper.getWasherHistory(washerID,context);
+
+    }
+
+    public List<Phase1Order> getWasherReceivedClothes(int washerID, Context context) {
+        dbHelper = new Connect(context);
+        return dbHelper.getWasherReceivedClothes(washerID,context);
+    }
+    public int washerMarkedClothesAsReceived(int orderID, Context context){
+        dbHelper = new Connect(context);
+        return dbHelper.washerMarkedClothesAsReceived(orderID,context);
+
+    }
 }

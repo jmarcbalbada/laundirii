@@ -44,8 +44,10 @@
     <string name="courier_history">History</string>
     <string name="courier_pending_request">Pending Request</string>
     <string name="washer_menu_pendingrequest">Pending Request\n</string>
+    <string name="washer_menu_receivedclothes">Received Clothes\n</string>
     <string name="washer_menu_logs">Logs</string>
     <string name="washer_menu_history">History</string>
     <string name="title_activity_book_service">BookServiceActivity</string>
     <string name="you_may_choose_your_next_book">You may choose your next book!</string>
+    <string name="action_profile">Profile</string>
 </resources>
