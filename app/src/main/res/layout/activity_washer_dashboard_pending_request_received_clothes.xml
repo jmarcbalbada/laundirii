@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.washer_dashboard_ui.washer_dashboard_pendingrequest.WasherDashboardPendingrequestRequestConfirmation">
+    tools:context=".view.washer_dashboard_ui.washer_dashboard_pendingrequest.WasherDashboardPendingrequestReceivedClothes">
 
     <TextView
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_confirmation_acitivity_totalamount"
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_totalamount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Total Amount: "
@@ -19,7 +19,7 @@
         app:layout_constraintVertical_bias="0.528" />
 
     <TextView
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_confirmation_acitivity_InitialLoad"
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_InitialLoad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Initial Load: "
@@ -31,7 +31,7 @@
         app:layout_constraintVertical_bias="0.469" />
 
     <TextView
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_confirmation_acitivity_clientNameText"
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_clientNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Client Name"
@@ -44,7 +44,7 @@
 
 
     <Button
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_confirmation_acitivity_acceptbutton"
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_acceptbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Accept"
@@ -56,7 +56,7 @@
         app:layout_constraintVertical_bias="0.666" />
 
     <Button
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_confirmation_acitivity_cancelbutton"
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_cancelbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Cancel"

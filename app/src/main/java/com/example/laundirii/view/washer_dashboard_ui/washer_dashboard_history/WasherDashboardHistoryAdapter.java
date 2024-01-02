@@ -1,25 +1,27 @@
 package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_history;
 
-import android.content.Intent;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.laundirii.R;
 import com.example.laundirii.model.Phase1Order;
-import com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_pendingrequest.WasherDashboardPendingrequestConfirmation;
 
 import java.util.List;
 
 public class WasherDashboardHistoryAdapter extends RecyclerView.Adapter<WasherDashboardHistoryAdapter.PedingViewHolder> {
     private List<Phase1Order> orders;
+    Context context;
 
-    public WasherDashboardHistoryAdapter(List<Phase1Order> orders) {
+    public WasherDashboardHistoryAdapter(List<Phase1Order> orders,Context context) {
         this.orders = orders;
+        this.context = context;
     }
 
     @NonNull
@@ -36,16 +38,9 @@ public class WasherDashboardHistoryAdapter extends RecyclerView.Adapter<WasherDa
         // Bind other data as needed
         holder.textViewOrderId.setText("Order ID: " + order.getOrderID());
         holder.textViewClientName.setText("Client Name: " + order.getClientName());
+        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.washer_history));
         holder.textViewCourierStatus.setText("Courier Status: " + order.getCourierStatus());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), WasherDashboardPendingrequestConfirmation.class);
-                intent.putExtra("selectedOrder", order);
-                view.getContext().startActivity(intent);
-            }
-        });
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_pendingr
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,7 +15,7 @@ import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.view.washer_dashboard_ui.WasherDashboardActivity;
 
-public class WasherDashboardPendingrequestConfirmation extends AppCompatActivity {
+public class WasherDashboardPendingrequestRequestConfirmation extends AppCompatActivity {
 
     DashboardController dashboardController;
     TextView  ClientNameText, orderID,InitialLoad,TotalAmount;
@@ -37,36 +36,24 @@ public class WasherDashboardPendingrequestConfirmation extends AppCompatActivity
         cancelledButton = findViewById(R.id.washer_dashboard_fragment_pendingrequest_confirmation_acitivity_cancelbutton);
         acceptButton = findViewById(R.id.washer_dashboard_fragment_pendingrequest_confirmation_acitivity_acceptbutton);
 
-//        int cxid = selectedOrder.getClient().getCustomerID();
-//        Client c = selectedOrder.getClient().getClient(cxid,getBaseContext());
-
         // Set Value of Buttons and Text
         ClientNameText.setText("Client Name: "+selectedOrder.getClient(getBaseContext()).getName());
-//        TODO
         InitialLoad.setText("Initial Load:" + selectedOrder.getInitialLoad());
-//        find the rate of the washer system
-//TODO
-
-        TotalAmount.setText("Total Amount:" + selectedOrder.getWasher(getBaseContext()).getRatePerKg() * selectedOrder.getInitialLoad());
-        double hey =  selectedOrder.getWasher().getRatePerKg();
-        Log.e("TOTAL AMOUNT", Double.toString(hey));
-        Log.e("Order ID", Integer.toString(selectedOrder.getOrderID()));
-//        Log.e("Initial Load", Integer.toString(selectedOrder.));
-
+        TotalAmount.setText("Total Amount:" + selectedOrder.getTotalDue());
 
 
         // Cancel the booking request of the customer
         cancelledButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(WasherDashboardPendingrequestConfirmation.this)
+                new AlertDialog.Builder(WasherDashboardPendingrequestRequestConfirmation.this)
                         .setTitle("Confirmation")
                         .setMessage("Are you sure you want to show the toast?")
                         .setPositiveButton("Yes", (dialog, which) -> {
                             // set status to -1
                             selectedOrder.setPhase1OrderStatus(-1,getBaseContext());
                             //
-                            Intent intent = new Intent(WasherDashboardPendingrequestConfirmation.this, WasherDashboardActivity.class);
+                            Intent intent = new Intent(WasherDashboardPendingrequestRequestConfirmation.this, WasherDashboardActivity.class);
                             startActivity(intent);
 
 
@@ -85,15 +72,16 @@ public class WasherDashboardPendingrequestConfirmation extends AppCompatActivity
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(WasherDashboardPendingrequestConfirmation.this)
+                new AlertDialog.Builder(WasherDashboardPendingrequestRequestConfirmation.this)
                         .setTitle("Confirmation")
                         .setMessage("Are you sure you want to show the toast?")
                         .setPositiveButton("Yes", (dialog, which) -> {
                             // User accept the book request
 
+                            //get the id of available courier and update the courier status to 0(getting the status of available courier)
                             int availableCourierID = dashboardController.availableCourier(getBaseContext());
+
                             //assign to a random courier using the controller
-                            Log.e("AVAILME",availableCourierID+": this is id of");
                             if(availableCourierID == - 1){
                                 Toast.makeText(getApplicationContext(), "No Available Courier Please Try Again Later",Toast.LENGTH_SHORT).show();
                                 return;
@@ -101,18 +89,14 @@ public class WasherDashboardPendingrequestConfirmation extends AppCompatActivity
                             //getting the phase1OrderID
                             int phase1OrderID = selectedOrder.getOrderID();
 
-                            // udpating the phase1Order_Courier_ID
-                            Log.e("Phase1CourierID",availableCourierID+": this is id of");
-                            selectedOrder.getCourier().setCourierID(phase1OrderID,availableCourierID,getBaseContext());
-
-                            //TODO if there are no available courier make sure the funciton above will not run
-                            // set the status to accepted 1 = means accepted and would be randomly assign to a new courier
-                            selectedOrder.setPhase1OrderStatus(1,getBaseContext());
-
+                            int result = dashboardController.washerAcceptClientRequest(phase1OrderID,availableCourierID,getBaseContext());
+                            if (result == 0){
+                                return;
+                            }
                             Toast.makeText(getApplicationContext(), "Accepted", Toast.LENGTH_SHORT).show();
 
 
-                            Intent intent = new Intent(WasherDashboardPendingrequestConfirmation.this, WasherDashboardActivity.class);
+                            Intent intent = new Intent(WasherDashboardPendingrequestRequestConfirmation.this, WasherDashboardActivity.class);
                             startActivity(intent);
 
                         })
@@ -125,4 +109,5 @@ public class WasherDashboardPendingrequestConfirmation extends AppCompatActivity
         });
 
     }
+
 }

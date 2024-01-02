@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -1086,10 +1087,10 @@ public class Connect extends SQLiteOpenHelper {
         return pendingDelivery;
     }
 
-    public List<Phase1Order> getPendingDeliveriesOnWasher(int washerID, Context context) {
+    public List<Phase1Order> getWasherHistory(int washerID, Context context) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS = 0;";
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS == -1 OR PHASE1_ORDER_STATUS == 4;";
         String[] selectionArgs = {String.valueOf(washerID)};
 
         Cursor cursor = db.rawQuery(query, selectionArgs);
@@ -1098,9 +1099,9 @@ public class Connect extends SQLiteOpenHelper {
             do {
                 Phase1Order addOrder = new Phase1Order();
                 addOrder.setOrderID(cursor.getInt(0));
-                addOrder.setClientID(cursor.getInt(1));
-                addOrder.setWasherID(cursor.getInt(2));
-                addOrder.setCourierID(cursor.getInt(3));
+                addOrder.setClient(this.getClient(cursor.getInt(1)));
+                addOrder.setWasher(this.getWasher(cursor.getInt(2)));
+                addOrder.setCourier(this.getCourier(cursor.getInt(3)));
                 addOrder.setCourierStatus(cursor.getInt(4));
                 addOrder.setTotalCourierAmount(cursor.getFloat(5));
                 addOrder.setDateCourier(cursor.getString(6));
@@ -1109,7 +1110,42 @@ public class Connect extends SQLiteOpenHelper {
                 addOrder.setPaymentStatus(cursor.getInt(9));
                 addOrder.setDateReceived(cursor.getString(10));
                 addOrder.setInitialLoad(cursor.getInt(11));
-                addOrder.setDatePlaced(cursor.getString(12));
+                addOrder.setPhase1OrderStatus(cursor.getInt(12));
+                addOrder.setDatePlaced(cursor.getString(13));
+
+                OrderToReceiveList.add(addOrder);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        this.getReadableDatabase().close();
+
+        return OrderToReceiveList;
+    }
+    public List<Phase1Order> getPendingDeliveriesOnWasher(int washerID, Context context) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS != -1 ORDER BY PHASE1_ORDER_STATUS ;";
+        String[] selectionArgs = {String.valueOf(washerID)};
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        List<Phase1Order> OrderToReceiveList = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                Phase1Order addOrder = new Phase1Order();
+                addOrder.setOrderID(cursor.getInt(0));
+                addOrder.setClient(this.getClient(cursor.getInt(1)));
+                addOrder.setWasher(this.getWasher(cursor.getInt(2)));
+                addOrder.setCourier(this.getCourier(cursor.getInt(3)));
+                addOrder.setCourierStatus(cursor.getInt(4));
+                addOrder.setTotalCourierAmount(cursor.getFloat(5));
+                addOrder.setDateCourier(cursor.getString(6));
+                addOrder.setTotalDue(cursor.getFloat(7));
+                addOrder.setTotalPaid(cursor.getFloat(8));
+                addOrder.setPaymentStatus(cursor.getInt(9));
+                addOrder.setDateReceived(cursor.getString(10));
+                addOrder.setInitialLoad(cursor.getInt(11));
+                addOrder.setPhase1OrderStatus(cursor.getInt(12));
+                addOrder.setDatePlaced(cursor.getString(13));
 
                 OrderToReceiveList.add(addOrder);
             } while (cursor.moveToNext());
@@ -1252,18 +1288,91 @@ public class Connect extends SQLiteOpenHelper {
     public int availableCourier() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor availableCourier = db.rawQuery("SELECT DISTINCT C.COURIER_ID FROM COURIER C JOIN PHASE1_ORDER P ON C.COURIER_ID = P.PHASE1_ORDER_COURIER_ID WHERE P.PHASE1_ORDER_STATUS <> 1 LIMIT 1;", new String[]{});
+//        Cursor availableCourier = db.rawQuery("SELECT DISTINCT C.COURIER_ID FROM COURIER C JOIN PHASE1_ORDER P ON C.COURIER_ID = P.PHASE1_ORDER_COURIER_ID WHERE P.PHASE1_ORDER_STATUS <> 1 LIMIT 1;", new String[]{});
+        // select courier where courier status is available (1)
+        Cursor availableCourier = db.rawQuery("SELECT COURIER_ID FROM COURIER WHERE COURIER_STATUS = 1", new String[]{});
         if( availableCourier.moveToFirst() == false){
             return -1;
         }
-        Log.e("AVAILME",availableCourier.getInt(0)+": this is id of");
+        String courierid = Integer.toString(availableCourier.getInt(0));
+
+        // Use the correct database object (ddb) consistently
+        SQLiteDatabase ddb = this.getWritableDatabase();
+
+        // Use execSQL for UPDATE queries
+        ddb.execSQL("UPDATE COURIER SET COURIER_STATUS = 0 WHERE COURIER_ID = ?", new Object[]{courierid});
+        Log.e("Courier ID" ,"fuck");
+        db.close();
+        ddb.close();
+
         return availableCourier.getInt(0);
     }
 
-    public void setPhase1Courier(int phase1OrderID,int courierID) {
+
+    public int washerAcceptClientRequest(int phase1OrderID, int availableCourierID) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE PHASE1_ORDER SET PHASE1_ORDER_COURIER_ID = ? WHERE PHASE1_ORDER_ID = ?",
-                new Object[]{courierID, phase1OrderID});
-        db.close();
+
+        // Update statement
+        String updateQuery = "UPDATE PHASE1_ORDER SET PHASE1_ORDER_STATUS = 1 WHERE PHASE1_ORDER_ID = ?";
+
+        // Execute the update statement and get the number of rows affected
+        SQLiteStatement stmt = db.compileStatement(updateQuery);
+        stmt.bindLong(1, phase1OrderID);
+
+        int rowsAffected = stmt.executeUpdateDelete();
+
+        // Return the number of rows affected
+        return rowsAffected;
+    }
+
+    public List<Phase1Order> getWasherReceivedClothes(int washerID, Context context) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS == 4;";
+        String[] selectionArgs = {String.valueOf(washerID)};
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        List<Phase1Order> OrderToReceiveList = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                Phase1Order addOrder = new Phase1Order();
+                addOrder.setOrderID(cursor.getInt(0));
+                addOrder.setClient(this.getClient(cursor.getInt(1)));
+                addOrder.setWasher(this.getWasher(cursor.getInt(2)));
+                addOrder.setCourier(this.getCourier(cursor.getInt(3)));
+                addOrder.setCourierStatus(cursor.getInt(4));
+                addOrder.setTotalCourierAmount(cursor.getFloat(5));
+                addOrder.setDateCourier(cursor.getString(6));
+                addOrder.setTotalDue(cursor.getFloat(7));
+                addOrder.setTotalPaid(cursor.getFloat(8));
+                addOrder.setPaymentStatus(cursor.getInt(9));
+                addOrder.setDateReceived(cursor.getString(10));
+                addOrder.setInitialLoad(cursor.getInt(11));
+                addOrder.setPhase1OrderStatus(cursor.getInt(12));
+                addOrder.setDatePlaced(cursor.getString(13));
+
+                OrderToReceiveList.add(addOrder);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        this.getReadableDatabase().close();
+
+        return OrderToReceiveList;
+    }
+
+    public int washerMarkedClothesAsReceived(int phase1OrderID, Context context) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Update statement
+        String updateQuery = "UPDATE PHASE1_ORDER SET PHASE1_ORDER_STATUS = 4 WHERE PHASE1_ORDER_ID = ?";
+
+        // Execute the update statement and get the number of rows affected
+        SQLiteStatement stmt = db.compileStatement(updateQuery);
+        stmt.bindLong(1, phase1OrderID);
+
+        int rowsAffected = stmt.executeUpdateDelete();
+
+        // Return the number of rows affected
+        return rowsAffected;
     }
 }

@@ -46,7 +46,7 @@ public class WasherDashboardPendingrequestFragment extends Fragment {
         washer = dashboardController.getWasher(washerUsername, this.getActivity());
         List<Phase1Order> orders = dashboardController.getPendingDeliveriesOnWasher(washer.getWasherID(), getContext());
 
-         washerDashboardPendingrequestAdapter = new WasherDashboardPendingrequestAdapter(orders);
+         washerDashboardPendingrequestAdapter = new WasherDashboardPendingrequestAdapter(orders,getContext());
         recyclerView.setAdapter(washerDashboardPendingrequestAdapter);
         return root;
     }

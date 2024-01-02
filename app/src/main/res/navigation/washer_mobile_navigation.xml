@@ -6,6 +6,11 @@
     app:startDestination="@+id/washer_pendingrequest_fragment">
 
     <fragment
+        android:id="@+id/washer_received_clothes_fragment"
+        android:name="com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_receivedclothes.WasherDashboardReceivedClothesFragment"
+        android:label="@string/washer_menu_receivedclothes"
+        tools:layout="@layout/washer_dashboard_fragment_received_clothes" />
+    <fragment
         android:id="@+id/washer_history_fragment"
         android:name="com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_history.WasherDashboardHistoryFragment"
         android:label="@string/washer_menu_history"
@@ -16,12 +21,6 @@
         android:name="com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_pendingrequest.WasherDashboardPendingrequestFragment"
         android:label="@string/washer_menu_pendingrequest"
         tools:layout="@layout/washer_dashboard_fragment_pendingrequest" />
-
-    <fragment
-        android:id="@+id/washer_logs_fragment"
-        android:name="com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_logs.WasherDashboardLogsFragment"
-        android:label="@string/washer_menu_logs"
-        tools:layout="@layout/washer_dashboard_fragment_logs" />
 
     <fragment
         android:id="@+id/washer_nav_notification"

@@ -4,4 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#588970</color>
     <color name="gray">#808080</color>
+    <color name="washer_customer_waiting_for_approval">#FFA400</color>
+    <color name="washer_rider_on_the_way_to_customer">#EEFF00</color>
+    <color name="washer_rider_on_the_way_here">#2FFF00</color>
+    <color name="washer_history">#FF9898</color>
 </resources>
