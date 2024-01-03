@@ -32,7 +32,15 @@ public class Phase1Order implements Serializable {
     //actual date received from courier to washer
     private String dateReceived;
     private int initialLoad;
-    private int phase1OrderStatus; // -1 - Invalid/Cancelled , 0 - Pending, 1 - Active
+    private int phase1OrderStatus;
+    /*
+     -1 - Invalid / Cancelled
+     0 - Pending (Washer needs to click the transaction)
+     1 - Courier on the way to Client
+     2 - Courier Arrived (Courier)
+     3 - Received Client Laundry / Courier on the way to Washer (Courier)
+     4 - Washer Received the Laundry (Washer)
+     */
     private String datePlaced;
     private Connect dbHelper;
 
@@ -124,9 +132,32 @@ public class Phase1Order implements Serializable {
 
     @Override
     public String toString() {
+        if(courier == null)
+        {
+            courier = new Courier();
+        }
         String paymentStat = paymentStatus == 0 ? "Unpaid" : "Paid";
+        String orderStatus = "";
+
+        switch(this.phase1OrderStatus)
+        {
+            case -1: orderStatus = "Invalid / Cancelled";
+                break;
+            case 0: orderStatus = "Pending";
+                break;
+            case 1: orderStatus = "Courier is on the way to Client!";
+                break;
+            case 2: orderStatus = "Courier has arrived!";
+                break;
+            case 3: orderStatus = "Courier is on the way to Washer!";
+                break;
+            case 4: orderStatus = "Washer Received the Laundry!";
+                break;
+        }
+
         return "PICKUP from Client to Washer" + "\n" +
                 "Order ID:\t" + orderID + "\n" +
+                "Order Status: \t" + orderStatus + "\n" +
                 "Client:\t" + client.getName() + "\n" +
                 "Client Address:\t" + client.getAddress() + "\n" +
                 "Washer:\t" + washer.getShopName() + "\n" +
@@ -213,8 +244,9 @@ public class Phase1Order implements Serializable {
         return;
     }
 
-    public void setPhase1OrderStatus(int phase1OrderStatus) {
-        this.phase1OrderStatus = phase1OrderStatus;
+    public boolean setPhase1OrderStatus(int phase1OrderID, int phase1OrderStatus, Context context) {
+        dbHelper = new Connect(context);
+        return dbHelper.setReturnPhase1OrderStatus(phase1OrderID,phase1OrderStatus);
     }
 
     public void setCourier(Courier courier) {
