@@ -1,6 +1,5 @@
 package com.example.laundirii.view.client_dashboard_ui.client_dashboard_current;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -89,6 +88,23 @@ public class CurrentFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateTimerAsync(getPendingOrders());
+        // Your code here, e.g., UI updates or interactions
+    }
+
+    private List<Phase1Order> getPendingOrders() {
+        return dashboardController.getPendingDeliveryOnClient(client.getCustomerID(), getActivity());
+    }
+
+    // timer is active iff the dialog is active and showingi
     private void showCustomDialog(Phase1Order phase1Order) {
         // Inflate the layout for the dialog
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.popup_client_timer_countdown, null);
@@ -115,6 +131,42 @@ public class CurrentFragment extends Fragment {
         });
     }
 
+    // timer is active iff the Current fragment is displaying/resume
+    private void updateTimerAsync(List<Phase1Order> phase1OrderList) {
+        final Handler handler = new Handler(Looper.getMainLooper());
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                // Iterate through the list and update timers for each Phase1Order
+                for (Phase1Order phase1Order : phase1OrderList) {
+                    updateTimer(phase1Order);
+                }
+
+                // Check if any order is out of timer and update accordingly
+                List<Phase1Order> ordersToUpdateStatus = new ArrayList<>();
+                for (Phase1Order phase1Order : phase1OrderList) {
+                    if (isOutOfTimer(phase1Order)) {
+                        ordersToUpdateStatus.add(phase1Order);
+                    }
+                }
+
+                if (!ordersToUpdateStatus.isEmpty()) {
+                    // Handle the out-of-timer case (e.g., update status and display)
+                    for (Phase1Order order : ordersToUpdateStatus) {
+                        dashboardController.updatePhase1OrderStatus(order.getOrderID(), -1, getContext());
+                    }
+                    displayPendingOrders();
+                    //Toast.makeText(getContext(), "Timer has expired for some orders!", Toast.LENGTH_SHORT).show();
+                }
+
+                // Schedule the next update after a certain interval (e.g., 1 second)
+                handler.postDelayed(this, 1000); // 1000 milliseconds (1 second) delay
+            }
+        });
+    }
+
+    // timer is active iff the dialog is active and showing
     private void updateTimerAsync(final Phase1Order phase1Order, final TextView timerTextView, AlertDialog dialog) {
         final Handler handler = new Handler(Looper.getMainLooper());
 
@@ -127,7 +179,7 @@ public class CurrentFragment extends Fragment {
                 if (isOutOfTimer(phase1Order)) {
                     // Handle the out-of-timer case (e.g., show a message)
                     timerTextView.setText("Timer has expired for this order!");
-                    dashboardController.updatePhase1OrderStatus(phase1Order.getOrderID(),-1, getContext());
+                    dashboardController.updatePhase1OrderStatus(phase1Order.getOrderID(), -1, getContext());
                     displayPendingOrders();
                     Toast.makeText(getContext(), "Timer has expired for the order!", Toast.LENGTH_SHORT).show();
                     handler.postDelayed(new Runnable() {
@@ -146,6 +198,27 @@ public class CurrentFragment extends Fragment {
         });
     }
 
+    //method overloading for updateAsyncTimer when the fragment is active
+    private void updateTimer(Phase1Order phase1Order) {
+        // Calculate the expiration date and time (5 minutes from datePlaced)
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date date = dateFormat.parse(phase1Order.getDatePlaced());
+            calendar.setTime(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            System.err.println("Error parsing date: " + e.getMessage());
+        }
+        currentDate = new Date();
+
+        calendar.add(Calendar.MINUTE, 5);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+        String dateString = sdf.format(calendar.getTime());
+    }
+
+    //method overloading for updateAsyncTimer when the dialog is active
     private void updateTimer(Phase1Order phase1Order, TextView timerTextView) {
         // Calculate the expiration date and time (5 minutes from datePlaced)
         Calendar calendar = Calendar.getInstance();
@@ -167,6 +240,7 @@ public class CurrentFragment extends Fragment {
                 + dateString + " or it will be automatically cancelled.");
     }
 
+    // returns true if it exceeds to the specified time limit.
     private boolean isOutOfTimer(Phase1Order phase1Order) {
         try {
             // Parse the date string to a Date object
@@ -180,8 +254,6 @@ public class CurrentFragment extends Fragment {
             long differenceInMinutes = differenceInMillis / (60 * 1000);
 
             // Check if the difference is greater than 5 minutes
-            boolean b = differenceInMinutes >= 1;
-            Log.e("isOutOfTimer", b + "" + "\ndateplaced: " + datePlaced.getTime() + "\ncurrent: " + currentDate.getTime() + "\ndiff: " + differenceInMinutes);
             return differenceInMinutes >= 1;
 
         } catch (ParseException e) {
@@ -191,11 +263,22 @@ public class CurrentFragment extends Fragment {
     }
 
     private void displayPendingOrders() {
-        List<Phase1Order> listPendingOrders = new ArrayList<>();
-        listPendingOrders = dashboardController.getPendingDeliveryOnClient(client.getCustomerID(), this.getActivity());
+        List<Phase1Order> listPendingOrders = dashboardController.getPendingDeliveryOnClient(client.getCustomerID(), getActivity());
         Log.e("listPendingOrders", listPendingOrders.size() + "");
-        pendingClientOrdersAdapter = new ArrayAdapter<Phase1Order>(this.getContext(), android.R.layout.simple_list_item_1, listPendingOrders);
-        lv_pendingOrders.setAdapter(pendingClientOrdersAdapter);
+
+        if (pendingClientOrdersAdapter == null) {
+            pendingClientOrdersAdapter = new ArrayAdapter<Phase1Order>(getContext(), android.R.layout.simple_list_item_1, listPendingOrders);
+            lv_pendingOrders.setAdapter(pendingClientOrdersAdapter);
+        } else {
+            // Clear existing data
+            pendingClientOrdersAdapter.clear();
+
+            // Add new data
+            pendingClientOrdersAdapter.addAll(listPendingOrders);
+
+            // Notify the adapter about the changes
+            pendingClientOrdersAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
