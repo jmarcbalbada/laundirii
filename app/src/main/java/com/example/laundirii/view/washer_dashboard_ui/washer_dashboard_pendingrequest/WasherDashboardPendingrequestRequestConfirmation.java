@@ -51,7 +51,8 @@ public class WasherDashboardPendingrequestRequestConfirmation extends AppCompatA
                         .setMessage("Are you sure you want to show the toast?")
                         .setPositiveButton("Yes", (dialog, which) -> {
                             // set status to -1
-                            selectedOrder.setPhase1OrderStatus(-1,getBaseContext());
+
+                            dashboardController.updatePhase1OrderStatus(selectedOrder.getOrderID(),-1,getBaseContext());
                             // User cancel the book request
                             Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
 
