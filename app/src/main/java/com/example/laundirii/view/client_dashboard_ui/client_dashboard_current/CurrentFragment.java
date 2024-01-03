@@ -180,9 +180,9 @@ public class CurrentFragment extends Fragment {
             long differenceInMinutes = differenceInMillis / (60 * 1000);
 
             // Check if the difference is greater than 5 minutes
-            boolean b = differenceInMinutes >= 5;
+            boolean b = differenceInMinutes >= 1;
             Log.e("isOutOfTimer", b + "" + "\ndateplaced: " + datePlaced.getTime() + "\ncurrent: " + currentDate.getTime() + "\ndiff: " + differenceInMinutes);
-            return differenceInMinutes >= 5;
+            return differenceInMinutes >= 1;
 
         } catch (ParseException e) {
             e.printStackTrace();

@@ -2,6 +2,7 @@ package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_pendingr
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.laundirii.R;
 import com.example.laundirii.model.Phase1Order;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class WasherDashboardPendingrequestAdapter extends RecyclerView.Adapter<WasherDashboardPendingrequestAdapter.OrdersViewHolder> {
 
     private List<Phase1Order> orders;
     private Context context;
+    //private Date currentDate;
 
     public WasherDashboardPendingrequestAdapter(List<Phase1Order> orders, Context context) {
         this.orders = orders;
@@ -30,6 +36,7 @@ public class WasherDashboardPendingrequestAdapter extends RecyclerView.Adapter<W
     @Override
     public OrdersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.washer_tolist_pendingdeliveryrequest, parent, false);
+        //currentDate = new Date();
         return new OrdersViewHolder(view);
     }
 
@@ -102,6 +109,30 @@ public class WasherDashboardPendingrequestAdapter extends RecyclerView.Adapter<W
         });
 
     }
+
+//    private boolean isOutOfTimer(Phase1Order phase1Order) {
+//        try {
+//            // Parse the date string to a Date object
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+//            Date datePlaced = sdf.parse(phase1Order.getDatePlaced());
+//
+//            // Calculate the difference in milliseconds
+//            long differenceInMillis = currentDate.getTime() - datePlaced.getTime();
+//
+//            // Convert the difference to minutes
+//            long differenceInMinutes = differenceInMillis / (60 * 1000);
+//
+//            // Check if the difference is greater than 5 minutes
+//            boolean b = differenceInMinutes >= 1;
+//            Log.e("isOutOfTimer", b + "" + "\ndateplaced: " + datePlaced.getTime() + "\ncurrent: " + currentDate.getTime() + "\ndiff: " + differenceInMinutes);
+//            return differenceInMinutes >= 1;
+//
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
+
     @Override
     public int getItemCount() {
         return orders.size();

@@ -92,7 +92,7 @@ public class DashboardController {
 
     public boolean updatePhase1OrderStatus(int phase1OrderID, int status, Context context)
     {
-        return phase1Order.setPhase1OrderStatus(phase1OrderID, status, context);
+        return phase1Order.setPhase1OrderStatus2(phase1OrderID, status, context);
     }
 
 //    public int getCourierStatusOnDb(int courierID, Context context)

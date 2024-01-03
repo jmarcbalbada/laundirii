@@ -2,6 +2,7 @@ package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_pendingr
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,13 @@ import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.databinding.WasherDashboardFragmentPendingrequestBinding;
 import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.model.Washer;
+import com.example.laundirii.view.client_dashboard_ui.client_dashboard_current.CurrentFragment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class WasherDashboardPendingrequestFragment extends Fragment {
 
@@ -25,7 +31,7 @@ public class WasherDashboardPendingrequestFragment extends Fragment {
     private RecyclerView recyclerView;
     private WasherDashboardPendingrequestAdapter washerDashboardPendingrequestAdapter;
     private Washer washer;
-
+    private Date currentDate;
 
     private SharedPreferences washerInfoPreferences;
 
@@ -48,8 +54,12 @@ public class WasherDashboardPendingrequestFragment extends Fragment {
 
          washerDashboardPendingrequestAdapter = new WasherDashboardPendingrequestAdapter(orders,getContext());
         recyclerView.setAdapter(washerDashboardPendingrequestAdapter);
+        currentDate = new Date();
+
         return root;
     }
+
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
