@@ -146,8 +146,11 @@ public class CurrentFragment extends Fragment {
                 // Check if any order is out of timer and update accordingly
                 List<Phase1Order> ordersToUpdateStatus = new ArrayList<>();
                 for (Phase1Order phase1Order : phase1OrderList) {
-                    if (isOutOfTimer(phase1Order)) {
-                        ordersToUpdateStatus.add(phase1Order);
+                    if(phase1Order.getPhase1OrderStatus() == 0)
+                    {
+                        if (isOutOfTimer(phase1Order)) {
+                            ordersToUpdateStatus.add(phase1Order);
+                        }
                     }
                 }
 
@@ -265,21 +268,28 @@ public class CurrentFragment extends Fragment {
     private void displayPendingOrders() {
         List<Phase1Order> listPendingOrders = dashboardController.getPendingDeliveryOnClient(client.getCustomerID(), getActivity());
         Log.e("listPendingOrders", listPendingOrders.size() + "");
-
-        if (pendingClientOrdersAdapter == null) {
-            pendingClientOrdersAdapter = new ArrayAdapter<Phase1Order>(getContext(), android.R.layout.simple_list_item_1, listPendingOrders);
-            lv_pendingOrders.setAdapter(pendingClientOrdersAdapter);
-        } else {
-            // Clear existing data
-            pendingClientOrdersAdapter.clear();
-
-            // Add new data
-            pendingClientOrdersAdapter.addAll(listPendingOrders);
-
-            // Notify the adapter about the changes
-            pendingClientOrdersAdapter.notifyDataSetChanged();
-        }
+        pendingClientOrdersAdapter = new ArrayAdapter<Phase1Order>(this.getContext(), android.R.layout.simple_list_item_1, listPendingOrders);
+        lv_pendingOrders.setAdapter(pendingClientOrdersAdapter);
     }
+
+//    private void displayPendingOrders() {
+//        List<Phase1Order> listPendingOrders = dashboardController.getPendingDeliveryOnClient(client.getCustomerID(), getActivity());
+//        Log.e("listPendingOrders", listPendingOrders.size() + "");
+//
+//        if (pendingClientOrdersAdapter == null) {
+//            pendingClientOrdersAdapter = new ArrayAdapter<Phase1Order>(getContext(), android.R.layout.simple_list_item_1, listPendingOrders);
+//            lv_pendingOrders.setAdapter(pendingClientOrdersAdapter);
+//        } else {
+//            // Clear existing data
+//            pendingClientOrdersAdapter.clear();
+//
+//            // Add new data
+//            pendingClientOrdersAdapter.addAll(listPendingOrders);
+//
+//            // Notify the adapter about the changes
+//            pendingClientOrdersAdapter.notifyDataSetChanged();
+//        }
+//    }
 
     @Override
     public void onDestroyView() {
