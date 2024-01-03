@@ -147,4 +147,8 @@ public class DashboardController {
     public int washerMarkedClothesAsReceived(int orderID, Context context) {
         return phase1Order.washerMarkedClothesAsReceived(orderID,context);
     }
+
+    public void washerUpdatePhase1OrderCourierIDAndCourierDate(int orderID, int availableCourierID, Context applicationContext) {
+        phase1Order.washerUpdatePhase1OrderCourierIDAndCourierDate(orderID, availableCourierID, applicationContext);
+    }
 }

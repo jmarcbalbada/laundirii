@@ -360,4 +360,10 @@ public class Phase1Order implements Serializable {
         return dbHelper.washerMarkedClothesAsReceived(orderID,context);
 
     }
+
+    public void washerUpdatePhase1OrderCourierIDAndCourierDate(int orderID, int availableCourierID,Context applicationContext) {
+        dbHelper = new Connect(applicationContext);
+        dbHelper.washerUpdatePhase1OrderCourierIDAndCourierDate(orderID, availableCourierID);
+
+    }
 }

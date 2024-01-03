@@ -1,13 +1,10 @@
 package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_pendingrequest;
 
-import static java.security.AccessController.getContext;
-
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.content.Context;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,13 +52,11 @@ public class WasherDashboardPendingrequestRequestConfirmation extends AppCompatA
                         .setPositiveButton("Yes", (dialog, which) -> {
                             // set status to -1
                             selectedOrder.setPhase1OrderStatus(-1,getBaseContext());
-                            //
-                            Intent intent = new Intent(WasherDashboardPendingrequestRequestConfirmation.this, WasherDashboardActivity.class);
-                            startActivity(intent);
-
-
                             // User cancel the book request
                             Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
+
+                            Intent intent = new Intent(WasherDashboardPendingrequestRequestConfirmation.this, WasherDashboardActivity.class);
+                            startActivity(intent);
                         })
                         .setNegativeButton("No", (dialog, which) -> {
                             // User did not take action
@@ -89,6 +84,8 @@ public class WasherDashboardPendingrequestRequestConfirmation extends AppCompatA
                                 Toast.makeText(getApplicationContext(), "No Available Courier Please Try Again Later",Toast.LENGTH_SHORT).show();
                                 return;
                             }
+                            //TODO setting courier date and set Phase1Order courier_id
+                            dashboardController.washerUpdatePhase1OrderCourierIDAndCourierDate(selectedOrder.getOrderID(),availableCourierID,getApplicationContext());
                             //getting the phase1OrderID
                             int phase1OrderID = selectedOrder.getOrderID();
 
