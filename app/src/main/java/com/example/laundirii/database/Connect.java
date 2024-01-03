@@ -1405,4 +1405,28 @@ public class Connect extends SQLiteOpenHelper {
         // Return the number of rows affected
         return rowsAffected;
     }
+
+    public int washerUpdatePhase1OrderCourierIDAndCourierDate(int orderID, int availableCourierID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Update statement
+        String updateQuery = "UPDATE PHASE1_ORDER SET PHASE1_ORDER_COURIER_ID = ?, PHASE1_DATE_COURIER = ? WHERE PHASE1_ORDER_ID = ?";
+
+        // Get current date to set in the PHASE1_DATE_COURIER
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = dateFormat.format(date);
+
+        // Execute the update statement and get the number of rows affected
+        SQLiteStatement stmt = db.compileStatement(updateQuery);
+        stmt.bindLong(1, availableCourierID);
+        stmt.bindString(2, formattedDate);
+        stmt.bindLong(3, orderID);
+
+        int rowsAffected = stmt.executeUpdateDelete();
+
+        // Return the number of rows affected
+        return rowsAffected;
+    }
+
 }
