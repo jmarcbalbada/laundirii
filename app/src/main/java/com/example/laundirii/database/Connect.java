@@ -733,7 +733,7 @@ public class Connect extends SQLiteOpenHelper {
                     courier = getCourier(cursor.getInt(courierIdIndex));
                 }
 
-                Log.e("COURIERINDEX", cursor.getInt(courierIdIndex) + "");
+                //Log.e("COURIERINDEX", cursor.getInt(courierIdIndex) + "");
                 int courierStatusIndex = cursor.getColumnIndex(PHASE1_COURIER_STATUS);
                 int totalCourierAmountIndex = cursor.getColumnIndex(PHASE1_TOTAL_COURIER_AMOUNT);
                 int dateCourierIndex = cursor.getColumnIndex(PHASE1_DATE_COURIER);
