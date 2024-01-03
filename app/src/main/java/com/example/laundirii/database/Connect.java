@@ -706,8 +706,12 @@ public class Connect extends SQLiteOpenHelper {
         List<Phase1Order> pendingDeliveries = new ArrayList<>();
 //
 //        // Query the PHASE1_ORDER table for pending deliveries for the specified client
-        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_CLIENT_ID = ? " +
-                "AND (PHASE1_DATE_COURIER = '' OR PHASE1_DATE_RECEIVED = '')";
+//        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_CLIENT_ID = ? " +
+//                "AND (PHASE1_ORDER_STATUS != -1)";
+
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_CLIENT_ID = ? AND " +
+                "(PHASE1_ORDER_STATUS != -1) ORDER BY PHASE1_DATE_PLACED DESC";
+
 
 //        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_CLIENT_ID = ? " +
 //                "AND PHASE1_COURIER_STATUS = 0";
@@ -766,7 +770,10 @@ public class Connect extends SQLiteOpenHelper {
                             cursor.getString(datePlacedIndex)
                     );
 
-                    Log.e("InsidePending", pendingOrder.getCourier().toString());
+                    if(courier != null)
+                    {
+                        Log.e("InsidePending", pendingOrder.getCourier().toString());
+                    }
 
                     // Add the order to the list of pending deliveries
                     pendingDeliveries.add(pendingOrder);
@@ -816,15 +823,15 @@ public class Connect extends SQLiteOpenHelper {
         switch (typeOfUser) {
             // Query Client
             case 0:
-                query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_CLIENT_ID = ? AND PHASE1_PAYMENT_STATUS = 1";
+                query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_CLIENT_ID = ? ORDER BY PHASE1_DATE_PLACED DESC";
                 break;
             // Query Courier
             case 1:
-                query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_COURIER_ID = ? AND PHASE1_PAYMENT_STATUS = 1";
+                query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_COURIER_ID = ?";
                 break;
             // Query Washer
             case 2:
-                query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_PAYMENT_STATUS = 1";
+                query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ?";
                 break;
         }
 
@@ -1248,6 +1255,29 @@ public class Connect extends SQLiteOpenHelper {
 
         db.close();
     }
+
+    public boolean setReturnPhase1OrderStatus(int orderID, int phase1OrderStatus) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Use update for update operation
+        int rowsAffected = db.update("PHASE1_ORDER",
+                getContentValues(phase1OrderStatus),
+                "PHASE1_ORDER_ID = ?",
+                new String[]{String.valueOf(orderID)});
+
+        db.close();
+
+        // Check if the update was successful
+        return rowsAffected > 0;
+    }
+
+    // Helper method to create ContentValues
+    private ContentValues getContentValues(int phase1OrderStatus) {
+        ContentValues values = new ContentValues();
+        values.put("PHASE1_ORDER_STATUS", phase1OrderStatus);
+        return values;
+    }
+
 
     public int availableCourier() {
         SQLiteDatabase db = this.getReadableDatabase();

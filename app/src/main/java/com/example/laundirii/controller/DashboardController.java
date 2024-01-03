@@ -90,6 +90,11 @@ public class DashboardController {
         return courier.updateCourierStatusOnConnect(courierID,status, context);
     }
 
+    public boolean updatePhase1OrderStatus(int phase1OrderID, int status, Context context)
+    {
+        return phase1Order.setPhase1OrderStatus(phase1OrderID, status, context);
+    }
+
 //    public int getCourierStatusOnDb(int courierID, Context context)
 //    {
 //        return courier.getCourierStatusOnDb(courierID,context);
