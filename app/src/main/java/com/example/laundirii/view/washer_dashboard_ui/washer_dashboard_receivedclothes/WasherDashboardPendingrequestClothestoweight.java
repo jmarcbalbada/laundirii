@@ -30,7 +30,7 @@ public class WasherDashboardPendingrequestClothestoweight extends AppCompatActiv
         Phase1Order selectedOrder = (Phase1Order) getIntent().getSerializableExtra("selectedOrder");
         ClientNameText = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothestoweight_activity_clientname);
         InitialLoad = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothestoweight_initial_load);
-        TotalAmount = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothestoweight_initial_load);
+        TotalAmount = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothestoweight_total_amount);
         acceptButton = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothestoweight_activity_accept);
 
         // Set Value of Buttons and Text
@@ -45,10 +45,10 @@ public class WasherDashboardPendingrequestClothestoweight extends AppCompatActiv
             public void onClick(View v) {
                 new AlertDialog.Builder(WasherDashboardPendingrequestClothestoweight.this)
                         .setTitle("Confirmation")
-                        .setMessage("Are you sure you want to show the toast?")
+                        .setMessage("Are you sure this is correct weight?")
                         .setPositiveButton("Yes", (dialog, which) -> {
 
-                            Toast.makeText(getApplicationContext(), "Accepted", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Order weight saved", Toast.LENGTH_SHORT).show();
                             //TODO update orderStatus
                             dashboardController.updatePhase1OrderStatus(selectedOrder.getOrderID(),5,getBaseContext());
                             //TODO set total Due

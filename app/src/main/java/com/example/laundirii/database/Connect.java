@@ -1439,7 +1439,7 @@ public class Connect extends SQLiteOpenHelper {
     public List<Phase1Order> getWasherReceivedClothes(int washerID, Context context) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS IN (4,5,6);";
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS IN (4,5,6) ORDER BY PHASE1_ORDER_STATUS;";
         String[] selectionArgs = {String.valueOf(washerID)};
 
         Cursor cursor = db.rawQuery(query, selectionArgs);
