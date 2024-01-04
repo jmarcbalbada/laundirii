@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.laundirii.R;
@@ -31,6 +33,7 @@ public class CourierDashboardActivity extends AppCompatActivity {
     private Courier courier;
     private TextView navCourierNameText;
     private TextView navPhoneNoText;
+    private Switch courierSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,53 @@ public class CourierDashboardActivity extends AppCompatActivity {
         // instantiate navigation bar values
         navCourierNameText.setText("Good day, " + courier.getName() + "!");
         navPhoneNoText.setText("Contact No: " + courier.getContactNo());
+        courierSwitch = findViewById(R.id.courierSwitchStatus);
+        int status = 0;
+        if (courier.getStatus())
+        {
+            status = 1;
+        }
+        switch(status)
+        {
+            // OFF - COURIER STATUS
+            case 0:
+                courierSwitch.setChecked(false);
+                courierSwitch.setText("OFF");
+                boolean hasActive = dashboardController.hasActiveTransactionOnPhase1Order(courier.getCourierID(),this);
+                if(hasActive)
+                {
+                    // do NOT enable switch
+                    courierSwitch.setEnabled(false);
+                }
+                else
+                {
+                    courierSwitch.setEnabled(true);
+                }
+                break;
+            // ON - COURIER STATUS
+            case 1:
+                courierSwitch.setChecked(true);
+                courierSwitch.setText("ON");
+                courierSwitch.setEnabled(true);
+                break;
+        }
+
+        courierSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                // perform logic if ON
+                if(isChecked)
+                {
+                    dashboardController.setCourierStatusOnDatabase(courier.getCourierID(),true,CourierDashboardActivity.this.getApplicationContext());
+                    courierSwitch.setText("ON");
+                }
+                else
+                {
+                    dashboardController.setCourierStatusOnDatabase(courier.getCourierID(),false,CourierDashboardActivity.this.getApplicationContext());
+                    courierSwitch.setText("OFF");
+                }
+            }
+        });
     }
 
     private void setCourier()

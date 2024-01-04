@@ -40,6 +40,9 @@ public class Phase1Order implements Serializable {
      2 - Courier Arrived (Courier)
      3 - Received Client Laundry / Courier on the way to Washer (Courier)
      4 - Washer Received the Laundry (Washer)
+     5 - Washer is weighing your clothes!
+     6 -
+     ? - Completed
      */
     private String datePlaced;
     private Connect dbHelper;
@@ -121,6 +124,12 @@ public class Phase1Order implements Serializable {
     {
         dbHelper = new Connect(context);
         return dbHelper.acceptPendingRequestOnCourier(courierID, orderID);
+    }
+
+    public boolean updatePhase1OrderStatusOnDb(int courierID, int status, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.updatePhase1OrderStatusOnDb(courierID, status);
     }
 
 //    public boolean insertDummyPhase1Order(Context context)
@@ -249,6 +258,10 @@ public class Phase1Order implements Serializable {
     }
 
     public boolean setPhase1OrderStatus2(int phase1OrderID, int phase1OrderStatus, Context context) {
+        if(context == null)
+        {
+            return false;
+        }
         dbHelper = new Connect(context);
         return dbHelper.setReturnPhase1OrderStatus(phase1OrderID,phase1OrderStatus);
     }

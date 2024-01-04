@@ -10,13 +10,16 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -54,7 +57,15 @@ public class CourierDashboardHomeFragment extends Fragment {
         courierInfoPreferences = this.getActivity().getSharedPreferences("LoginCourierPreferences", 0);
         String courierUsername = courierInfoPreferences.getString("courierUsername", "");
         courier = dashboardController.getCourier(courierUsername, this.getActivity());
-
+        boolean hasPendingTransaction = dashboardController.hasActiveTransactionOnPhase1Order(courier.getCourierID(), getContext());
+        if(hasPendingTransaction)
+        {
+            Phase1Order phase1Order = dashboardController.getPendingDeliveryOnCourier(courier.getCourierID(), getContext());
+            if(phase1Order.getPhase1OrderStatus() == 1)
+            {
+                showCustomDialogOnReceivedBooking(phase1Order);
+            }
+        }
         // display pending orders
         try{
             displayPendingOrders();
@@ -62,7 +73,106 @@ public class CourierDashboardHomeFragment extends Fragment {
         {
             Log.e("displayPendingErrors", e.getMessage().toString());
         }
+
+        lv_pendingOrders.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Phase1Order selectedOrder = (Phase1Order) parent.getItemAtPosition(position);
+                switch(selectedOrder.getPhase1OrderStatus())
+                {
+                    case -1:
+                        break;
+                    case 0:
+                        break;
+                    case 1: showCustomDialogOnNotifyingClient();
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                }
+            }
+        });
         return root;
+    }
+
+    private void showCustomDialogOnNotifyingClient()
+    {
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.popup_notify_client_courier_arrived, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+        builder.setTitle("Reminder!");
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        TextView textViewDismiss = dialogView.findViewById(R.id.textViewCourierArrivedCancelButton);
+        TextView textViewNotify = dialogView.findViewById(R.id.CourierReceivedNotifyButton);
+
+        textViewNotify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean success = dashboardController.updatePhase1OrderStatusOnDb(courier.getCourierID(),2,getContext());
+                displayPendingOrders();
+                if(success)
+                {
+                    Toast.makeText(getContext(), "Notified Client!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(getContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+
+            }
+        });
+
+        textViewDismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void showCustomDialogOnReceivedBooking(Phase1Order phase1Order)
+    {
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.popup_courier_received_booking, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+        builder.setTitle("Reminder!");
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        TextView textViewDismiss = dialogView.findViewById(R.id.textViewCourierReceivedDismissButton);
+        TextView textViewContent = dialogView.findViewById(R.id.textViewCourierReceivedContent);
+
+        if(textViewContent != null)
+        {
+            textViewContent.setText("Order ID: " + phase1Order.getOrderID()
+                    + "\nClient: " + phase1Order.getClient().getName()
+                    + "\nClient Address: " + phase1Order.getClient().getAddress()
+                    + "\nInitial Load: " + phase1Order.getInitialLoad()
+                    + "\nWasher: " + phase1Order.getWasher().getShopName()
+                    + "\nWasher Address: " + phase1Order.getWasher().getShopLocation()
+            );
+        }
+
+        textViewDismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
     }
 
     public void displayPendingOrders() {
@@ -122,9 +232,6 @@ public class CourierDashboardHomeFragment extends Fragment {
             }
         }
     }
-
-
-
 
     @Override
     public void onDestroyView() {

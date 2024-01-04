@@ -700,6 +700,47 @@ public class Connect extends SQLiteOpenHelper {
         return washer;
     }
 
+    public boolean hasActiveTransactionOnPhase1Order(int courierID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT COUNT(*) FROM PHASE1_ORDER " +
+                "WHERE " + PHASE1_ORDER_COURIER_ID + " = ? AND " +
+                PHASE1_ORDER_STATUS + " IN (1, 2, 3)";  // Assuming 1, 2, 3 represent active transaction statuses
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(courierID)});
+        if (cursor != null) {
+            cursor.moveToFirst();
+            int rowCount = cursor.getInt(0);
+            cursor.close();
+            return rowCount > 0;
+        }
+
+        return false;
+    }
+
+    public boolean setCourierStatusOnDatabase(int courierID, boolean newStatus) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("COURIER_STATUS", newStatus ? 1 : 0);  // Assuming 1 represents ON and 0 represents OFF
+
+        int rowsAffected = db.update("COURIER", values, "COURIER_ID = ?", new String[]{String.valueOf(courierID)});
+
+        return rowsAffected > 0;
+    }
+
+    public boolean updatePhase1OrderStatusOnDb(int courierID, int newStatus) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("PHASE1_ORDER_STATUS", newStatus);
+
+        int rowsAffected = db.update("PHASE1_ORDER", values, "PHASE1_ORDER_COURIER_ID = ?", new String[]{String.valueOf(courierID)});
+
+        return rowsAffected > 0;
+    }
+
+
+
     // pending client
 
     public List<Phase1Order> getPendingDeliveryOnClient(int clientID) {
@@ -773,7 +814,7 @@ public class Connect extends SQLiteOpenHelper {
 
                     if(courier != null)
                     {
-                        Log.e("InsidePending", pendingOrder.getCourier().toString());
+                        //Log.e("InsidePending", pendingOrder.getCourier().toString());
                     }
 
                     // Add the order to the list of pending deliveries
@@ -1337,7 +1378,6 @@ public class Connect extends SQLiteOpenHelper {
 
         return availableCourier.getInt(0);
     }
-
 
     public int washerAcceptClientRequest(int phase1OrderID, int availableCourierID) {
         SQLiteDatabase db = this.getWritableDatabase();
