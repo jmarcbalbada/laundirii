@@ -16,10 +16,12 @@ import com.example.laundirii.model.Courier;
 import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.model.Washer;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public class Connect extends SQLiteOpenHelper {
@@ -1128,16 +1130,46 @@ public class Connect extends SQLiteOpenHelper {
 
         return OrderToReceiveList;
     }
+    private boolean isFiveMinutesGreater(Date date1, Date date2) {
+        long differenceInMillis = date2.getTime() - date1.getTime();
+        long differenceInMinutes = differenceInMillis / (60 * 1000);
+
+        // Check if the difference is greater than 5 minutes
+        Log.e("5MINUTES",""+ differenceInMillis);
+        return differenceInMinutes >= 1;
+    }
     public List<Phase1Order> getPendingDeliveriesOnWasher(int washerID, Context context) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS != -1 ORDER BY PHASE1_ORDER_STATUS ;";
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS IN (0,1,2,3) ORDER BY PHASE1_ORDER_STATUS ;";
         String[] selectionArgs = {String.valueOf(washerID)};
 
         Cursor cursor = db.rawQuery(query, selectionArgs);
         List<Phase1Order> OrderToReceiveList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
+
+                Date currentDate = new Date();
+                String dateString = cursor.getString(13);
+
+// Parse the date string into a Date object
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                Date formattedDate = null;
+                try {
+                    formattedDate = simpleDateFormat.parse(dateString);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+
+
+// Check if the formatted date is 5 minutes or more greater than the current date
+                boolean result = isFiveMinutesGreater( formattedDate,currentDate);
+
+                // dont store if phase1order is greater than 1 minute
+                if(result == true && cursor.getInt(12) == 0){
+                    continue;
+                }
+
                 Phase1Order addOrder = new Phase1Order();
                 addOrder.setOrderID(cursor.getInt(0));
                 addOrder.setClient(this.getClient(cursor.getInt(1)));
@@ -1285,11 +1317,20 @@ public class Connect extends SQLiteOpenHelper {
     public void setPhase1OrderStatus(int orderID, int phase1OrderStatus) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Use execSQL for update operation
-        db.execSQL("UPDATE PHASE1_ORDER SET PHASE1_ORDER_STATUS = ? WHERE PHASE1_ORDER_ID = ? ;",
-                new Object[]{phase1OrderStatus, orderID});
-
-        db.close();
+        try {
+            // Use execSQL for update operation
+            db.execSQL("UPDATE PHASE1_ORDER SET PHASE1_ORDER_STATUS = ? WHERE PHASE1_ORDER_ID = ? ;",
+                    new Object[]{phase1OrderStatus, orderID});
+        } catch (SQLException e) {
+            // Handle the exception (e.g., log it, show an error message, etc.)
+            e.printStackTrace(); // This prints the exception details to the console
+            // You can add your own error handling logic here
+        } finally {
+            // Close the database connection in the finally block to ensure it's always closed
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
+        }
     }
 
     public boolean setReturnPhase1OrderStatus(int orderID, int phase1OrderStatus) {
@@ -1358,7 +1399,7 @@ public class Connect extends SQLiteOpenHelper {
     public List<Phase1Order> getWasherReceivedClothes(int washerID, Context context) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS == 4;";
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS IN (4,5,6);";
         String[] selectionArgs = {String.valueOf(washerID)};
 
         Cursor cursor = db.rawQuery(query, selectionArgs);
@@ -1429,4 +1470,33 @@ public class Connect extends SQLiteOpenHelper {
         return rowsAffected;
     }
 
+    public void updatePhase1OrderDateReceivedToCurrentDate(int orderID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Update statement
+        String updateQuery = "UPDATE PHASE1_ORDER SET PHASE1_DATE_RECEIVED = ? WHERE PHASE1_ORDER_ID = ?";
+
+        // Get current date to set in the PHASE1_DATE_COURIER
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = dateFormat.format(date);
+
+        // Execute the update statement and get the number of rows affected
+        SQLiteStatement stmt = db.compileStatement(updateQuery);
+        stmt.bindString(1, formattedDate);
+        stmt.bindLong(2, orderID);
+
+    }
+
+    public void updatePhase1OrderTotalDue(int orderID, double totalDue) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Update statement
+        String updateQuery = "UPDATE PHASE1_ORDER SET PHASE1_TOTAL_DUE = ? WHERE PHASE1_ORDER_ID = ?";
+
+        // Execute the update statement and get the number of rows affected
+        SQLiteStatement stmt = db.compileStatement(updateQuery);
+        stmt.bindDouble(1, totalDue);
+        stmt.bindLong(2, orderID);
+    }
 }

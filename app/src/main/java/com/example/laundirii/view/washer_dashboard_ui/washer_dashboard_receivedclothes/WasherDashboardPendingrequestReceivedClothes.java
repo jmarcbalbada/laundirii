@@ -1,4 +1,4 @@
-package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_pendingrequest;
+package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_receivedclothes;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -19,7 +19,7 @@ public class WasherDashboardPendingrequestReceivedClothes extends AppCompatActiv
 
     DashboardController dashboardController;
     TextView ClientNameText, orderID,InitialLoad,TotalAmount;
-    Button cancelledButton, acceptButton;
+    Button notReceivedButton, receivedButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,30 +32,25 @@ public class WasherDashboardPendingrequestReceivedClothes extends AppCompatActiv
         ClientNameText = findViewById(R.id.washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_clientNameText);
         InitialLoad = findViewById(R.id.washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_InitialLoad);
         TotalAmount = findViewById(R.id.washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_totalamount);
-        cancelledButton = findViewById(R.id.washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_cancelbutton);
-        acceptButton = findViewById(R.id.washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_acceptbutton);
+        notReceivedButton = findViewById(R.id.washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_cancelbutton);
+        receivedButton = findViewById(R.id.washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_acceptbutton);
 
         // Set Value of Buttons and Text
         ClientNameText.setText("Client Name: "+selectedOrder.getClient(getBaseContext()).getName());
         InitialLoad.setText("Initial Load:" + selectedOrder.getInitialLoad());
-        TotalAmount.setText("Total Amount:" + selectedOrder.getTotalDue());
+        TotalAmount.setText("Initial Total Amount: " + selectedOrder.getInitialLoad()*selectedOrder.getWasher().getRatePerKg());
 
 
         // Cancel the booking request of the customer
-        cancelledButton.setOnClickListener(new View.OnClickListener() {
+        notReceivedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(WasherDashboardPendingrequestReceivedClothes.this)
                         .setTitle("Confirmation")
                         .setMessage("Are you sure you want to show the toast?")
                         .setPositiveButton("Yes", (dialog, which) -> {
-
-                            int result = dashboardController.washerMarkedClothesAsReceived(selectedOrder.getOrderID(),getBaseContext());
-
-                            if(result == 0){
-                                Toast.makeText(getApplicationContext(), "Failed Try Again", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
+                            // TODO
+                            //implement when order did not received
                             Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(WasherDashboardPendingrequestReceivedClothes.this, WasherDashboardActivity.class);
                             startActivity(intent);
@@ -69,7 +64,7 @@ public class WasherDashboardPendingrequestReceivedClothes extends AppCompatActiv
         });
 
         // Accept the booking request of the customer
-        acceptButton.setOnClickListener(new View.OnClickListener() {
+        receivedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(WasherDashboardPendingrequestReceivedClothes.this)
@@ -77,6 +72,13 @@ public class WasherDashboardPendingrequestReceivedClothes extends AppCompatActiv
                         .setMessage("Are you sure you want to show the toast?")
                         .setPositiveButton("Yes", (dialog, which) -> {
                             Toast.makeText(getApplicationContext(), "Accepted", Toast.LENGTH_SHORT).show();
+
+                            // TODO
+                            //implement when order not received
+                            // set order status to 4
+                            dashboardController.updatePhase1OrderStatus(selectedOrder.getOrderID(), 4,getBaseContext());
+                            // change date received PHASE1_ORDER
+                            dashboardController.updatePhase1OrderDateReceivedToCurrentDate(selectedOrder.getOrderID() ,getBaseContext());
 
                             Intent intent = new Intent(WasherDashboardPendingrequestReceivedClothes.this, WasherDashboardActivity.class);
                             startActivity(intent);

@@ -366,4 +366,14 @@ public class Phase1Order implements Serializable {
         dbHelper.washerUpdatePhase1OrderCourierIDAndCourierDate(orderID, availableCourierID);
 
     }
+
+    public void updatePhase1OrderDateReceivedToCurrentDate(int orderID, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        dbHelper.updatePhase1OrderDateReceivedToCurrentDate(orderID);
+    }
+
+    public void updatePhase1OrderTotalDue(int orderID, double totalDue, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        dbHelper.updatePhase1OrderTotalDue(orderID,totalDue);
+    }
 }

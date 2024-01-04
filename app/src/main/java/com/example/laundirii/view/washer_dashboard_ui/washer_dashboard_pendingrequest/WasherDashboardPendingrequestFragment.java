@@ -2,6 +2,7 @@ package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_pendingr
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.laundirii.R;
 import com.example.laundirii.controller.DashboardController;
@@ -28,12 +30,14 @@ public class WasherDashboardPendingrequestFragment extends Fragment {
     private Washer washer;
     private Date currentDate;
 
+    private List<Phase1Order> order;
     private SharedPreferences washerInfoPreferences;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
-    private DashboardController dashboardController = new DashboardController();
+    private DashboardController dashboardController;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
+        dashboardController = new DashboardController();
 
         binding = WasherDashboardFragmentPendingrequestBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -41,17 +45,52 @@ public class WasherDashboardPendingrequestFragment extends Fragment {
         recyclerView = root.findViewById(R.id.washer_pendingrequest_tolist_recyclerviewer);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        swipeRefreshLayout = root.findViewById(R.id.washerSwipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(this::refreshData);
+
         // fetch courier
         washerInfoPreferences = this.getActivity().getSharedPreferences("LoginWasherPreferences", 0);
         String washerUsername = washerInfoPreferences.getString("washerUsername", "");
         washer = dashboardController.getWasher(washerUsername, this.getActivity());
         List<Phase1Order> orders = dashboardController.getPendingDeliveriesOnWasher(washer.getWasherID(), getContext());
 
-         washerDashboardPendingrequestAdapter = new WasherDashboardPendingrequestAdapter(orders,getContext());
+        this.order = orders;
+
+        washerDashboardPendingrequestAdapter = new WasherDashboardPendingrequestAdapter(orders, getContext());
+//         washerDashboardPendingrequestAdapter = new WasherDashboardPendingrequestAdapter(washerUsername,getContext());
         recyclerView.setAdapter(washerDashboardPendingrequestAdapter);
         currentDate = new Date();
 
         return root;
+    }
+
+
+    private void refreshData() {
+        // Implement the logic to refresh your data (e.g., fetch new data from the server)
+        // After refreshing, update the RecyclerView and stop the refreshing animation
+        updateRecyclerView();
+        swipeRefreshLayout.setRefreshing(false);
+    }
+    private boolean isFiveMinutesGreater(Date date1, Date date2) {
+        long differenceInMillis = date2.getTime() - date1.getTime();
+        long differenceInMinutes = differenceInMillis / (60 * 1000);
+
+        // Check if the difference is greater than 5 minutes
+        Log.e("5MINUTES",""+ differenceInMinutes);
+        return differenceInMinutes >= 1;
+    }
+    private void updateRecyclerView() {
+        // Fetch new data or update your existing data source
+
+        List<Phase1Order> newOrders = dashboardController.getPendingDeliveriesOnWasher(washer.getWasherID(),getContext());
+
+        newOrders.forEach(order->{
+
+        });
+
+        // Update the adapter with the new data
+        washerDashboardPendingrequestAdapter.setData(newOrders);
+        washerDashboardPendingrequestAdapter.notifyDataSetChanged();
     }
 
 
@@ -60,8 +99,6 @@ public class WasherDashboardPendingrequestFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
-
 }
 //package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_pendingrequest;
 //

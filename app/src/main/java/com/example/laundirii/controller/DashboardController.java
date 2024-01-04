@@ -151,4 +151,12 @@ public class DashboardController {
     public void washerUpdatePhase1OrderCourierIDAndCourierDate(int orderID, int availableCourierID, Context applicationContext) {
         phase1Order.washerUpdatePhase1OrderCourierIDAndCourierDate(orderID, availableCourierID, applicationContext);
     }
+
+    public void updatePhase1OrderDateReceivedToCurrentDate(int orderID, Context baseContext) {
+        phase1Order.updatePhase1OrderDateReceivedToCurrentDate(orderID, baseContext);
+    }
+
+    public void updatePhase1OrderTotalDue(int orderID, double totalDue, Context baseContext) {
+        phase1Order.updatePhase1OrderTotalDue(orderID, totalDue,baseContext);
+    }
 }
