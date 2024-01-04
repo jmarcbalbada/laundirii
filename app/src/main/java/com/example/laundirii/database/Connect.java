@@ -1135,7 +1135,7 @@ public class Connect extends SQLiteOpenHelper {
         long differenceInMinutes = differenceInMillis / (60 * 1000);
 
         // Check if the difference is greater than 5 minutes
-        Log.e("5MINUTES",""+ differenceInMinutes);
+        Log.e("5MINUTES",""+ differenceInMillis);
         return differenceInMinutes >= 1;
     }
     public List<Phase1Order> getPendingDeliveriesOnWasher(int washerID, Context context) {
@@ -1165,6 +1165,7 @@ public class Connect extends SQLiteOpenHelper {
 // Check if the formatted date is 5 minutes or more greater than the current date
                 boolean result = isFiveMinutesGreater( formattedDate,currentDate);
 
+                // dont store if phase1order is greater than 1 minute
                 if(result == true && cursor.getInt(12) == 0){
                     continue;
                 }

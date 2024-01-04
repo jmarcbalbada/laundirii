@@ -19,11 +19,8 @@ import com.example.laundirii.databinding.WasherDashboardFragmentPendingrequestBi
 import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.model.Washer;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class WasherDashboardPendingrequestFragment extends Fragment {
 
@@ -33,6 +30,7 @@ public class WasherDashboardPendingrequestFragment extends Fragment {
     private Washer washer;
     private Date currentDate;
 
+    private List<Phase1Order> order;
     private SharedPreferences washerInfoPreferences;
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -55,6 +53,8 @@ public class WasherDashboardPendingrequestFragment extends Fragment {
         String washerUsername = washerInfoPreferences.getString("washerUsername", "");
         washer = dashboardController.getWasher(washerUsername, this.getActivity());
         List<Phase1Order> orders = dashboardController.getPendingDeliveriesOnWasher(washer.getWasherID(), getContext());
+
+        this.order = orders;
 
         washerDashboardPendingrequestAdapter = new WasherDashboardPendingrequestAdapter(orders, getContext());
 //         washerDashboardPendingrequestAdapter = new WasherDashboardPendingrequestAdapter(washerUsername,getContext());
@@ -81,27 +81,11 @@ public class WasherDashboardPendingrequestFragment extends Fragment {
     }
     private void updateRecyclerView() {
         // Fetch new data or update your existing data source
+
         List<Phase1Order> newOrders = dashboardController.getPendingDeliveriesOnWasher(washer.getWasherID(),getContext());
-        newOrders.forEach(order ->{
-            Date currentDate = new Date();
-            String dateString = order.getDatePlaced();
 
-// Parse the date string into a Date object
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-            Date formattedDate = null;
-            try {
-                formattedDate = simpleDateFormat.parse(dateString);
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
+        newOrders.forEach(order->{
 
-
-// Check if the formatted date is 5 minutes or more greater than the current date
-            boolean result = isFiveMinutesGreater( formattedDate,currentDate);
-
-            if(!(result == true && order.getPhase1OrderStatus() == 0)){
-                dashboardController.updatePhase1OrderStatus(order.getOrderID(),-1,getContext());
-            }
         });
 
         // Update the adapter with the new data
