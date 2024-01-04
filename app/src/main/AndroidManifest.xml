@@ -13,7 +13,13 @@
         android:theme="@style/Theme.LaunDirii"
         tools:targetApi="31">
         <activity
-            android:name=".view.washer_dashboard_ui.washer_dashboard_pendingrequest.WasherDashboardPendingrequestReceivedClothes"
+            android:name=".view.washer_dashboard_ui.washer_dashboard_receivedclothes.WasherDashboardPendingrequestClothesReadyToPickUp"
+            android:exported="false" />
+        <activity
+            android:name=".view.washer_dashboard_ui.washer_dashboard_receivedclothes.WasherDashboardPendingrequestClothestoweight"
+            android:exported="false" />
+        <activity
+            android:name=".view.washer_dashboard_ui.washer_dashboard_receivedclothes.WasherDashboardPendingrequestReceivedClothes"
             android:exported="false" />
         <activity
             android:name=".view.client_dashboard_ui.BookServiceActivity"

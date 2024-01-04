@@ -4,67 +4,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.washer_dashboard_ui.washer_dashboard_receivedclothes.WasherDashboardPendingrequestReceivedClothes">
+    tools:context=".view.washer_dashboard_ui.washer_dashboard_receivedclothes.WasherDashboardPendingrequestClothestoweight">
+
 
     <TextView
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_totalamount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Initial Total Amount: "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.528" />
-
-    <TextView
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_InitialLoad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Initial Load: "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.469" />
-
-    <TextView
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_clientNameText"
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_clothestoweight_activity_clientname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Client Name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.391" />
+        app:layout_constraintVertical_bias="0.358" />
 
-
-    <Button
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_acceptbutton"
+    <TextView
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_clothestoweight_initial_load"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Received"
+        android:text="Initial Load: "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.527"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.631" />
+        app:layout_constraintVertical_bias="0.436" />
 
-    <Button
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_cancelbutton"
+    <TextView
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_clothestoweight_total_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Not Received"
+        android:text="Total Amount: "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.544"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.729" />
+        app:layout_constraintVertical_bias="0.495" />
+
+    <Button
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_clothestoweight_activity_accept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accept"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.528"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.718" />
+
+    <EditText
+        android:id="@+id/editTextText2"
+        android:layout_width="174dp"
+        android:layout_height="42dp"
+        android:ems="10"
+        android:hint="Enter exact clothes weight"
+        android:inputType="text"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.593" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

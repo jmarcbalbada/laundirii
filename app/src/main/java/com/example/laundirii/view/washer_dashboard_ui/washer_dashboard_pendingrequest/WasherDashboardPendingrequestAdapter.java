@@ -2,7 +2,6 @@ package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_pendingr
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.laundirii.R;
 import com.example.laundirii.model.Phase1Order;
+import com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_receivedclothes.WasherDashboardPendingrequestClothesReadyToPickUp;
+import com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_receivedclothes.WasherDashboardPendingrequestReceivedClothes;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class WasherDashboardPendingrequestAdapter extends RecyclerView.Adapter<WasherDashboardPendingrequestAdapter.OrdersViewHolder> {
 
@@ -63,6 +60,8 @@ public class WasherDashboardPendingrequestAdapter extends RecyclerView.Adapter<W
                 break;
             case 3:
                 // Rider is on the way
+                //TODO
+                // Make the logic,
                 setRiderOnToWasherStyle(holder,order);
                 break;
         }
@@ -73,6 +72,32 @@ public class WasherDashboardPendingrequestAdapter extends RecyclerView.Adapter<W
         holder.textViewClientName.setText("Client Name: " + order.getClientName());
         holder.textViewCourierStatus.setText("Pending Waiting For Approval");
     }
+
+    private void setClothesReadyToPickUpStyle(OrdersViewHolder holder, Phase1Order order) {
+        this.initialize(holder,order);
+        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.washer_customer_waiting_for_approval));
+        holder.textViewCourierStatus.setText("Pending Waiting For Approval");
+        holder.itemView.setOnClickListener(view -> {
+            // Handle item click here
+            Intent intent = new Intent(view.getContext(), WasherDashboardPendingrequestClothesReadyToPickUp.class);
+            intent.putExtra("selectedOrder", order);
+            view.getContext().startActivity(intent);
+        });
+
+    }
+
+    private void setWasherWeightClothesStyle(OrdersViewHolder holder, Phase1Order order) {
+        this.initialize(holder,order);
+        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.washer_customer_waiting_for_approval));
+        holder.textViewCourierStatus.setText("Pending Waiting For Approval");
+        holder.itemView.setOnClickListener(view -> {
+            // Handle item click here
+            Intent intent = new Intent(view.getContext(), WasherDashboardPendingrequestReceivedClothes.class);
+            intent.putExtra("selectedOrder", order);
+            view.getContext().startActivity(intent);
+        });
+    }
+
     private void setPendingStatusStyle(OrdersViewHolder holder,Phase1Order order) {
         this.initialize(holder,order);
         holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.washer_customer_waiting_for_approval));
@@ -137,6 +162,11 @@ public class WasherDashboardPendingrequestAdapter extends RecyclerView.Adapter<W
     public int getItemCount() {
         return orders.size();
     }
+
+    public void setData(List<Phase1Order> newOrders) {
+        this.orders = newOrders;
+    }
+
     public static class OrdersViewHolder extends RecyclerView.ViewHolder {
         TextView textViewClientName;
         TextView textViewOrderId;
