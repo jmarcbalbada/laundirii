@@ -1166,7 +1166,6 @@ public class Connect extends SQLiteOpenHelper {
                 boolean result = isFiveMinutesGreater( formattedDate,currentDate);
 
                 if(result == true && cursor.getInt(12) == 0){
-//                    setPhase1OrderStatus(cursor.getInt(0),-1);
                     continue;
                 }
 
@@ -1317,11 +1316,20 @@ public class Connect extends SQLiteOpenHelper {
     public void setPhase1OrderStatus(int orderID, int phase1OrderStatus) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Use execSQL for update operation
-        db.execSQL("UPDATE PHASE1_ORDER SET PHASE1_ORDER_STATUS = ? WHERE PHASE1_ORDER_ID = ? ;",
-                new Object[]{phase1OrderStatus, orderID});
-
-        db.close();
+        try {
+            // Use execSQL for update operation
+            db.execSQL("UPDATE PHASE1_ORDER SET PHASE1_ORDER_STATUS = ? WHERE PHASE1_ORDER_ID = ? ;",
+                    new Object[]{phase1OrderStatus, orderID});
+        } catch (SQLException e) {
+            // Handle the exception (e.g., log it, show an error message, etc.)
+            e.printStackTrace(); // This prints the exception details to the console
+            // You can add your own error handling logic here
+        } finally {
+            // Close the database connection in the finally block to ensure it's always closed
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
+        }
     }
 
     public boolean setReturnPhase1OrderStatus(int orderID, int phase1OrderStatus) {

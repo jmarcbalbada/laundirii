@@ -2,6 +2,7 @@ package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_pendingr
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,11 @@ import com.example.laundirii.databinding.WasherDashboardFragmentPendingrequestBi
 import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.model.Washer;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class WasherDashboardPendingrequestFragment extends Fragment {
 
@@ -67,9 +71,38 @@ public class WasherDashboardPendingrequestFragment extends Fragment {
         updateRecyclerView();
         swipeRefreshLayout.setRefreshing(false);
     }
+    private boolean isFiveMinutesGreater(Date date1, Date date2) {
+        long differenceInMillis = date2.getTime() - date1.getTime();
+        long differenceInMinutes = differenceInMillis / (60 * 1000);
+
+        // Check if the difference is greater than 5 minutes
+        Log.e("5MINUTES",""+ differenceInMinutes);
+        return differenceInMinutes >= 1;
+    }
     private void updateRecyclerView() {
         // Fetch new data or update your existing data source
         List<Phase1Order> newOrders = dashboardController.getPendingDeliveriesOnWasher(washer.getWasherID(),getContext());
+        newOrders.forEach(order ->{
+            Date currentDate = new Date();
+            String dateString = order.getDatePlaced();
+
+// Parse the date string into a Date object
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            Date formattedDate = null;
+            try {
+                formattedDate = simpleDateFormat.parse(dateString);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+
+
+// Check if the formatted date is 5 minutes or more greater than the current date
+            boolean result = isFiveMinutesGreater( formattedDate,currentDate);
+
+            if(!(result == true && order.getPhase1OrderStatus() == 0)){
+                dashboardController.updatePhase1OrderStatus(order.getOrderID(),-1,getContext());
+            }
+        });
 
         // Update the adapter with the new data
         washerDashboardPendingrequestAdapter.setData(newOrders);
