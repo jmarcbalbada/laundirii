@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.laundirii.R;
 import com.example.laundirii.model.Phase1Order;
+import com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_pendingrequest.WasherDashboardPendingrequestReceivedClothes;
 
 import java.util.List;
 
@@ -82,7 +83,7 @@ public class WasherDashboardReceivedClothesAdapter extends RecyclerView.Adapter<
         holder.textViewCourierStatus.setText("Pending Waiting For Approval");
         holder.itemView.setOnClickListener(view -> {
             // Handle item click here
-            Intent intent = new Intent(view.getContext(), WasherDashboardPendingrequestReceivedClothes.class);
+            Intent intent = new Intent(view.getContext(), WasherDashboardPendingrequestClothestoweight.class);
             intent.putExtra("selectedOrder", order);
             view.getContext().startActivity(intent);
         });

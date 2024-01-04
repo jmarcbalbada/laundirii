@@ -1,4 +1,4 @@
-package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_receivedclothes;
+package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_pendingrequest;
 
 import android.app.AlertDialog;
 import android.content.Intent;

@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.laundirii.R;
 import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_receivedclothes.WasherDashboardPendingrequestClothesReadyToPickUp;
-import com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_receivedclothes.WasherDashboardPendingrequestReceivedClothes;
 
 import java.util.List;
 

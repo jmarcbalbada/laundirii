@@ -19,7 +19,7 @@
             android:name=".view.washer_dashboard_ui.washer_dashboard_receivedclothes.WasherDashboardPendingrequestClothestoweight"
             android:exported="false" />
         <activity
-            android:name=".view.washer_dashboard_ui.washer_dashboard_receivedclothes.WasherDashboardPendingrequestReceivedClothes"
+            android:name=".view.washer_dashboard_ui.washer_dashboard_pendingrequest.WasherDashboardPendingrequestReceivedClothes"
             android:exported="false" />
         <activity
             android:name=".view.client_dashboard_ui.BookServiceActivity"
