@@ -2,6 +2,7 @@ package com.example.laundirii.controller;
 
 import android.content.Context;
 
+import com.example.laundirii.database.Connect;
 import com.example.laundirii.model.Client;
 import com.example.laundirii.model.Courier;
 import com.example.laundirii.model.Order;
@@ -54,7 +55,6 @@ public class DashboardController {
         return washer.getWasher(username,context);
     }
 
-
     public Phase1Order getPendingDeliveryOnCourier(int courierID, Context context)
     {
         return phase1Order.getPendingDeliveryOnCourier(courierID, context);
@@ -80,9 +80,25 @@ public class DashboardController {
         return phase1Order.getAvailableWashers(context);
     }
 
+    public boolean updatePhase1OrderStatusOnDb(int courierID, int status, Context context)
+    {
+        return phase1Order.updatePhase1OrderStatusOnDb(courierID,status,context);
+    }
+
     public boolean acceptPendingRequestOnCourier(int courierID, int orderID, Context context)
     {
         return phase1Order.acceptPendingRequestOnCourier(courierID,orderID,context);
+    }
+
+    public boolean setCourierStatusOnDatabase(int courierID, boolean status, Context context)
+    {
+        return courier.setCourierStatusOnDatabase(courierID,status,context);
+    }
+
+
+    public boolean hasActiveTransactionOnPhase1Order(int courierID, Context context)
+    {
+        return courier.hasActiveTransactionOnPhase1Order(courierID, context);
     }
 
     public boolean updateCourierStatus(int courierID, int status, Context context)
@@ -92,6 +108,10 @@ public class DashboardController {
 
     public boolean updatePhase1OrderStatus(int phase1OrderID, int status, Context context)
     {
+        if(context == null)
+        {
+            return false;
+        }
         return phase1Order.setPhase1OrderStatus2(phase1OrderID, status, context);
     }
 

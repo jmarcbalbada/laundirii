@@ -82,12 +82,24 @@ public class Courier implements Serializable {
         return courier;
     }
 
+    public boolean setCourierStatusOnDatabase(int courierID, boolean status, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.setCourierStatusOnDatabase(courierID,status);
+    }
+
     public boolean updateCourierStatusOnConnect(int courierID, int status, Context context)
     {
         dbHelper = new Connect(context);
         return dbHelper.updateCourierStatus(courierID, status);
     }
 
+    public boolean hasActiveTransactionOnPhase1Order(int courierID, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.hasActiveTransactionOnPhase1Order(courierID);
+    }
+//
 //    public int getCourierStatusOnDb(int courierID, Context context)
 //    {
 //        dbHelper = new Connect(context);

@@ -8,4 +8,6 @@
     <color name="washer_rider_on_the_way_to_customer">#EEFF00</color>
     <color name="washer_rider_on_the_way_here">#2FFF00</color>
     <color name="washer_history">#FF9898</color>
+    <color name="your_thumb_color">#44FF63</color>
+    <color name="your_track_color">#588970</color>
 </resources>

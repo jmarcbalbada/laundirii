@@ -58,6 +58,7 @@ public class CurrentFragment extends Fragment {
         Log.e("thisClient", client.toString());
         lv_pendingOrders = root.findViewById(R.id.current_transaction);
         bookServiceButton = root.findViewById(R.id.btn_book_service);
+        checkPopupStatus();
         displayPendingOrders();
 
         // Initialize the current date and time
@@ -78,10 +79,23 @@ public class CurrentFragment extends Fragment {
                 // Handle item click here
                 Phase1Order selectedOrder = (Phase1Order) parent.getItemAtPosition(position);
 
-                if (selectedOrder.getPhase1OrderStatus() == 0) {
-                    showCustomDialog(selectedOrder);
+                switch(selectedOrder.getPhase1OrderStatus())
+                {
+                    case -1:
+                        break;
+                    case 0: showCustomDialog(selectedOrder);
+                        break;
+                    case 1:
+                        break;
+                    case 2: showCustomDialogClientHandover(selectedOrder);
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
                 }
-                Toast.makeText(getContext(), "Selected Order ID: " + selectedOrder.getOrderID() + "", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -130,6 +144,103 @@ public class CurrentFragment extends Fragment {
             }
         });
     }
+
+    public void checkPopupStatus()
+    {
+        List<Phase1Order> listPendingOrders = dashboardController.getPendingDeliveryOnClient(client.getCustomerID(), getActivity());
+
+        for (Phase1Order order : listPendingOrders) {
+            switch(order.getPhase1OrderStatus())
+            {
+                case -1:
+                    break;
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2: showCustomDialogOnCourierArrived(order);
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+            }
+        }
+    }
+
+    private void showCustomDialogClientHandover(Phase1Order phase1Order) {
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.popup_client_handover_courier, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+        builder.setTitle("Reminder!");
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        TextView textViewNoButton = dialogView.findViewById(R.id.textViewClientHandoverNoButton);
+        TextView textViewYesButton = dialogView.findViewById(R.id.textViewClientHandoverYesButton);
+
+        textViewNoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        textViewYesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean success = dashboardController.updatePhase1OrderStatus(phase1Order.getOrderID(), 3, getContext());
+                displayPendingOrders();
+                if(success)
+                {
+                    Toast.makeText(getContext(), "Success!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(getContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void showCustomDialogOnCourierArrived(Phase1Order phase1Order)
+    {
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.popup_courier_arrived, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+        builder.setTitle("Reminder!");
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        TextView textViewOkayButton = dialogView.findViewById(R.id.textViewCourierHasArrivedContentOkayButton);
+        TextView textViewContent = dialogView.findViewById(R.id.textViewCourierHasArrivedContent);
+
+        //
+        if(textViewContent != null)
+        {
+            textViewContent.setText("Your courier " + phase1Order.getCourier().getName() +
+                    " under the order " + phase1Order.getOrderID() + " is already on the location. " +
+                    "Please ready your laundry and hand it over to the courier."
+            );
+        }
+
+        textViewOkayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
+
 
     // timer is active iff the Current fragment is displaying/resume
     private void updateTimerAsync(List<Phase1Order> phase1OrderList) {
