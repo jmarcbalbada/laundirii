@@ -61,6 +61,11 @@ public class CourierDashboardHomeFragment extends Fragment {
         if(hasPendingTransaction)
         {
             Phase1Order phase1Order = dashboardController.getPendingDeliveryOnCourier(courier.getCourierID(), getContext());
+            if(phase1Order == null)
+            {
+                phase1Order = new Phase1Order();
+            }
+
             if(phase1Order.getPhase1OrderStatus() == 1)
             {
                 showCustomDialogOnReceivedBooking(phase1Order);
@@ -90,7 +95,7 @@ public class CourierDashboardHomeFragment extends Fragment {
                         break;
                     case 3:
                         break;
-                    case 4:
+                    case 4: showCustomDialogOnReceivingWasherPaymentPhase1();
                         break;
                     case 5:
                         break;
@@ -99,6 +104,49 @@ public class CourierDashboardHomeFragment extends Fragment {
         });
         return root;
     }
+
+    private void showCustomDialogOnReceivingWasherPaymentPhase1()
+    {
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.popup_courier_received_paymentwasher_phase1, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+        builder.setTitle("Reminder!");
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        TextView textViewNoButton = dialogView.findViewById(R.id.textViewReceivedPaymentNoButton);
+        TextView textViewYesButton = dialogView.findViewById(R.id.textViewReceivedPaymentYesButton);
+
+        textViewYesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean success = dashboardController.setCourierStatusPhase1OrderOnDatabase(courier.getCourierID(), true, getContext());
+                displayPendingOrders();
+                if(success)
+                {
+                    Toast.makeText(getContext(), "Received payment!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(getContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+
+            }
+        });
+
+        textViewNoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+
 
     private void showCustomDialogOnNotifyingClient()
     {
@@ -180,14 +228,22 @@ public class CourierDashboardHomeFragment extends Fragment {
 //        boolean isActive = courier.getCourierStatusOnDb(courier.getCourierID(),this.getActivity()) == 1 ? true : false;
 //        courier.setStatus(isActive);
 //        Log.e("Courier Status", courier.getStatus() + "");
-        if(!courier.getStatus())
+        boolean hasActive = dashboardController.hasActiveTransactionOnPhase1Order(courier.getCourierID(),getContext());
+        if(!courier.getStatus() && hasActive)
         {
             Phase1Order pendingDelivery = dashboardController.getPendingDeliveryOnCourier(courier.getCourierID(), this.getActivity());
-            List<Phase1Order> listPendingDelivery = new ArrayList<Phase1Order>();
-            listPendingDelivery.add(pendingDelivery);
-            Log.e("LISTPENDINGDELIVERY", listPendingDelivery.size() + "");
-            pendingOrdersAdapter = new ArrayAdapter<Phase1Order>(this.getContext(), android.R.layout.simple_list_item_1, listPendingDelivery);
-            lv_pendingOrders.setAdapter(pendingOrdersAdapter);
+            if (pendingDelivery != null) {
+                List<Phase1Order> listPendingDelivery = new ArrayList<>();
+                listPendingDelivery.add(pendingDelivery);
+
+                Log.e("LISTPENDINGDELIVERY", listPendingDelivery.size() + "");
+
+                pendingOrdersAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, listPendingDelivery);
+                lv_pendingOrders.setAdapter(pendingOrdersAdapter);
+            } else {
+                // Handle the case when pendingDelivery is null
+                Log.e("LISTPENDINGDELIVERY", "Pending delivery is null");
+            }
         }
         else
         {
