@@ -295,7 +295,230 @@ public class Connect extends SQLiteOpenHelper {
         return isValid;
     }
 
-    // washer didnt use this yet
+
+//    public boolean insertNotificationOnClient(int clientID, String title, String message) {
+//        try {
+//            SQLiteDatabase db = this.getWritableDatabase();  // Assuming 'this' refers to the Connect instance
+//
+//            ContentValues values = new ContentValues();
+//            values.put("NOTIFICATION_CLIENT_ID", clientID);
+//            values.put("NOTIFICATION_TITLE", title);
+//            values.put("NOTIFICATION_MESSAGE", message);
+//            values.put("NOTIFICATION_IS_READ", 0);  // Assuming the notification is initially unread
+//
+//            // Get current date and time in the specified format
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm a", Locale.getDefault());
+//            String dateTime = sdf.format(new Date());
+//            values.put("NOTIFICATION_DATETIME", dateTime);
+//
+//            // Insert the values into the NOTIFICATION table
+//            long result = db.insert("NOTIFICATION", null, values);
+//
+//            // Close the database to avoid memory leaks
+//            db.close();
+//
+//            // Return true if the insertion was successful, false otherwise
+//            return result != -1;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            // Return false if an exception occurred during the insertion
+//            return false;
+//        }
+//    }
+
+    public int getUnreadNotificationCount(int ID, int typeOfUser) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int count = 0;
+        String query = "";
+        // 0 - client , 1 - courier, 2 - washer
+        switch(typeOfUser)
+        {
+            case 0:
+                query = "SELECT COUNT(*) FROM NOTIFICATION " +
+                        "WHERE NOTIFICATION_IS_READ = 0 AND NOTIFICATION_CLIENT_ID = ?";
+                break;
+            case 1:
+                query = "SELECT COUNT(*) FROM NOTIFICATION " +
+                        "WHERE NOTIFICATION_IS_READ = 0 AND NOTIFICATION_COURIER_ID = ?";
+                break;
+            case 2:
+                query = "SELECT COUNT(*) FROM NOTIFICATION " +
+                        "WHERE NOTIFICATION_IS_READ = 0 AND NOTIFICATION_WASHER_ID = ?";
+                break;
+        }
+
+        try {
+            String[] selectionArgs = {String.valueOf(ID)};
+            Cursor cursor = db.rawQuery(query, selectionArgs);
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                count = cursor.getInt(0);
+                cursor.close();
+            }
+        } catch (SQLException e) {
+            // Handle exceptions as needed
+            Log.e("NotificationCountError", e.getMessage());
+        } finally {
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
+        }
+
+        return count;
+    }
+
+    public void markNotificationsAsRead(int ID, int typeOfUser) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "";
+        // 0 - client , 1 - courier, 2 - washer
+        switch(typeOfUser)
+        {
+            case 0:
+                query = "UPDATE NOTIFICATION SET NOTIFICATION_IS_READ = 1 WHERE NOTIFICATION_CLIENT_ID = ?";
+                break;
+            case 1:
+                query = "UPDATE NOTIFICATION SET NOTIFICATION_IS_READ = 1 WHERE NOTIFICATION_COURIER_ID = ?";
+                break;
+            case 2:
+                query = "UPDATE NOTIFICATION SET NOTIFICATION_IS_READ = 1 WHERE NOTIFICATION_WASHER_ID = ?";
+                break;
+        }
+        try {
+            String[] selectionArgs = {String.valueOf(ID)};
+            Cursor cursor = db.rawQuery(query, selectionArgs);
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                cursor.close();
+            }
+        } catch (SQLException e) {
+            Log.e("Mark Notifications as Read Error", e.getMessage());
+        } finally {
+            db.close();
+        }
+    }
+
+
+    public List<Notification> getNotificationOnClient(int clientID)
+    {
+        List<Notification> notifications = new ArrayList<>();
+        String query = "SELECT * FROM NOTIFICATION WHERE NOTIFICATION_CLIENT_ID = ? " +
+                "ORDER BY NOTIFICATION_DATETIME DESC";
+
+        String[] selectionArgs = {String.valueOf(clientID)};
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        try
+        {
+            while(cursor.moveToNext())
+            {
+                int notificationIdIndex = cursor.getColumnIndex(NOTIFICATION_ID);
+                int notificationTitleIndex = cursor.getColumnIndex(NOTIFICATION_TITLE);
+                int notificationMessageIndex = cursor.getColumnIndex(NOTIFICATION_MESSAGE);
+                int notificationIsReadIndex = cursor.getColumnIndex(NOTIFICATION_IS_READ);
+                int notificationClientIdIndex = cursor.getColumnIndex(NOTIFICATION_CLIENT_ID);
+                int notificationCourierIdIndex = cursor.getColumnIndex(NOTIFICATION_COURIER_ID);
+                int notificationWasherIdIndex = cursor.getColumnIndex(NOTIFICATION_WASHER_ID);
+                int notificationDateTimeIndex = cursor.getColumnIndex(NOTIFICATION_DATETIME);
+
+                if(notificationIdIndex != -1 && notificationTitleIndex != -1 &&
+                        notificationMessageIndex != -1 && notificationIsReadIndex != -1 &&
+                        notificationClientIdIndex != -1 && notificationClientIdIndex != 1 &&
+                        notificationCourierIdIndex != -1 && notificationWasherIdIndex != -1 &&
+                        notificationDateTimeIndex != -1)
+                {
+                    boolean isRead = cursor.getInt(notificationIsReadIndex) == 1;
+                    Notification notification = new Notification(
+                            cursor.getInt(notificationIdIndex),
+                            cursor.getString(notificationTitleIndex),
+                            cursor.getString(notificationMessageIndex),
+                            isRead,
+                            getClient(cursor.getInt(notificationClientIdIndex)),
+                            new Courier(),
+                            new Washer(),
+                            cursor.getString(notificationDateTimeIndex)
+                    );
+
+                    notifications.add(notification);
+                }
+                else
+                {
+                    Log.e("Notification Error DB", "one is -1");
+                }
+            }
+
+        }catch(Exception e)
+        {
+            Log.e("DATABASE ERROR", e.getMessage().toString());
+        }finally
+        {
+            cursor.close();
+        }
+
+        return notifications;
+    }
+
+    public List<Notification> getNotificationOnCourier(int courierID)
+    {
+        List<Notification> notifications = new ArrayList<>();
+        String query = "SELECT * FROM NOTIFICATION WHERE NOTIFICATION_COURIER_ID = ? " +
+                "ORDER BY NOTIFICATION_DATETIME DESC";
+
+        String[] selectionArgs = {String.valueOf(courierID)};
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        try
+        {
+            while(cursor.moveToNext())
+            {
+                int notificationIdIndex = cursor.getColumnIndex(NOTIFICATION_ID);
+                int notificationTitleIndex = cursor.getColumnIndex(NOTIFICATION_TITLE);
+                int notificationMessageIndex = cursor.getColumnIndex(NOTIFICATION_MESSAGE);
+                int notificationIsReadIndex = cursor.getColumnIndex(NOTIFICATION_IS_READ);
+                int notificationClientIdIndex = cursor.getColumnIndex(NOTIFICATION_CLIENT_ID);
+                int notificationCourierIdIndex = cursor.getColumnIndex(NOTIFICATION_COURIER_ID);
+                int notificationWasherIdIndex = cursor.getColumnIndex(NOTIFICATION_WASHER_ID);
+                int notificationDateTimeIndex = cursor.getColumnIndex(NOTIFICATION_DATETIME);
+
+                if(notificationIdIndex != -1 && notificationTitleIndex != -1 &&
+                        notificationMessageIndex != -1 && notificationIsReadIndex != -1 &&
+                        notificationClientIdIndex != -1 && notificationClientIdIndex != 1 &&
+                        notificationCourierIdIndex != -1 && notificationWasherIdIndex != -1 &&
+                        notificationDateTimeIndex != -1)
+                {
+                    boolean isRead = cursor.getInt(notificationIsReadIndex) == 1;
+                    Notification notification = new Notification(
+                            cursor.getInt(notificationIdIndex),
+                            cursor.getString(notificationTitleIndex),
+                            cursor.getString(notificationMessageIndex),
+                            isRead,
+                            new Client(),
+                            getCourier(cursor.getInt(notificationCourierIdIndex)),
+                            new Washer(),
+                            cursor.getString(notificationDateTimeIndex)
+                    );
+
+                    notifications.add(notification);
+                }
+                else
+                {
+                    Log.e("Notification Error DB", "one is -1");
+                }
+            }
+
+        }catch(Exception e)
+        {
+            Log.e("DATABASE ERROR", e.getMessage().toString());
+        }finally
+        {
+            cursor.close();
+        }
+
+        return notifications;
+    }
+
+
 //    public void insertNotification(int washerID, String title, String message) {
 //        SQLiteDatabase db = this.getWritableDatabase();  // Assuming 'this' refers to the Connect instance
 //

@@ -4,18 +4,22 @@ import android.content.Context;
 
 import com.example.laundirii.database.Connect;
 
+
 import java.io.Serializable;
 import java.util.List;
 
 public class Notification implements Serializable {
+
     private int NotificationID;
     private String title;
     private String message;
+    // 0 - unread , 1 - read
     private boolean isRead;
     private Client client;
     private Courier courier;
     private Washer washer;
     private String dateTime;
+    private Connect dbHelper;
 
     private Connect dbHelper;
 
@@ -30,6 +34,7 @@ public class Notification implements Serializable {
         this.dateTime = dateTime;
     }
 
+
     public Notification() {
         NotificationID = 0;
         this.title = "";
@@ -41,16 +46,39 @@ public class Notification implements Serializable {
         this.dateTime = "";
     }
 
-
     @Override
     public String toString() {
-        return "Notification{" +
-                "NotificationID=" + NotificationID +
-                ", Title='" + title + '\'' +
-                ", Message='" + message + '\'' +
-                ", Date='" + dateTime + '\'' +
-                '}';
+        return
+                "\n" + this.title + "\n\n"
+                + this.message + "\n"
+                + this.dateTime + "\n";
     }
+
+    public List<Notification> getNotificationOnClient(int clientID, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.getNotificationOnClient(clientID);
+    }
+
+    public List<Notification> getNotificationOnCourier(int courierID, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.getNotificationOnCourier(courierID);
+    }
+
+    public int getUnreadNotificationCount(int ID, int typeOfUser, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.getUnreadNotificationCount(ID,typeOfUser);
+    }
+
+    public void markNotificationsAsRead(int ID, int typeOfUser, Context context)
+    {
+        dbHelper = new Connect(context);
+        dbHelper.markNotificationsAsRead(ID,typeOfUser);
+    }
+
+
 
     public int getNotificationID() {
         return NotificationID;

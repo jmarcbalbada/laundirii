@@ -62,6 +62,28 @@ public class DashboardController {
         return phase1Order.getPendingDeliveryOnCourier(courierID, context);
     }
 
+    public List<Notification> getNotificationOnClient(int clientID, Context context)
+    {
+        return notification.getNotificationOnClient(clientID, context);
+    }
+
+    public List<Notification> getNotificationOnCourier(int courierID, Context context)
+    {
+        return notification.getNotificationOnCourier(courierID, context);
+    }
+
+    public int getUnreadNotificationCount(int ID, int typeOfUser, Context context)
+    {
+        return notification.getUnreadNotificationCount(ID,typeOfUser,context);
+    }
+
+    public void markNotificationsAsRead(int ID, int typeOfUser, Context context)
+    {
+        notification.markNotificationsAsRead(ID,typeOfUser,context);
+    }
+
+
+
     public List<Phase1Order> getPendingDeliveryOnClient(int clientID, Context context)
     {
         return phase1Order.getPendingDeliveryOnClient(clientID,context);
