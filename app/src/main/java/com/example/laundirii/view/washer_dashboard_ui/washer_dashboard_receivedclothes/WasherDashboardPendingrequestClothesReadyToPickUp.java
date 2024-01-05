@@ -50,8 +50,15 @@ public class WasherDashboardPendingrequestClothesReadyToPickUp extends AppCompat
                             // User accept the book request
 
                             // set status to 6
+                            // mark as ready to collect
                             dashboardController.updatePhase1OrderStatus(selectedOrder.getOrderID(),6,getBaseContext());
-                            Toast.makeText(getApplicationContext(), "Mark as Ready To Pick Up", Toast.LENGTH_SHORT).show();
+
+                            // TODO send notification to Client
+                            // this function will only notify the client and washer
+                            String notificaitonTitle = selectedOrder.getWasher().getShopName()+" - Clothes Ready to Pick up";
+                            String notificationMessage = "Clothes ready to collect. Total Amount to pay: " + selectedOrder.getTotalDue();
+                            dashboardController.washerSendNotificationToClient(selectedOrder.getWasher().getWasherID(),selectedOrder.getClient().getCustomerID(),0,notificaitonTitle,notificationMessage,getBaseContext());
+                            Toast.makeText(getApplicationContext(), "Clothes will soon be pick up", Toast.LENGTH_SHORT).show();
 
 
                             Intent intent = new Intent(WasherDashboardPendingrequestClothesReadyToPickUp.this, WasherDashboardActivity.class);

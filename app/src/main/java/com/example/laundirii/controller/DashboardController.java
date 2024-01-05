@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.laundirii.model.Client;
 import com.example.laundirii.model.Courier;
+import com.example.laundirii.model.Notification;
 import com.example.laundirii.model.Order;
 import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.model.Washer;
@@ -17,6 +18,7 @@ public class DashboardController {
     private Washer washer;
     private Order order;
     private Phase1Order phase1Order;
+    private Notification notification;
 
     public DashboardController()
     {
@@ -181,5 +183,13 @@ public class DashboardController {
 
     public void updatePhase1OrderInitialLoad(int orderID, int initialload, Context baseContext) {
         phase1Order.updatePhase1OrderInitialLoad(orderID, initialload,baseContext);
+    }
+
+    public List<Notification> getWasherNotification(int washerID, Context context) {
+        return notification.getWasherNotification(washerID,context);
+    }
+
+    public void washerSendNotificationToClient(int washerID,int customerID,int courierID, String notificaitonTitle ,String notificationMessage, Context baseContext) {
+        notification.washerSendNotificationToClient(washerID,customerID,courierID,notificaitonTitle,notificationMessage,baseContext);
     }
 }
