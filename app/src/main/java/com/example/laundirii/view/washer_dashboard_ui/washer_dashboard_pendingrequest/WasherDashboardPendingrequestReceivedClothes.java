@@ -38,7 +38,7 @@ public class WasherDashboardPendingrequestReceivedClothes extends AppCompatActiv
         // Set Value of Buttons and Text
         ClientNameText.setText("Client Name: "+selectedOrder.getClient(getBaseContext()).getName());
         InitialLoad.setText("Initial Load:" + selectedOrder.getInitialLoad());
-        TotalAmount.setText("Initial Total Amount: " + selectedOrder.getInitialLoad()*selectedOrder.getWasher().getRatePerKg());
+        TotalAmount.setText("Initial Total Amount: " + ((selectedOrder.getInitialLoad()*selectedOrder.getWasher().getRatePerKg() )+ selectedOrder.getTotalCourierAmount()) );
 
 
         // Cancel the booking request of the customer
@@ -47,7 +47,7 @@ public class WasherDashboardPendingrequestReceivedClothes extends AppCompatActiv
             public void onClick(View v) {
                 new AlertDialog.Builder(WasherDashboardPendingrequestReceivedClothes.this)
                         .setTitle("Confirmation")
-                        .setMessage("Are you sure you want to show the toast?")
+                        .setMessage("Are you sure you want to take this action?")
                         .setPositiveButton("Yes", (dialog, which) -> {
                             // TODO
                             //implement when order did not received
@@ -69,7 +69,7 @@ public class WasherDashboardPendingrequestReceivedClothes extends AppCompatActiv
             public void onClick(View v) {
                 new AlertDialog.Builder(WasherDashboardPendingrequestReceivedClothes.this)
                         .setTitle("Confirmation")
-                        .setMessage("Are you sure you want to show the toast?")
+                        .setMessage("Are you sure you received the clothes")
                         .setPositiveButton("Yes", (dialog, which) -> {
                             Toast.makeText(getApplicationContext(), "Accepted", Toast.LENGTH_SHORT).show();
 

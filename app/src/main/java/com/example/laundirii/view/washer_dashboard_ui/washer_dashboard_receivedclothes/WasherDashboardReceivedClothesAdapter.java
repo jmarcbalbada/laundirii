@@ -54,6 +54,8 @@ public class WasherDashboardReceivedClothesAdapter extends RecyclerView.Adapter<
                 setClothesReadyToPickUpStyle(holder,order);
                 break;
             case 6:
+                // Ready to Pick up
+
                 setClothesToBePickUpStyle(holder,order);
                 break;
         }
@@ -81,7 +83,7 @@ public class WasherDashboardReceivedClothesAdapter extends RecyclerView.Adapter<
     private void setWasherWeightClothesStylee(OrdersViewHolder holder, Phase1Order order) {
         this.initialize(holder,order);
         holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.washer_rider_on_the_way_to_customer));
-        holder.textViewCourierStatus.setText("Clothes Need to Wash");
+        holder.textViewCourierStatus.setText("Clothes Need to be weighted");
         holder.itemView.setOnClickListener(view -> {
             // Handle item click here
             Intent intent = new Intent(view.getContext(), WasherDashboardPendingrequestClothestoweight.class);
@@ -93,7 +95,7 @@ public class WasherDashboardReceivedClothesAdapter extends RecyclerView.Adapter<
     private void setClothesReadyToPickUpStyle(OrdersViewHolder holder, Phase1Order order) {
         this.initialize(holder,order);
         holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.washer_customer_waiting_for_approval));
-        holder.textViewCourierStatus.setText("Needs to be Weighted");
+        holder.textViewCourierStatus.setText("Clothes Need to Wash");
         holder.itemView.setOnClickListener(view -> {
             // Handle item click here
             Intent intent = new Intent(view.getContext(), WasherDashboardPendingrequestClothesReadyToPickUp.class);
@@ -117,6 +119,7 @@ public class WasherDashboardReceivedClothesAdapter extends RecyclerView.Adapter<
             textViewOrderId = itemView.findViewById(R.id.textViewOrderId);
             textViewClientName = itemView.findViewById(R.id.textViewClientName);
             textViewCourierStatus = itemView.findViewById(R.id.textViewCourierStatus);
+
             // Initialize other TextViews or UI components as needed
         }
 
