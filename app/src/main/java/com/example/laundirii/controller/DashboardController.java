@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.laundirii.model.Client;
 import com.example.laundirii.model.Courier;
+import com.example.laundirii.model.Notification;
 import com.example.laundirii.model.Order;
 import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.model.Washer;
@@ -17,6 +18,7 @@ public class DashboardController {
     private Washer washer;
     private Order order;
     private Phase1Order phase1Order;
+    private Notification notification;
 
     public DashboardController()
     {
@@ -25,6 +27,7 @@ public class DashboardController {
         washer = new Washer();
         order = new Order();
         phase1Order = new Phase1Order();
+        notification = new Notification();
     }
     public DashboardController(Client client)
     {
@@ -58,6 +61,28 @@ public class DashboardController {
     {
         return phase1Order.getPendingDeliveryOnCourier(courierID, context);
     }
+
+    public List<Notification> getNotificationOnClient(int clientID, Context context)
+    {
+        return notification.getNotificationOnClient(clientID, context);
+    }
+
+    public List<Notification> getNotificationOnCourier(int courierID, Context context)
+    {
+        return notification.getNotificationOnCourier(courierID, context);
+    }
+
+    public int getUnreadNotificationCount(int ID, int typeOfUser, Context context)
+    {
+        return notification.getUnreadNotificationCount(ID,typeOfUser,context);
+    }
+
+    public void markNotificationsAsRead(int ID, int typeOfUser, Context context)
+    {
+        notification.markNotificationsAsRead(ID,typeOfUser,context);
+    }
+
+
 
     public List<Phase1Order> getPendingDeliveryOnClient(int clientID, Context context)
     {
