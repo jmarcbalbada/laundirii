@@ -76,6 +76,7 @@ public class DashboardController {
         return phase1Order.getPendingRequestOnCourier(context);
     }
 
+
     public List<Washer> getAvailableWashers(Context context)
     {
         return phase1Order.getAvailableWashers(context);
@@ -100,6 +101,16 @@ public class DashboardController {
     public boolean hasActiveTransactionOnPhase1Order(int courierID, Context context)
     {
         return courier.hasActiveTransactionOnPhase1Order(courierID, context);
+    }
+
+    public boolean hasCourierAlreadyReceivedPaymentPhase1(int courierID, Context context)
+    {
+        return courier.hasCourierAlreadyReceivedPaymentPhase1(courierID, context);
+    }
+
+    public boolean setCourierStatusPhase1OrderOnDatabase(int courierID, boolean status, Context context)
+    {
+        return phase1Order.setCourierStatusPhase1OrderOnDatabase(courierID,status, context);
     }
 
     public boolean updateCourierStatus(int courierID, int status, Context context)

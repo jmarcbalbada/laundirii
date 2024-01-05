@@ -131,6 +131,14 @@ public class Phase1Order implements Serializable {
         return dbHelper.updatePhase1OrderStatusOnDb(courierID, status);
     }
 
+    public boolean setCourierStatusPhase1OrderOnDatabase(int courierID, boolean status, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.setCourierStatusPhase1OrderOnDatabase(courierID, status);
+    }
+
+
+
 //    public boolean insertDummyPhase1Order(Context context)
 //    {
 //        dbHelper = new Connect(context);
@@ -160,6 +168,10 @@ public class Phase1Order implements Serializable {
             case 3: orderStatus = "Courier is on the way to Washer!";
                 break;
             case 4: orderStatus = "Washer Received the Laundry!";
+                break;
+            case 5: orderStatus = "Washer is currently washing the clothes!";
+                break;
+            case 6: orderStatus = "Ready to Collect!";
                 break;
         }
 
