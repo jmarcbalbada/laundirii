@@ -2,7 +2,6 @@ package com.example.laundirii.controller;
 
 import android.content.Context;
 
-import com.example.laundirii.database.Connect;
 import com.example.laundirii.model.Client;
 import com.example.laundirii.model.Courier;
 import com.example.laundirii.model.Order;
@@ -178,5 +177,9 @@ public class DashboardController {
 
     public void updatePhase1OrderTotalDue(int orderID, double totalDue, Context baseContext) {
         phase1Order.updatePhase1OrderTotalDue(orderID, totalDue,baseContext);
+    }
+
+    public void updatePhase1OrderInitialLoad(int orderID, int initialload, Context baseContext) {
+        phase1Order.updatePhase1OrderInitialLoad(orderID, initialload,baseContext);
     }
 }

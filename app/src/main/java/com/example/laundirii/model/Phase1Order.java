@@ -41,7 +41,7 @@ public class Phase1Order implements Serializable {
      3 - Received Client Laundry / Courier on the way to Washer (Courier)
      4 - Washer Received the Laundry (Washer)
      5 - Washer is weighing your clothes!
-     6 -
+     6 - R
      ? - Completed
      */
     private String datePlaced;
@@ -388,5 +388,10 @@ public class Phase1Order implements Serializable {
     public void updatePhase1OrderTotalDue(int orderID, double totalDue, Context baseContext) {
         dbHelper = new Connect(baseContext);
         dbHelper.updatePhase1OrderTotalDue(orderID,totalDue);
+    }
+
+    public void updatePhase1OrderInitialLoad(int orderID, int initialload, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        dbHelper.updatePhase1OrderInitialLoad(orderID,initialload);
     }
 }

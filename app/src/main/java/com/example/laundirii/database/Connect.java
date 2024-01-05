@@ -1439,7 +1439,7 @@ public class Connect extends SQLiteOpenHelper {
     public List<Phase1Order> getWasherReceivedClothes(int washerID, Context context) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS IN (4,5,6);";
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS IN (4,5,6) ORDER BY PHASE1_ORDER_STATUS;";
         String[] selectionArgs = {String.valueOf(washerID)};
 
         Cursor cursor = db.rawQuery(query, selectionArgs);
@@ -1526,6 +1526,8 @@ public class Connect extends SQLiteOpenHelper {
         stmt.bindString(1, formattedDate);
         stmt.bindLong(2, orderID);
 
+        stmt.execute();
+        db.close();
     }
 
     public void updatePhase1OrderTotalDue(int orderID, double totalDue) {
@@ -1538,5 +1540,36 @@ public class Connect extends SQLiteOpenHelper {
         SQLiteStatement stmt = db.compileStatement(updateQuery);
         stmt.bindDouble(1, totalDue);
         stmt.bindLong(2, orderID);
+
+        stmt.execute();
+        db.close();
+
+//        SQLiteDatabase dbb = this.getReadableDatabase();
+//        Cursor duevalue = dbb.rawQuery("SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_ID =? ", new String[]{Integer.toString(orderID)});
+//        if(duevalue.moveToFirst() ) {
+//            int index = duevalue.getColumnIndex(PHASE1_TOTAL_DUE);
+//            if (index != -1) {
+//                double foq;
+//                foq = duevalue.getDouble(index);
+//                Log.e("TOTAL DUE WINSON","Value"+totalDue);
+//            }
+//        }
+
+
+    }
+
+    public void updatePhase1OrderInitialLoad(int orderID, int initialload) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Update statement
+        String updateQuery = "UPDATE PHASE1_ORDER SET PHASE1_INITIAL_LOAD = ? WHERE PHASE1_ORDER_ID = ?";
+
+        // Execute the update statement and get the number of rows affected
+        SQLiteStatement stmt = db.compileStatement(updateQuery);
+        stmt.bindDouble(1, initialload);
+        stmt.bindLong(2, orderID);
+
+        stmt.execute();
+        db.close();
     }
 }
