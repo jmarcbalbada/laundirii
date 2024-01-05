@@ -751,7 +751,24 @@ public class Connect extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT COUNT(*) FROM PHASE1_ORDER " +
                 "WHERE " + PHASE1_ORDER_COURIER_ID + " = ? AND " +
-                PHASE1_ORDER_STATUS + " IN (1, 2, 3)";  // Assuming 1, 2, 3 represent active transaction statuses
+                PHASE1_ORDER_STATUS + " IN (1, 2, 3, 4)";  // Assuming 1, 2, 3 represent active transaction statuses
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(courierID)});
+        if (cursor != null) {
+            cursor.moveToFirst();
+            int rowCount = cursor.getInt(0);
+            cursor.close();
+            return rowCount > 0;
+        }
+
+        return false;
+    }
+
+    public boolean hasCourierAlreadyReceivedPaymentPhase1(int courierID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT COUNT(*) FROM PHASE1_ORDER " +
+                "WHERE " + PHASE1_ORDER_COURIER_ID + " = ? AND " +
+                PHASE1_COURIER_STATUS + " = 1";
 
         Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(courierID)});
         if (cursor != null) {
@@ -771,6 +788,17 @@ public class Connect extends SQLiteOpenHelper {
         values.put("COURIER_STATUS", newStatus ? 1 : 0);  // Assuming 1 represents ON and 0 represents OFF
 
         int rowsAffected = db.update("COURIER", values, "COURIER_ID = ?", new String[]{String.valueOf(courierID)});
+
+        return rowsAffected > 0;
+    }
+
+    public boolean setCourierStatusPhase1OrderOnDatabase(int courierID, boolean newStatus) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("PHASE1_COURIER_STATUS", newStatus ? 1 : 0);  // Assuming 1 represents ON and 0 represents OFF
+
+        int rowsAffected = db.update("PHASE1_ORDER", values, "PHASE1_ORDER_COURIER_ID = ?", new String[]{String.valueOf(courierID)});
 
         return rowsAffected > 0;
     }

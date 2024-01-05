@@ -99,6 +99,14 @@ public class Courier implements Serializable {
         dbHelper = new Connect(context);
         return dbHelper.hasActiveTransactionOnPhase1Order(courierID);
     }
+
+    public boolean hasCourierAlreadyReceivedPaymentPhase1(int courierID, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.hasCourierAlreadyReceivedPaymentPhase1(courierID);
+    }
+
+
 //
 //    public int getCourierStatusOnDb(int courierID, Context context)
 //    {
