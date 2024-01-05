@@ -72,6 +72,17 @@ public class Connect extends SQLiteOpenHelper {
 //    public static final String GRAND_TOTAL = "GRAND_TOTAL";
 //    public static final String DATE_RECEIVED = "DATE_RECEIVED";
 
+    // NOTIFICATION
+    public static final String NOTIFICATION_ID = "NOTIFICATION_ID";
+    public static final String NOTIFICATION_TITLE = "NOTIFICATION_TITLE";
+    public static final String NOTIFICATION_MESSAGE = "NOTIFICATION_MESSAGE";
+    public static final String NOTIFICATION_IS_READ = "NOTIFICATION_IS_READ";
+    public static final String NOTIFICATION_CLIENT_ID = "NOTIFICATION_CLIENT_ID";
+    public static final String NOTIFICATION_COURIER_ID = "NOTIFICATION_COURIER_ID";
+    public static final String NOTIFICATION_WASHER_ID = "NOTIFICATION_WASHER_ID";
+    public static final String NOTIFICATION_DATETIME = "NOTIFICATION_DATETIME";
+
+
     // PHASE 1 ORDER
     public static final String PHASE1_ORDER_ID = "PHASE1_ORDER_ID";
     public static final String PHASE1_ORDER_CLIENT_ID = "PHASE1_ORDER_CLIENT_ID";
@@ -156,6 +167,17 @@ public class Connect extends SQLiteOpenHelper {
                 "PHASE1_DATE_PLACED TEXT" +
                 ");";
 
+        String createNotificationTableStatement = "CREATE TABLE NOTIFICATION (" +
+                "NOTIFICATION_ID INTEGER PRIMARY KEY, " +
+                "NOTIFICATION_TITLE TEXT, " +
+                "NOTIFICATION_MESSAGE TEXT, " +
+                "NOTIFICATION_IS_READ INTEGER, " +  // Use 0 for false, 1 for true
+                "NOTIFICATION_CLIENT_ID INTEGER, " +
+                "NOTIFICATION_COURIER_ID INTEGER, " +
+                "NOTIFICATION_WASHER_ID INTEGER, " +
+                "NOTIFICATION_DATETIME TEXT" +
+                ");";
+
         String createPhase2OrderTableStatement = "CREATE TABLE PHASE2COURIERPICKUP_ORDER (" +
                 "PHASE2_ORDER_ID INTEGER PRIMARY KEY, " +
                 "PHASE2_ORDER_CLIENT_ID INTEGER, " +
@@ -178,6 +200,7 @@ public class Connect extends SQLiteOpenHelper {
         db.execSQL(createFeedbackTableStatement);
         db.execSQL(createPhase1OrderTableStatement);
         db.execSQL(createPhase2OrderTableStatement);
+        db.execSQL(createNotificationTableStatement);
 //        db.execSQL(createOrderTableStatement);
         db.execSQL(createClientTableStatement);
         db.execSQL(createCourierTableStatement);
@@ -269,6 +292,28 @@ public class Connect extends SQLiteOpenHelper {
         db.close();
         return isValid;
     }
+
+    public void insertNotification(int washerID, String title, String message) {
+        SQLiteDatabase db = this.getWritableDatabase();  // Assuming 'this' refers to the Connect instance
+
+        ContentValues values = new ContentValues();
+        values.put("NOTIFICATION_WASHER_ID", washerID);
+        values.put("NOTIFICATION_TITLE", title);
+        values.put("NOTIFICATION_MESSAGE", message);
+        values.put("NOTIFICATION_IS_READ", 0);  // Assuming the notification is initially unread
+
+        // Get current date and time in the specified format
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
+        String dateTime = sdf.format(new Date());
+        values.put("NOTIFICATION_DATETIME", dateTime);
+
+        // Insert the values into the NOTIFICATION table
+        db.insert("NOTIFICATION", null, values);
+
+        // Close the database to avoid memory leaks
+        db.close();
+    }
+
 
     // INSERT CLIENT (REGISTER)
 
