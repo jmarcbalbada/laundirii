@@ -4,9 +4,12 @@ import android.content.Context;
 
 import com.example.laundirii.database.Connect;
 
+
+import java.io.Serializable;
 import java.util.List;
 
-public class Notification {
+public class Notification implements Serializable {
+
     private int NotificationID;
     private String title;
     private String message;
@@ -16,6 +19,8 @@ public class Notification {
     private Courier courier;
     private Washer washer;
     private String dateTime;
+    private Connect dbHelper;
+
     private Connect dbHelper;
 
     public Notification(int notificationID, String title, String message, boolean isRead, Client client, Courier courier, Washer washer, String dateTime) {
@@ -29,8 +34,9 @@ public class Notification {
         this.dateTime = dateTime;
     }
 
-    public Notification()
-    {
+
+    public Notification() {
+        NotificationID = 0;
         this.title = "";
         this.message = "";
         this.isRead = false;
@@ -136,5 +142,14 @@ public class Notification {
 
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public List<Notification> getWasherNotification(int washerID, Context context) {
+        dbHelper = new Connect(context);
+        return dbHelper.getWasherNotification(washerID);
+    }
+    public void sendNotifications(int washerID, int customerID, int courierID, String notificaitonTitle, String notificationMessage, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        dbHelper.sendNotifications(washerID,customerID, courierID,notificaitonTitle ,notificationMessage);
     }
 }

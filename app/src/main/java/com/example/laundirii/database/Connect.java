@@ -1,5 +1,6 @@
 package com.example.laundirii.database;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -293,6 +294,7 @@ public class Connect extends SQLiteOpenHelper {
         db.close();
         return isValid;
     }
+
 
 //    public boolean insertNotificationOnClient(int clientID, String title, String message) {
 //        try {
@@ -1869,4 +1871,81 @@ public class Connect extends SQLiteOpenHelper {
         stmt.execute();
         db.close();
     }
+
+    @SuppressLint("Range")
+    public List<Notification> getWasherNotification(int washerID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Query the Notification table
+        Cursor cursor = db.rawQuery("SELECT * FROM NOTIFICATION WHERE NOTIFICATION_WASHER_ID = ?", new String[]{Integer.toString(washerID)});
+
+        List<Notification> notifications = new ArrayList<>();
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    Notification notification = new Notification();
+                    notification.setNotificationID(cursor.getInt(cursor.getColumnIndex("NOTIFICATION_ID")));
+                    notification.setTitle(cursor.getString(cursor.getColumnIndex("NOTIFICATION_TITLE")));
+                    notification.setMessage(cursor.getString(cursor.getColumnIndex("NOTIFICATION_MESSAGE")));
+                    notification.setRead(cursor.getInt(cursor.getColumnIndex("NOTIFICATION_IS_READ")) == 1); // Assuming 1 represents true in your database
+                    // You may need to adjust the above line based on how your boolean is stored in the database
+
+                    // Populate client, courier, washer objects if needed
+                    notification.setClient(cursor.getInt(cursor.getColumnIndex(NOTIFICATION_CLIENT_ID)) != -1 ? this.getClient(cursor.getInt(cursor.getColumnIndex(NOTIFICATION_CLIENT_ID))) : null);
+                    notification.setCourier(cursor.getInt(cursor.getColumnIndex(NOTIFICATION_COURIER_ID)) != -1 ? this.getCourier(cursor.getInt(cursor.getColumnIndex(NOTIFICATION_COURIER_ID))) : null);
+                    notification.setWasher(cursor.getInt(cursor.getColumnIndex(NOTIFICATION_WASHER_ID)) != -1 ? this.getWasher(cursor.getInt(cursor.getColumnIndex(NOTIFICATION_WASHER_ID))) : null);
+
+
+                    notification.setDateTime(cursor.getString(cursor.getColumnIndex("NOTIFICATION_DATETIME")));
+
+                    notifications.add(notification);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+            db.close();
+        }
+
+        return notifications;
+    }
+
+    public void sendNotifications(int washerID, int customerID, int courierID, String notificationTitle, String notificationMessage) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("NOTIFICATION_TITLE", notificationTitle);
+        values.put("NOTIFICATION_MESSAGE", notificationMessage);
+        values.put("NOTIFICATION_IS_READ", 0); // Assuming the initial state is unread
+
+        // set the value of ID to -1 if the value is 0
+
+        if(customerID != 0){
+            values.put("NOTIFICATION_CLIENT_ID", customerID );
+        }
+        if(courierID != 0){
+            values.put("NOTIFICATION_COURIER_ID", courierID );
+        }
+        if(washerID != 0){
+            values.put("NOTIFICATION_WASHER_ID", washerID );
+        }
+
+        // Get the current date and time
+        String dateTime = getCurrentDateTime();
+        values.put("NOTIFICATION_DATETIME", dateTime);
+
+        // Insert the values into the table
+        long newRowId = db.insert("NOTIFICATION", null, values);
+
+        db.close();
+    }
+
+    private String getCurrentDateTime() {
+        // Get the current date and time in the desired format
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
+
 }

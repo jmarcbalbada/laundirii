@@ -74,11 +74,24 @@ public class WasherDashboardPendingrequestReceivedClothes extends AppCompatActiv
                             Toast.makeText(getApplicationContext(), "Accepted", Toast.LENGTH_SHORT).show();
 
                             // TODO
-                            //implement when order not received
+                            //implement when clothes received
                             // set order status to 4
                             dashboardController.updatePhase1OrderStatus(selectedOrder.getOrderID(), 4,getBaseContext());
+
                             // change date received PHASE1_ORDER
                             dashboardController.updatePhase1OrderDateReceivedToCurrentDate(selectedOrder.getOrderID() ,getBaseContext());
+
+                            // Send notification
+                            //These are the actual message
+                            String notificaitonTitle = selectedOrder.getWasher().getShopName()+" - Clothes Succesfully Delivered";
+                            String notificationMessage = "Thank you for the patronage will clean you clothes ASAP";
+                            // Send Notification to Client
+                            dashboardController.sendNotifications(0,selectedOrder.getClient().getCustomerID(),0,notificaitonTitle,notificationMessage,getBaseContext());
+
+                            notificaitonTitle = selectedOrder.getWasher().getShopName()+" - Delivery Received";
+                            notificationMessage = "We received the delivery.";
+                            // Send Notification to Courier
+                            dashboardController.sendNotifications(0,0,selectedOrder.getCourier().getCourierID(),notificaitonTitle,notificationMessage,getBaseContext());
 
                             Intent intent = new Intent(WasherDashboardPendingrequestReceivedClothes.this, WasherDashboardActivity.class);
                             startActivity(intent);

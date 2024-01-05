@@ -218,4 +218,12 @@ public class DashboardController {
     public void updatePhase1OrderInitialLoad(int orderID, int initialload, Context baseContext) {
         phase1Order.updatePhase1OrderInitialLoad(orderID, initialload,baseContext);
     }
+
+    public List<Notification> getWasherNotification(int washerID, Context context) {
+        return notification.getWasherNotification(washerID,context);
+    }
+
+    public void sendNotifications(int washerID, int customerID, int courierID, String notificaitonTitle , String notificationMessage, Context baseContext) {
+        notification.sendNotifications(washerID,customerID,courierID,notificaitonTitle,notificationMessage,baseContext);
+    }
 }

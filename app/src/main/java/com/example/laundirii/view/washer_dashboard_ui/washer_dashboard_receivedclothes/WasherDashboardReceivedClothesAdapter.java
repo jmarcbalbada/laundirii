@@ -12,12 +12,14 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.laundirii.R;
+import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.model.Phase1Order;
 
 import java.util.List;
 
 public class WasherDashboardReceivedClothesAdapter extends RecyclerView.Adapter<WasherDashboardReceivedClothesAdapter.OrdersViewHolder> {
 
+    private DashboardController dashboardController;
     private List<Phase1Order> orders;
     private Context context;
 
@@ -29,6 +31,7 @@ public class WasherDashboardReceivedClothesAdapter extends RecyclerView.Adapter<
     @NonNull
     @Override
     public OrdersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        dashboardController = new DashboardController();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.washer_tolist_receivedclothes, parent, false);
         return new OrdersViewHolder(view);
     }
@@ -70,14 +73,6 @@ public class WasherDashboardReceivedClothesAdapter extends RecyclerView.Adapter<
         this.initialize(holder,order);
         holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.washer_rider_on_the_way_here));
         holder.textViewCourierStatus.setText("Pending to be Picked Up");
-//       TODO Phase2Order
-
-//        holder.itemView.setOnClickListener(view -> {
-//            // Handle item click here
-//            Intent intent = new Intent(view.getContext(), WasherDashboardPendingrequestToBePickUp.class);
-//            intent.putExtra("selectedOrder", order);
-//            view.getContext().startActivity(intent);
-//        });
     }
 
     private void setWasherWeightClothesStylee(OrdersViewHolder holder, Phase1Order order) {

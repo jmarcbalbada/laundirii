@@ -44,8 +44,8 @@ public class Phase1Order implements Serializable {
      6 - Ready to Collect! / Completed!
      */
     private String datePlaced;
-    private Connect dbHelper;
 
+    private Connect dbHelper;
     public Phase1Order(int orderID, Client client, Washer washer, Courier courier,
                        int courierStatus, double totalCourierAmount, String dateCourier,
                        double totalDue, double totalPaid, int paymentStatus, String dateReceived, int initialLoad, int phase1OrderStatus, String datePlaced) {

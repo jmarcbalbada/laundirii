@@ -90,11 +90,23 @@ public class WasherDashboardPendingrequestRequestConfirmation extends AppCompatA
                             //getting the phase1OrderID
                             int phase1OrderID = selectedOrder.getOrderID();
 
+                            String notificaitonTitle = selectedOrder.getWasher().getShopName()+" - Request Accepted";
+                            String notificationMessage = "Courier is coming to pick up clothes";
+                            // Sending Notification to Client
+                            dashboardController.sendNotifications(0,selectedOrder.getClient().getCustomerID(),0,notificaitonTitle,notificationMessage,getBaseContext());
+
+
+                            notificaitonTitle = selectedOrder.getWasher().getShopName()+" - Request Accepted";
+                            notificationMessage = "Collect the clothes" ;
+                            // Sending Notification to Courier
+                            dashboardController.sendNotifications(0,0,availableCourierID,notificaitonTitle,notificationMessage,getBaseContext());
+
+
                             int result = dashboardController.washerAcceptClientRequest(phase1OrderID,availableCourierID,getBaseContext());
                             if (result == 0){
                                 return;
                             }
-                            Toast.makeText(getApplicationContext(), "Accepted", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Courier has been assigned", Toast.LENGTH_SHORT).show();
 
 
                             Intent intent = new Intent(WasherDashboardPendingrequestRequestConfirmation.this, WasherDashboardActivity.class);

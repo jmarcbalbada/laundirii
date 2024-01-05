@@ -77,10 +77,13 @@ public class WasherDashboardPendingrequestClothestoweight extends AppCompatActiv
                             double totalDue = (finalInitialLoad1 *selectedOrder.getWasher().getRatePerKg())+selectedOrder.getTotalCourierAmount();
                             dashboardController.updatePhase1OrderTotalDue(selectedOrder.getOrderID(),totalDue,getBaseContext());
 
-                            Log.e("YAWA1","order ID"+selectedOrder.getOrderID());
-                            Log.e("YAWA1","totalvalue"+totalDue);
+                            // Send notification
 
-
+                            //These are the actual message
+                            String notificaitonTitle = selectedOrder.getWasher().getShopName()+" - Clothes Weighted";
+                            String notificationMessage = "Recalibrated your clothes weight, total amount to pay: " + totalDue;
+                            // Send Notification to Client
+                            dashboardController.sendNotifications(0,selectedOrder.getClient().getCustomerID(),0,notificaitonTitle,notificationMessage,getBaseContext());
 
                             Intent intent = new Intent(WasherDashboardPendingrequestClothestoweight.this, WasherDashboardActivity.class);
                             startActivity(intent);
