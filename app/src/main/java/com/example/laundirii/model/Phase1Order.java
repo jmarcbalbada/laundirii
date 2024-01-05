@@ -39,10 +39,9 @@ public class Phase1Order implements Serializable {
      1 - Courier on the way to Client
      2 - Courier Arrived (Courier)
      3 - Received Client Laundry / Courier on the way to Washer (Courier)
-     4 - Washer Received the Laundry (Washer)
-     5 - Washer is weighing your clothes!
-     6 - R
-     ? - Completed
+     4 - Washer is receiving and weighing your clothes!
+     5 - Washer is currently washing the clothes!
+     6 - Ready to Collect! / Completed!
      */
     private String datePlaced;
     private Connect dbHelper;
