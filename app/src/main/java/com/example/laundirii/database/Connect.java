@@ -296,26 +296,26 @@ public class Connect extends SQLiteOpenHelper {
     }
 
     // washer didnt use this yet
-    public void insertNotification(int washerID, String title, String message) {
-        SQLiteDatabase db = this.getWritableDatabase();  // Assuming 'this' refers to the Connect instance
-
-        ContentValues values = new ContentValues();
-        values.put("NOTIFICATION_WASHER_ID", washerID);
-        values.put("NOTIFICATION_TITLE", title);
-        values.put("NOTIFICATION_MESSAGE", message);
-        values.put("NOTIFICATION_IS_READ", 0);  // Assuming the notification is initially unread
-
-        // Get current date and time in the specified format
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
-        String dateTime = sdf.format(new Date());
-        values.put("NOTIFICATION_DATETIME", dateTime);
-
-        // Insert the values into the NOTIFICATION table
-        db.insert("NOTIFICATION", null, values);
-
-        // Close the database to avoid memory leaks
-        db.close();
-    }
+//    public void insertNotification(int washerID, String title, String message) {
+//        SQLiteDatabase db = this.getWritableDatabase();  // Assuming 'this' refers to the Connect instance
+//
+//        ContentValues values = new ContentValues();
+//        values.put("NOTIFICATION_WASHER_ID", washerID);
+//        values.put("NOTIFICATION_TITLE", title);
+//        values.put("NOTIFICATION_MESSAGE", message);
+//        values.put("NOTIFICATION_IS_READ", 0);  // Assuming the notification is initially unread
+//
+//        // Get current date and time in the specified format
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
+//        String dateTime = sdf.format(new Date());
+//        values.put("NOTIFICATION_DATETIME", dateTime);
+//
+//        // Insert the values into the NOTIFICATION table
+//        db.insert("NOTIFICATION", null, values);
+//
+//        // Close the database to avoid memory leaks
+//        db.close();
+//    }
 
 
     // INSERT CLIENT (REGISTER)
@@ -1687,16 +1687,25 @@ public class Connect extends SQLiteOpenHelper {
         return notifications;
     }
 
-    public void washerSendNotificationToClient(int washerID, int customerID, int courierID, String notificationTitle, String notificationMessage) {
+    public void sendNotifications(int washerID, int customerID, int courierID, String notificationTitle, String notificationMessage) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put("NOTIFICATION_TITLE", notificationTitle);
         values.put("NOTIFICATION_MESSAGE", notificationMessage);
         values.put("NOTIFICATION_IS_READ", 0); // Assuming the initial state is unread
-        values.put("NOTIFICATION_CLIENT_ID", customerID);
-        values.put("NOTIFICATION_COURIER_ID", courierID); // You may adjust this based on your logic
-        values.put("NOTIFICATION_WASHER_ID", washerID);
+
+        // set the value of ID to -1 if the value is 0
+
+        if(customerID != 0){
+            values.put("NOTIFICATION_CLIENT_ID", customerID );
+        }
+        if(courierID != 0){
+            values.put("NOTIFICATION_COURIER_ID", courierID );
+        }
+        if(washerID != 0){
+            values.put("NOTIFICATION_WASHER_ID", washerID );
+        }
 
         // Get the current date and time
         String dateTime = getCurrentDateTime();

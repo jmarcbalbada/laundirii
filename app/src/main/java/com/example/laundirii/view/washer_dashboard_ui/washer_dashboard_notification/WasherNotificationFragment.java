@@ -27,6 +27,7 @@ public class WasherNotificationFragment extends Fragment {
     private DashboardController dashboardController;
     private SharedPreferences washerSharedPreferences;
     private Washer washer;
+    private ListView listView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -48,18 +49,10 @@ public class WasherNotificationFragment extends Fragment {
         notifications = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, notificationList);
         listView.setAdapter(notifications);
 
-        // when List View Item is selected it will show the showNotification
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-
-            // get the selected notification
-            Notification notification_item = (Notification) parent.getItemAtPosition(position);
-
-            // show a dialog with buttons based on the notification
-            showNotification(notification_item);
-        });
 
         return root;
     }
+
 
     private void showNotification(Notification notification) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());

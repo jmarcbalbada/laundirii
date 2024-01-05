@@ -55,11 +55,14 @@ public class WasherDashboardPendingrequestClothesReadyToPickUp extends AppCompat
 
                             // TODO send notification to Client
                             // this function will only notify the client and washer
+
+                            // Send notification
+
+                            //These are the actual message
                             String notificaitonTitle = selectedOrder.getWasher().getShopName()+" - Clothes Ready to Pick up";
                             String notificationMessage = "Clothes ready to collect. Total Amount to pay: " + selectedOrder.getTotalDue();
-                            dashboardController.washerSendNotificationToClient(selectedOrder.getWasher().getWasherID(),selectedOrder.getClient().getCustomerID(),0,notificaitonTitle,notificationMessage,getBaseContext());
-                            Toast.makeText(getApplicationContext(), "Clothes will soon be pick up", Toast.LENGTH_SHORT).show();
-
+                            // Send Notification to Client
+                            dashboardController.sendNotifications(0,selectedOrder.getClient().getCustomerID(),0,notificaitonTitle,notificationMessage,getBaseContext());
 
                             Intent intent = new Intent(WasherDashboardPendingrequestClothesReadyToPickUp.this, WasherDashboardActivity.class);
                             startActivity(intent);

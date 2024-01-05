@@ -31,7 +31,14 @@ public class Notification implements Serializable {
     }
 
     public Notification() {
-
+        NotificationID = 0;
+        this.title = "";
+        this.message = "";
+        this.isRead = false;
+        this.client = new Client();
+        this.courier = new Courier();
+        this.washer = new Washer();
+        this.dateTime = "";
     }
 
 
@@ -113,8 +120,8 @@ public class Notification implements Serializable {
         dbHelper = new Connect(context);
         return dbHelper.getWasherNotification(washerID);
     }
-    public void washerSendNotificationToClient(int washerID, int customerID, int courierID, String notificaitonTitle, String notificationMessage, Context baseContext) {
+    public void sendNotifications(int washerID, int customerID, int courierID, String notificaitonTitle, String notificationMessage, Context baseContext) {
         dbHelper = new Connect(baseContext);
-        dbHelper.washerSendNotificationToClient(washerID,customerID, courierID,notificaitonTitle ,notificationMessage);
+        dbHelper.sendNotifications(washerID,customerID, courierID,notificaitonTitle ,notificationMessage);
     }
 }

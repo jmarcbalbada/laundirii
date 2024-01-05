@@ -27,6 +27,7 @@ public class DashboardController {
         washer = new Washer();
         order = new Order();
         phase1Order = new Phase1Order();
+        notification = new Notification();
     }
     public DashboardController(Client client)
     {
@@ -200,7 +201,7 @@ public class DashboardController {
         return notification.getWasherNotification(washerID,context);
     }
 
-    public void washerSendNotificationToClient(int washerID,int customerID,int courierID, String notificaitonTitle ,String notificationMessage, Context baseContext) {
-        notification.washerSendNotificationToClient(washerID,customerID,courierID,notificaitonTitle,notificationMessage,baseContext);
+    public void sendNotifications(int washerID, int customerID, int courierID, String notificaitonTitle , String notificationMessage, Context baseContext) {
+        notification.sendNotifications(washerID,customerID,courierID,notificaitonTitle,notificationMessage,baseContext);
     }
 }
