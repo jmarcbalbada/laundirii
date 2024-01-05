@@ -1,14 +1,22 @@
 package com.example.laundirii.model;
 
+import android.content.Context;
+
+import com.example.laundirii.database.Connect;
+
+import java.util.List;
+
 public class Notification {
     private int NotificationID;
     private String title;
     private String message;
+    // 0 - unread , 1 - read
     private boolean isRead;
     private Client client;
     private Courier courier;
     private Washer washer;
     private String dateTime;
+    private Connect dbHelper;
 
     public Notification(int notificationID, String title, String message, boolean isRead, Client client, Courier courier, Washer washer, String dateTime) {
         NotificationID = notificationID;
@@ -21,15 +29,50 @@ public class Notification {
         this.dateTime = dateTime;
     }
 
+    public Notification()
+    {
+        this.title = "";
+        this.message = "";
+        this.isRead = false;
+        this.client = new Client();
+        this.courier = new Courier();
+        this.washer = new Washer();
+        this.dateTime = "";
+    }
+
     @Override
     public String toString() {
-        return "Notification{" +
-                "NotificationID=" + NotificationID +
-                ", Title='" + title + '\'' +
-                ", Message='" + message + '\'' +
-                ", Date='" + dateTime + '\'' +
-                '}';
+        return
+                "\n" + this.title + "\n\n"
+                + this.message + "\n"
+                + this.dateTime + "\n";
     }
+
+    public List<Notification> getNotificationOnClient(int clientID, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.getNotificationOnClient(clientID);
+    }
+
+    public List<Notification> getNotificationOnCourier(int courierID, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.getNotificationOnCourier(courierID);
+    }
+
+    public int getUnreadNotificationCount(int ID, int typeOfUser, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.getUnreadNotificationCount(ID,typeOfUser);
+    }
+
+    public void markNotificationsAsRead(int ID, int typeOfUser, Context context)
+    {
+        dbHelper = new Connect(context);
+        dbHelper.markNotificationsAsRead(ID,typeOfUser);
+    }
+
+
 
     public int getNotificationID() {
         return NotificationID;

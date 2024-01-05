@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import com.example.laundirii.R;
 import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.databinding.ActivityCourierDashboardBinding;
 import com.example.laundirii.model.Courier;
+import com.example.laundirii.view.client_dashboard_ui.ClientDashboardActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -34,6 +36,8 @@ public class CourierDashboardActivity extends AppCompatActivity {
     private TextView navCourierNameText;
     private TextView navPhoneNoText;
     private Switch courierSwitch;
+    public static int notification_counter_number = 0;
+    public static TextView notificationCounter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +64,20 @@ public class CourierDashboardActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_courier_dashboard);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        setCourier();
+        notification_counter_number = dashboardController.getUnreadNotificationCount(courier.getCourierID(),1,this);
+        if(notification_counter_number > 0)
+        {
+            LayoutInflater li = LayoutInflater.from(CourierDashboardActivity.this);
+            notificationCounter = (TextView) li.inflate(R.layout.notification_counter, null);
+            navigationView.getMenu().findItem(R.id.cour_nav_notification).setActionView(notificationCounter);
+            showNotificationCounter(notification_counter_number);
+        }
 
         //initialize
         View headerView = binding.navView.getHeaderView(0);
         navCourierNameText = headerView.findViewById(R.id.navCourierName);
         navPhoneNoText = headerView.findViewById(R.id.navPhoneNo);
-        setCourier();
 
         // instantiate navigation bar values
         navCourierNameText.setText("Good day, " + courier.getName() + "!");
@@ -131,6 +143,18 @@ public class CourierDashboardActivity extends AppCompatActivity {
         // fetch courier
         courier = dashboardController.getCourier(courierUsername, this);
         Log.e("DashboardCourier", courier.toString());
+    }
+
+    public static void showNotificationCounter(int count)
+    {
+        if (notificationCounter != null) {
+            if (count > 0) {
+                notificationCounter.setText(String.valueOf(count));
+                notificationCounter.setVisibility(View.VISIBLE);
+            } else {
+                notificationCounter.setVisibility(View.GONE);
+            }
+        }
     }
 
     @Override
