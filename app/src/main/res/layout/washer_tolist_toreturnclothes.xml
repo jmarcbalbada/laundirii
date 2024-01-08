@@ -1,0 +1,59 @@
+<!-- your_client_item_layout.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- Your client item UI components go here -->
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20px"
+        android:shadowColor="@color/black"
+        android:text="Title"
+        android:textColor="@color/black"
+        android:typeface="monospace" />
+
+    <TextView
+        android:padding="20px"
+        android:shadowColor="@color/black"
+        android:textColor="@color/black"
+        android:id="@+id/textViewMessage"
+        android:typeface="monospace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Message" />
+    
+    <TextView
+        android:id="@+id/textViewOrderId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10px"
+        android:text="Order ID" />
+
+    <TextView
+        android:padding="10px"
+        android:id="@+id/textViewClientName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="Client Name" />
+
+    <TextView
+        android:padding="20px"
+        android:shadowColor="@color/black"
+        android:textColor="@color/black"
+        android:id="@+id/textViewCourierStatus"
+        android:typeface="monospace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status" />
+
+
+
+    <!-- Add other TextViews or UI components as needed -->
+
+</LinearLayout>

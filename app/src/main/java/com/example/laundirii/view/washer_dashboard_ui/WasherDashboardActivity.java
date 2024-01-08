@@ -50,7 +50,7 @@ public class WasherDashboardActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.washer_history_fragment, R.id.washer_pendingrequest_fragment, R.id.washer_nav_notification,R.id.washer_received_clothes_fragment)
+                R.id.washer_history_fragment, R.id.washer_pendingrequest_fragment, R.id.washer_nav_notification,R.id.washer_received_clothes_fragment,R.id.washer_clothes_to_return_fragment)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_washer_dashboard_ui);
