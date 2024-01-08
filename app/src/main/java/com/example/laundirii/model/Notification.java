@@ -21,8 +21,6 @@ public class Notification implements Serializable {
     private String dateTime;
     private Connect dbHelper;
 
-    private Connect dbHelper;
-
     public Notification(int notificationID, String title, String message, boolean isRead, Client client, Courier courier, Washer washer, String dateTime) {
         NotificationID = notificationID;
         this.title = title;

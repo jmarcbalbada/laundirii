@@ -41,7 +41,8 @@ public class Phase1Order implements Serializable {
      3 - Received Client Laundry / Courier on the way to Washer (Courier)
      4 - Washer is receiving and weighing your clothes!
      5 - Washer is currently washing the clothes!
-     6 - Ready to Collect! / Completed!
+     6 - Ready to Collect!
+     7 - Completed!
      */
     private String datePlaced;
 
@@ -173,6 +174,9 @@ public class Phase1Order implements Serializable {
                 break;
             case 6: orderStatus = "Ready to Collect!";
                 break;
+            case 7: orderStatus = "Completed!";
+                break;
+
         }
 
         return "PICKUP from Client to Washer" + "\n" +

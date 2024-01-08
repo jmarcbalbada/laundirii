@@ -1,10 +1,8 @@
 package com.example.laundirii.model;
 
-import com.example.laundirii.database.Connect;
-
 import java.io.Serializable;
 
-public class Phase2CourierPickup_Order implements Serializable {
+public class Phase2Order implements Serializable {
     private int orderID;
     private Client client;
     private Washer washer;
@@ -16,10 +14,27 @@ public class Phase2CourierPickup_Order implements Serializable {
     private double totalPaid;
     private int paymentStatus;
     private String dateReceived;
+    /*
+     -1 - Invalid / Cancelled
 
-    public Phase2CourierPickup_Order(int orderID, Client client, Washer washer, Courier courier,
-                                     int courierStatus, double totalCourierAmount, String dateCourier,
-                                     double totalDue, double totalPaid, int paymentStatus, String dateReceived) {
+     COURIER COLLECT:
+     10 - Client payment pending (Payment Status should be 1)
+     11 - Courier on the way to Washer
+     12 - Courier Arrived (Courier)
+     13 - Washer Hands over the laundry to Courier and pays courier (Processing)
+     14 - Received Client Clean Laundry (Courier must received the payment) (Processing)
+     15 - Courier on the way to Client!
+     16 - Courier arrived to Client
+     17 - Completed!
+
+     SELF COLLECT:
+     20
+     */
+    private int phase2OrderStatus;
+
+    public Phase2Order(int orderID, Client client, Washer washer, Courier courier,
+                       int courierStatus, double totalCourierAmount, String dateCourier,
+                       double totalDue, double totalPaid, int paymentStatus, String dateReceived, int phase2OrderStatus) {
         this.orderID = orderID;
         this.client = client;
         this.washer = washer;
@@ -31,9 +46,10 @@ public class Phase2CourierPickup_Order implements Serializable {
         this.totalPaid = totalPaid;
         this.paymentStatus = paymentStatus;
         this.dateReceived = dateReceived;
+        this.phase2OrderStatus = phase2OrderStatus;
     }
 
-    public Phase2CourierPickup_Order()
+    public Phase2Order()
     {
 
     }
@@ -41,7 +57,7 @@ public class Phase2CourierPickup_Order implements Serializable {
     @Override
     public String toString() {
         String paymentStat = paymentStatus == 0 ? "Unpaid" : "Paid";
-        return "PICKUP from Washer to Client:" + "\n" +
+        return "COLLECT from Washer to Client:" + "\n" +
                 "Order ID =\t" + orderID + "\n" +
                 "Client =\t" + client.getName() + "\n" +
                 "Client Address =\t" + client.getAddress() + "\n" +

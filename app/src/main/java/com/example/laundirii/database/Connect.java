@@ -102,7 +102,7 @@ public class Connect extends SQLiteOpenHelper {
     public static final String PHASE1_DATE_PLACED = "PHASE1_DATE_PLACED";
 
 
-    // PHASE 2 -  COURIER PICKUP ORDER
+    // PHASE 2 ORDER
     public static final String PHASE2_ORDER_ID = "PHASE2_ORDER_ID";
     public static final String PHASE2_ORDER_CLIENT_ID = "PHASE2_ORDER_CLIENT_ID";
     public static final String PHASE2_ORDER_WASHER_ID = "PHASE2_ORDER_WASHER_ID";
@@ -114,6 +114,7 @@ public class Connect extends SQLiteOpenHelper {
     public static final String PHASE2_TOTAL_PAID = "PHASE2_TOTAL_PAID";
     public static final String PHASE2_PAYMENT_STATUS = "PHASE2_PAYMENT_STATUS";
     public static final String PHASE2_DATE_RECEIVED = "PHASE2_DATE_RECEIVED";
+    public static final String PHASE2_ORDER_STATUS = "PHASE2_ORDER_STATUS";
 
     // FEEDBACK
     public static final String FEEDBACK_ID = "FEEDBACK_ID";
@@ -180,7 +181,7 @@ public class Connect extends SQLiteOpenHelper {
                 "NOTIFICATION_DATETIME TEXT" +
                 ");";
 
-        String createPhase2OrderTableStatement = "CREATE TABLE PHASE2COURIERPICKUP_ORDER (" +
+        String createPhase2OrderTableStatement = "CREATE TABLE PHASE2_ORDER (" +
                 "PHASE2_ORDER_ID INTEGER PRIMARY KEY, " +
                 "PHASE2_ORDER_CLIENT_ID INTEGER, " +
                 "PHASE2_ORDER_WASHER_ID INTEGER, " +
@@ -191,7 +192,8 @@ public class Connect extends SQLiteOpenHelper {
                 "PHASE2_TOTAL_DUE REAL, " +
                 "PHASE2_TOTAL_PAID REAL, " +
                 "PHASE2_PAYMENT_STATUS INTEGER, " +
-                "PHASE2_DATE_RECEIVED TEXT" +
+                "PHASE2_DATE_RECEIVED TEXT," +
+                "PHASE2_ORDER_STATUS INTEGER" +
                 ");";
         String createFeedbackTableStatement = "CREATE TABLE FEEDBACK (" +
                 "FEEDBACK_ID INTEGER PRIMARY KEY, " +
@@ -217,6 +219,7 @@ public class Connect extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS ORDER_TABLE");
         db.execSQL("DROP TABLE IF EXISTS FEEDBACK");
         db.execSQL("DROP TABLE IF EXISTS PHASE1_ORDER");
+        db.execSQL("DROP TABLE IF EXISTS PHASE2_ORDER");
         onCreate(db);
     }
 
