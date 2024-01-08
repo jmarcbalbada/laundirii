@@ -26,6 +26,7 @@ import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.databinding.ClientFragmentCurrentBinding;
 import com.example.laundirii.model.Client;
 import com.example.laundirii.model.Phase1Order;
+import com.example.laundirii.model.Phase2Order;
 import com.example.laundirii.view.client_dashboard_ui.BookServiceActivity;
 
 import java.text.ParseException;
@@ -95,6 +96,9 @@ public class CurrentFragment extends Fragment {
                         break;
                     case 5:
                         break;
+                        // ready to collect
+                    case 6: showCustomDialogReadyCollect(selectedOrder);
+                        break;
                 }
             }
         });
@@ -144,6 +148,47 @@ public class CurrentFragment extends Fragment {
             }
         });
     }
+
+    private void showCustomDialogReadyCollect(Phase1Order phase1Order) {
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.popup_client_ready_to_collect, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+        builder.setTitle("Reminder!");
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        TextView textViewNoButton = dialogView.findViewById(R.id.textViewClientReadyCollectContentNoButton);
+        TextView textViewYesButton = dialogView.findViewById(R.id.textViewClientReadyCollectContentYesButton);
+
+        textViewNoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        textViewYesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean success = dashboardController.updatePhase1OrderStatus(phase1Order.getOrderID(), 7, getContext());
+                displayPendingOrders();
+                if(success)
+                {
+                    Toast.makeText(getContext(), "Success!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(getContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+                displayPendingOrders();
+            }
+        });
+    }
+
 
     public void checkPopupStatus()
     {

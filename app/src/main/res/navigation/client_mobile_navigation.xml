@@ -10,6 +10,11 @@
         android:name="com.example.laundirii.view.client_dashboard_ui.client_dashboard_current.CurrentFragment"
         android:label="@string/menu_current"
         tools:layout="@layout/client_fragment_current" />
+    <fragment
+        android:id="@+id/client_nav_collect"
+        android:name="com.example.laundirii.view.client_dashboard_ui.client_dashboard_collect.ClientCollectFragment"
+        android:label="Collect Orders"
+        tools:layout="@layout/client_fragment_collect" />
 
     <fragment
         android:id="@+id/nav_history"
@@ -22,4 +27,5 @@
         android:name="com.example.laundirii.view.client_dashboard_ui.client_dashboard_notification.ClientNotificationFragment"
         android:label="@string/client_menu_notification"
         tools:layout="@layout/client_fragment_notification" />
+
 </navigation>

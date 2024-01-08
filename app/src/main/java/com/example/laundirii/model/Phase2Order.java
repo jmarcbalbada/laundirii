@@ -1,5 +1,7 @@
 package com.example.laundirii.model;
 
+import com.example.laundirii.database.Connect;
+
 import java.io.Serializable;
 
 public class Phase2Order implements Serializable {
@@ -16,6 +18,7 @@ public class Phase2Order implements Serializable {
     private String dateReceived;
     /*
      -1 - Invalid / Cancelled
+     0 - General Pending
 
      COURIER COLLECT:
      10 - Client payment pending (Payment Status should be 1)
@@ -31,10 +34,12 @@ public class Phase2Order implements Serializable {
      20
      */
     private int phase2OrderStatus;
+    private String referenceNo;
+    private Connect dbHelper;
 
     public Phase2Order(int orderID, Client client, Washer washer, Courier courier,
                        int courierStatus, double totalCourierAmount, String dateCourier,
-                       double totalDue, double totalPaid, int paymentStatus, String dateReceived, int phase2OrderStatus) {
+                       double totalDue, double totalPaid, int paymentStatus, String dateReceived, int phase2OrderStatus, String referenceNo) {
         this.orderID = orderID;
         this.client = client;
         this.washer = washer;
@@ -47,11 +52,22 @@ public class Phase2Order implements Serializable {
         this.paymentStatus = paymentStatus;
         this.dateReceived = dateReceived;
         this.phase2OrderStatus = phase2OrderStatus;
+        this.referenceNo = referenceNo;
     }
 
     public Phase2Order()
     {
-
+        client = new Client();
+        washer = new Washer();
+        courier = new Courier();
+        courierStatus = 0;
+        totalCourierAmount = 0;
+        dateCourier = "";
+        totalDue = 0;
+        totalPaid = 0;
+        paymentStatus = 0;
+        phase2OrderStatus = 0;
+        referenceNo = "";
     }
 
     @Override
@@ -67,6 +83,22 @@ public class Phase2Order implements Serializable {
                 "Total Due =\t" + this.totalDue + "\n" +
                 "Total Paid =\t" + this.totalPaid + "\n" +
                 "Payment Status =\t" + paymentStat + "\n";
+    }
+
+    public String getReferenceNo() {
+        return referenceNo;
+    }
+
+    public void setReferenceNo(String referenceNo) {
+        this.referenceNo = referenceNo;
+    }
+
+    public int getPhase2OrderStatus() {
+        return phase2OrderStatus;
+    }
+
+    public void setPhase2OrderStatus(int phase2OrderStatus) {
+        this.phase2OrderStatus = phase2OrderStatus;
     }
 
     public int getOrderID() {
