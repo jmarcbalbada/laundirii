@@ -9,6 +9,10 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_current" />
         <item
+            android:id="@+id/client_nav_collect"
+            android:icon="@android:drawable/ic_menu_today"
+            android:title="Ready to pick-up orders" />
+        <item
             android:id="@+id/nav_history"
             android:icon="@android:drawable/ic_menu_recent_history"
             android:title="@string/menu_history" />
