@@ -16,6 +16,7 @@ import com.example.laundirii.model.Client;
 import com.example.laundirii.model.Courier;
 import com.example.laundirii.model.Notification;
 import com.example.laundirii.model.Phase1Order;
+import com.example.laundirii.model.Phase2Order;
 import com.example.laundirii.model.Washer;
 
 import java.text.ParseException;
@@ -1950,5 +1951,39 @@ public class Connect extends SQLiteOpenHelper {
         return dateFormat.format(date);
     }
 
+
+    @SuppressLint("Range")
+    public List<Phase2Order> getWasherPhase2PendingOrder(int washerID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_WASHER_ID = ?";
+        String[] selectionArgs = {String.valueOf(washerID)};
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        List<Phase2Order> phase2OrderList = new ArrayList<>();
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    Phase2Order phase2Order = new Phase2Order();
+                    // Populate the Phase2Order object with data from the cursor
+                    phase2Order.setOrderID(cursor.getInt(cursor.getColumnIndex("PHASE2_ORDER_ID")));
+                    phase2Order.setClient(this.getClient(cursor.getInt(cursor.getColumnIndex("PHASE2_ORDER_CLIENT_ID"))));
+                    phase2Order.setWasher(this.getWasher(cursor.getInt(cursor.getColumnIndex("PHASE2_ORDER_WASHER_ID"))));
+                    phase2Order.setCourier(this.getCourier(cursor.getInt(cursor.getColumnIndex("PHASE2_ORDER_COURIER_ID"))));
+                    phase2Order.setCourierStatus(cursor.getInt(cursor.getColumnIndex("PHASE2_COURIER_STATUS")));
+                    phase2Order.setTotalCourierAmount(cursor.getFloat(cursor.getColumnIndex("PHASE2_TOTAL_COURIER_AMOUNT")));
+                    // Continue populating other fields as needed
+
+                    phase2OrderList.add(phase2Order);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+            db.close();
+        }
+
+        return phase2OrderList;
+    }
 
 }

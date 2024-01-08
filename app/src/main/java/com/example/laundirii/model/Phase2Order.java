@@ -1,6 +1,11 @@
 package com.example.laundirii.model;
 
+import android.content.Context;
+
+import com.example.laundirii.database.Connect;
+
 import java.io.Serializable;
+import java.util.List;
 
 public class Phase2Order implements Serializable {
     private int orderID;
@@ -14,22 +19,32 @@ public class Phase2Order implements Serializable {
     private double totalPaid;
     private int paymentStatus;
     private String dateReceived;
+
+    private Connect dbHelper;
+    public int getPhase2OrderStatus() {
+        return phase2OrderStatus;
+    }
+
+    public void setPhase2OrderStatus(int phase2OrderStatus) {
+        this.phase2OrderStatus = phase2OrderStatus;
+    }
+
     /*
-     -1 - Invalid / Cancelled
+         -1 - Invalid / Cancelled
 
-     COURIER COLLECT:
-     10 - Client payment pending (Payment Status should be 1)
-     11 - Courier on the way to Washer
-     12 - Courier Arrived (Courier)
-     13 - Washer Hands over the laundry to Courier and pays courier (Processing)
-     14 - Received Client Clean Laundry (Courier must received the payment) (Processing)
-     15 - Courier on the way to Client!
-     16 - Courier arrived to Client
-     17 - Completed!
+         COURIER COLLECT:
+         10 - Client payment pending (Payment Status should be 1)
+         11 - Courier on the way to Washer
+         12 - Courier Arrived (Courier)
+         13 - Washer Hands over the laundry to Courier and pays courier (Processing)
+         14 - Received Client Clean Laundry (Courier must received the payment) (Processing)
+         15 - Courier on the way to Client!
+         16 - Courier arrived to Client
+         17 - Completed!
 
-     SELF COLLECT:
-     20
-     */
+         SELF COLLECT:
+         20
+         */
     private int phase2OrderStatus;
 
     public Phase2Order(int orderID, Client client, Washer washer, Courier courier,
@@ -155,5 +170,10 @@ public class Phase2Order implements Serializable {
 
     public void setDateReceived(String dateReceived) {
         this.dateReceived = dateReceived;
+    }
+
+    public List<Phase2Order> getWasherPhase2PendingOrder(int washerID, Context context) {
+        dbHelper = new Connect(context);
+        return dbHelper.getWasherPhase2PendingOrder(washerID);
     }
 }

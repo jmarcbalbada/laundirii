@@ -34,10 +34,8 @@ public class WasherDashboardHistoryAdapter extends RecyclerView.Adapter<WasherDa
     @Override
     public void onBindViewHolder(@NonNull WasherDashboardHistoryAdapter.PedingViewHolder holder, int position) {
         Phase1Order order = orders.get(position);
-        // Bind your Phase1Order data to the ViewHolder
-        // Bind other data as needed
         holder.textViewOrderId.setText("Order ID: " + order.getOrderID());
-        holder.textViewClientName.setText("Client Name: " + order.getClientName());
+        holder.textViewClientName.setText("Client Name: " + order.getClient());
         holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.washer_history));
         holder.textViewCourierStatus.setText("Courier Status: " + order.getCourierStatus());
 

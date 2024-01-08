@@ -7,6 +7,7 @@ import com.example.laundirii.model.Courier;
 import com.example.laundirii.model.Notification;
 import com.example.laundirii.model.Order;
 import com.example.laundirii.model.Phase1Order;
+import com.example.laundirii.model.Phase2Order;
 import com.example.laundirii.model.Washer;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class DashboardController {
     private Washer washer;
     private Order order;
     private Phase1Order phase1Order;
+    private Phase2Order phase2Order;
     private Notification notification;
 
     public DashboardController()
@@ -225,5 +227,9 @@ public class DashboardController {
 
     public void sendNotifications(int washerID, int customerID, int courierID, String notificaitonTitle , String notificationMessage, Context baseContext) {
         notification.sendNotifications(washerID,customerID,courierID,notificaitonTitle,notificationMessage,baseContext);
+    }
+
+    public List<Phase2Order> getWasherPhase2PendingOrder(int washerID, Context context) {
+        return phase2Order.getWasherPhase2PendingOrder(washerID,context);
     }
 }
