@@ -359,6 +359,10 @@ public class Phase1Order implements Serializable {
     public int getClientID(){
         return client.getCustomerID();
     }
+    public int getWasherID()
+    {
+        return washer.getWasherID();
+    }
     public void getWasherID(int washerID)
     {
         washer.setWasherID(washerID);

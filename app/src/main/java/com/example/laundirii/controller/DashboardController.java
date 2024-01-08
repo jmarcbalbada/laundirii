@@ -29,6 +29,7 @@ public class DashboardController {
         washer = new Washer();
         order = new Order();
         phase1Order = new Phase1Order();
+        phase2Order = new Phase2Order();
         notification = new Notification();
     }
     public DashboardController(Client client)
@@ -84,6 +85,20 @@ public class DashboardController {
         notification.markNotificationsAsRead(ID,typeOfUser,context);
     }
 
+    public boolean insertPhase2Order(int clientID, int washerID, double totalDue,Context context)
+    {
+        return phase2Order.insertPhase2Order(clientID, washerID, totalDue, context);
+    }
+
+    public List<Phase2Order> getPendingCollectOnClient(int clientID, Context context)
+    {
+        return phase2Order.getPendingCollectOnClient(clientID,context);
+    }
+
+    public boolean updateReferenceNo(int clientID, String referenceNo, Context context)
+    {
+        return phase2Order.updateReferenceNo(clientID,referenceNo,context);
+    }
 
 
     public List<Phase1Order> getPendingDeliveryOnClient(int clientID, Context context)
