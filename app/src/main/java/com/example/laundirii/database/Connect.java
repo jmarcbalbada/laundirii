@@ -115,6 +115,7 @@ public class Connect extends SQLiteOpenHelper {
     public static final String PHASE2_PAYMENT_STATUS = "PHASE2_PAYMENT_STATUS";
     public static final String PHASE2_DATE_RECEIVED = "PHASE2_DATE_RECEIVED";
     public static final String PHASE2_ORDER_STATUS = "PHASE2_ORDER_STATUS";
+    public static final String PHASE2_REFERENCE_NO = "PHASE2_REFERENCE_NO";
 
     // FEEDBACK
     public static final String FEEDBACK_ID = "FEEDBACK_ID";
@@ -193,7 +194,8 @@ public class Connect extends SQLiteOpenHelper {
                 "PHASE2_TOTAL_PAID REAL, " +
                 "PHASE2_PAYMENT_STATUS INTEGER, " +
                 "PHASE2_DATE_RECEIVED TEXT," +
-                "PHASE2_ORDER_STATUS INTEGER" +
+                "PHASE2_ORDER_STATUS INTEGER," +
+                "PHASE2_REFERENCE_NO TEXT" +
                 ");";
         String createFeedbackTableStatement = "CREATE TABLE FEEDBACK (" +
                 "FEEDBACK_ID INTEGER PRIMARY KEY, " +
@@ -1056,7 +1058,7 @@ public class Connect extends SQLiteOpenHelper {
 //                "AND (PHASE1_ORDER_STATUS != -1)";
 
         String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_CLIENT_ID = ? AND " +
-                "(PHASE1_ORDER_STATUS != -1) ORDER BY PHASE1_DATE_PLACED DESC";
+                "(PHASE1_ORDER_STATUS != -1 AND PHASE1_ORDER_STATUS != 7) ORDER BY PHASE1_DATE_PLACED DESC";
 
 
 //        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_CLIENT_ID = ? " +
@@ -1594,6 +1596,32 @@ public class Connect extends SQLiteOpenHelper {
         values.put(PHASE1_DATE_RECEIVED, "");
         values.put(PHASE1_INITIAL_LOAD, initialLoad);
         values.put(PHASE1_ORDER_STATUS, 0);
+
+        // Set PHASE1_DATE_PLACED to the current date
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentDate = dateFormat.format(new Date());
+        values.put(PHASE1_DATE_PLACED, currentDate);
+
+        long result = db.insert("PHASE1_ORDER", null, values);
+
+        db.close();
+        return result != -1;
+    }
+
+    public boolean insertPhase2Order(int clientID, int washerID, double totalDue) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(PHASE2_ORDER_CLIENT_ID, clientID);
+        values.put(PHASE2_ORDER_WASHER_ID, washerID);
+        values.put(PHASE2_COURIER_STATUS, 0);
+        values.put(PHASE2_TOTAL_COURIER_AMOUNT, 50.0);
+        values.put(PHASE2_DATE_COURIER, "");
+        values.put(PHASE2_TOTAL_DUE, totalDue);
+        values.put(PHASE2_TOTAL_PAID, 0.0);
+        values.put(PHASE2_PAYMENT_STATUS, 0);
+        values.put(PHASE2_DATE_RECEIVED, "");
+        values.put(PHASE2_ORDER_STATUS, 0);
 
         // Set PHASE1_DATE_PLACED to the current date
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
