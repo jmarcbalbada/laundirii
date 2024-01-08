@@ -20,15 +20,6 @@ public class Phase2Order implements Serializable {
     private int paymentStatus;
     private String dateReceived;
 
-    private Connect dbHelper;
-    public int getPhase2OrderStatus() {
-        return phase2OrderStatus;
-    }
-
-    public void setPhase2OrderStatus(int phase2OrderStatus) {
-        this.phase2OrderStatus = phase2OrderStatus;
-    }
-
     /*
 
      -1 - Invalid / Cancelled
