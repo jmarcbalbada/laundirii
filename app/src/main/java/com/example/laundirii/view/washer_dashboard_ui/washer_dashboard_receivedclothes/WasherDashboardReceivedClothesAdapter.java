@@ -46,19 +46,14 @@ public class WasherDashboardReceivedClothesAdapter extends RecyclerView.Adapter<
         switch (order.getPhase1OrderStatus()) {
             case 4:
                 // WasherReceived the clothes and will set the order status to 5
-                //TODO
-                // Make the logic
                 setWasherWeightClothesStylee(holder,order);
                 break;
             case 5:
                 // Mark as Ready to Pick Up set status to 6
-                //TODO
-                // Make the logic
                 setClothesReadyToPickUpStyle(holder,order);
                 break;
             case 6:
-                // Ready to Pick up
-
+                // Ready to Pick up (Not Complete)
                 setClothesToBePickUpStyle(holder,order);
                 break;
         }

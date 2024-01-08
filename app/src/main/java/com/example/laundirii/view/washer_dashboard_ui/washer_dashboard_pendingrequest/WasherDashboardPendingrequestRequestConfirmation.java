@@ -85,7 +85,6 @@ public class WasherDashboardPendingrequestRequestConfirmation extends AppCompatA
                                 Toast.makeText(getApplicationContext(), "No Available Courier Please Try Again Later",Toast.LENGTH_SHORT).show();
                                 return;
                             }
-                            //TODO setting courier date and set Phase1Order courier_id
                             dashboardController.washerUpdatePhase1OrderCourierIDAndCourierDate(selectedOrder.getOrderID(),availableCourierID,getApplicationContext());
                             //getting the phase1OrderID
                             int phase1OrderID = selectedOrder.getOrderID();

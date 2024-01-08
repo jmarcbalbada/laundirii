@@ -49,7 +49,6 @@ public class WasherDashboardPendingrequestReceivedClothes extends AppCompatActiv
                         .setTitle("Confirmation")
                         .setMessage("Are you sure you want to take this action?")
                         .setPositiveButton("Yes", (dialog, which) -> {
-                            // TODO
                             //implement when order did not received
                             Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(WasherDashboardPendingrequestReceivedClothes.this, WasherDashboardActivity.class);
@@ -73,7 +72,6 @@ public class WasherDashboardPendingrequestReceivedClothes extends AppCompatActiv
                         .setPositiveButton("Yes", (dialog, which) -> {
                             Toast.makeText(getApplicationContext(), "Accepted", Toast.LENGTH_SHORT).show();
 
-                            // TODO
                             //implement when clothes received
                             // set order status to 4
                             dashboardController.updatePhase1OrderStatus(selectedOrder.getOrderID(), 4,getBaseContext());

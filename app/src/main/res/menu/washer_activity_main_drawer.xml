@@ -5,6 +5,11 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/washer_clothes_to_return_fragment"
+            android:icon="@drawable/washer_ic_launcher_pendingrequest_nav"
+            android:title="@string/washer_clothes_to_return" />
+
+        <item
             android:id="@+id/washer_received_clothes_fragment"
             android:icon="@drawable/washer_ic_launcher_pendingrequest_nav"
             android:title="@string/washer_menu_receivedclothes" />

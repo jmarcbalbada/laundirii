@@ -1,8 +1,11 @@
 package com.example.laundirii.model;
 
+
+import android.content.Context;
 import com.example.laundirii.database.Connect;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Phase2Order implements Serializable {
     private int orderID;
@@ -16,7 +19,18 @@ public class Phase2Order implements Serializable {
     private double totalPaid;
     private int paymentStatus;
     private String dateReceived;
+
+    private Connect dbHelper;
+    public int getPhase2OrderStatus() {
+        return phase2OrderStatus;
+    }
+
+    public void setPhase2OrderStatus(int phase2OrderStatus) {
+        this.phase2OrderStatus = phase2OrderStatus;
+    }
+
     /*
+
      -1 - Invalid / Cancelled
      0 - General Pending
 
@@ -187,5 +201,10 @@ public class Phase2Order implements Serializable {
 
     public void setDateReceived(String dateReceived) {
         this.dateReceived = dateReceived;
+    }
+
+    public List<Phase2Order> getWasherPhase2PendingOrder(int washerID, Context context) {
+        dbHelper = new Connect(context);
+        return dbHelper.getWasherPhase2PendingOrder(washerID);
     }
 }

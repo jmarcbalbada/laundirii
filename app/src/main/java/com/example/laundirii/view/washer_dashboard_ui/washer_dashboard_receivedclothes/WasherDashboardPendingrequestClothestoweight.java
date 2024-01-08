@@ -3,7 +3,6 @@ package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_received
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -69,11 +68,11 @@ public class WasherDashboardPendingrequestClothestoweight extends AppCompatActiv
                             int finalInitialLoad1 = finalInitialLoad;
 
                             Toast.makeText(getApplicationContext(), "Order weight saved", Toast.LENGTH_SHORT).show();
-                            //TODO update orderStatus
+                            // Update Status to 5
                             dashboardController.updatePhase1OrderStatus(selectedOrder.getOrderID(),5,getBaseContext());
                             //set initial load to final load
                             dashboardController.updatePhase1OrderInitialLoad(selectedOrder.getOrderID(),finalInitialLoad1,getBaseContext());
-                            //TODO set total Due
+                            // Updated Phase1Order Total Due
                             double totalDue = (finalInitialLoad1 *selectedOrder.getWasher().getRatePerKg())+selectedOrder.getTotalCourierAmount();
                             dashboardController.updatePhase1OrderTotalDue(selectedOrder.getOrderID(),totalDue,getBaseContext());
 

@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.washer_dashboard_ui.washer_dashboard_history.WasherDashboardHistoryFragment">
+    tools:context=".view.washer_dashboard_ui.washer_dashboard_clothes_to_return.WasherDashboardClothesToReturnFragment">
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/washer_history_tolist_recyclerviewer"
+        android:id="@+id/washer_clothes_to_return_tolist_recyclerviewer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        tools:listitem="@layout/washer_tolist_history" />
+        tools:listitem="@layout/washer_tolist_clothestoreturn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
