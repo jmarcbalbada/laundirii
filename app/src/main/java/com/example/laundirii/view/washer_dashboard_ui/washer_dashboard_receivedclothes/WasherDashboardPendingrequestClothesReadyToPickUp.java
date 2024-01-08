@@ -53,7 +53,6 @@ public class WasherDashboardPendingrequestClothesReadyToPickUp extends AppCompat
                             // mark as ready to collect
                             dashboardController.updatePhase1OrderStatus(selectedOrder.getOrderID(),6,getBaseContext());
 
-                            // TODO send notification to Client
                             // this function will only notify the client and washer
 
                             // Send notification
@@ -64,6 +63,7 @@ public class WasherDashboardPendingrequestClothesReadyToPickUp extends AppCompat
                             // Send Notification to Client
                             dashboardController.sendNotifications(0,selectedOrder.getClient().getCustomerID(),0,notificaitonTitle,notificationMessage,getBaseContext());
 
+                            Toast.makeText(getApplicationContext(), "Customer has been notified", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(WasherDashboardPendingrequestClothesReadyToPickUp.this, WasherDashboardActivity.class);
                             startActivity(intent);
 
