@@ -2,10 +2,12 @@ package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_clothes_
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,47 +20,50 @@ import com.example.laundirii.model.Washer;
 
 import java.util.List;
 
-public class WasherDashboardClothesToReturnFragment extends Fragment {
+public class WasherDashboardClothesToReturnFragment extends Fragment{
     private WasherDashboardFragmentClothesToReturnBinding binding;
     private RecyclerView recyclerView;
-    private DashboardController dashboardController;
-    private WasherDashboardClothesToReturnAdapter washerDashboardClothesToReturnAdapter;
     private SharedPreferences washerInfoPreferences;
     private Washer washer;
+    private DashboardController dashboardController;
+    private WasherDashboardClothesToReturnAdapter washerDashboardClothesToReturnAdapter;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+
         binding = WasherDashboardFragmentClothesToReturnBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Initialize your UI components and set up RecyclerView
+        dashboardController = new DashboardController();
+
         recyclerView = root.findViewById(R.id.washer_clothes_to_return_tolist_recyclerviewer);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Initialize Dashboard Controller
-        dashboardController = new DashboardController();
-
-        // Get the object washer
-        washerInfoPreferences = requireActivity().getSharedPreferences("WasherInfoPreferences", 0);
+        // fetch courier
+        washerInfoPreferences = this.getActivity().getSharedPreferences("LoginWasherPreferences", 0);
         String washerUsername = washerInfoPreferences.getString("washerUsername", "");
-        washer = dashboardController.getWasher(washerUsername, requireActivity());
+         washer = dashboardController.getWasher(washerUsername,getContext());
 
-        List<Phase2Order> phase2OrderList = dashboardController.getWasherPhase2PendingOrder(washer.getWasherID(),getContext());
+         Log.e("Waher Username","washer username: " + washerUsername );
+//        List<Phase2Order> phase2OrderList = dashboardController.getWasherPhase2ClohtesToReturn(washer.getWasherID(),getContext());
+        List<Phase2Order> phase2OrderList = dashboardController.getWasherPhase2ClohtesToReturn(washer.getWasherID(),getContext());
 
-        // Initialize and set up your RecyclerView adapter
+//        List<Phase2Order> phase2OrdersList = dashboardController.getWasherPhase2ClohtesToReturns(washer.getWasherID(), getActivity().getBaseContext());
+
+////        // Initialize and set up your RecyclerView adapter
+//        List<Phase1Order> orders = dashboardController.getPendingDeliveriesOnWasher(washer.getWasherID(), getContext());
+//        washerDashboardClothesToReturnAdapter = new WasherDashboardClothesToReturnAdapter(phase,getContext());
         washerDashboardClothesToReturnAdapter = new WasherDashboardClothesToReturnAdapter(phase2OrderList,getContext());
         recyclerView.setAdapter(washerDashboardClothesToReturnAdapter);
 
-        // Load and display data
-
         return root;
+
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
-
-
 }
-

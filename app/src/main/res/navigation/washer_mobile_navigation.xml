@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/washer_pendingrequest_fragment">
+    app:startDestination="@+id/washer_clothes_to_return_fragment">
 
     <fragment
         android:id="@+id/washer_received_clothes_fragment"
@@ -30,7 +30,7 @@
 
     <fragment
         android:id="@+id/washer_clothes_to_return_fragment"
-        android:name="com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_notification.WasherNotificationFragment"
+        android:name="com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_clothes_to_return.WasherDashboardClothesToReturnFragment"
         android:label="@string/washer_clothes_to_return"
         tools:layout="@layout/washer_dashboard_fragment_clothes_to_return" />
 </navigation>

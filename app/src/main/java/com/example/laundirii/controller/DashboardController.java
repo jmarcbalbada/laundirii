@@ -29,6 +29,7 @@ public class DashboardController {
         washer = new Washer();
         order = new Order();
         phase1Order = new Phase1Order();
+        phase2Order = new Phase2Order();
         notification = new Notification();
     }
     public DashboardController(Client client)
@@ -229,7 +230,23 @@ public class DashboardController {
         notification.sendNotifications(washerID,customerID,courierID,notificaitonTitle,notificationMessage,baseContext);
     }
 
-    public List<Phase2Order> getWasherPhase2PendingOrder(int washerID, Context context) {
-        return phase2Order.getWasherPhase2PendingOrder(washerID,context);
+    public List<Phase2Order> getWasherPhase2ClohtesToReturn(int washerID, Context context) {
+        return phase2Order.getWasherPhase2ClohtesToReturn(washerID,context);
+    }
+
+    public void updatePhase2OrderCourierID(int orderID, int availableCourierID, Context baseContext) {
+        phase2Order.updatePhase2OrderCourierID(orderID,availableCourierID,baseContext);
+    }
+
+    public void updatePhase2OrderStatus(int phase2OrderID, int phase2OrderStatus, Context baseContext) {
+        phase2Order.updatePhase2OrderStatus(phase2OrderID,phase2OrderStatus,baseContext);
+    }
+
+    public void updatePhase2OrderDateCourier(int phase2OrderID, Context baseContext) {
+        phase2Order.updatePhase2OrderDateCourier(phase2OrderID,baseContext);
+    }
+
+    public List<Phase2Order> getWasherPhase2ClohtesToReturns(int washerID, Context context) {
+        return phase2Order.getWasherPhase2ClohtesToReturns(washerID,context);
     }
 }

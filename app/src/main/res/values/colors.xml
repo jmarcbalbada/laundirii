@@ -4,9 +4,27 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#588970</color>
     <color name="gray">#808080</color>
-    <color name="washer_customer_waiting_for_approval">#FFA400</color>
-    <color name="washer_rider_on_the_way_to_customer">#EEFF00</color>
+    <color name="washer_customer_waiting_for_approval_n3">#FF0000</color>
+    <color name="washer_customer_waiting_for_approval_n2">#FF6F00</color>
+    <color name="washer_customer_waiting_for_approval_n1">#FF9900</color>
+    <color name="washer_customer_waiting_for_approval_1">#FFB700</color>
+    <color name="washer_customer_waiting_for_approval">#FFE600</color>
+    <color name="washer_rider_on_the_way_to_customer">#D9FF00</color>
     <color name="washer_rider_on_the_way_here">#2FFF00</color>
+    <color name="washer_rider_on_the_way_here1">#2FFF00</color>
+
+
+    <color name="pending1">#FF0000</color>
+    <color name="pending2">#FF4800</color>
+    <color name="pending3">#FF6F00</color>
+    <color name="pending4">#FF9900</color>
+    <color name="pending5">#FFB700</color>
+    <color name="pending6">#FFE600</color>
+    <color name="pending7">#D9FF00</color>
+    <color name="pending8">#9DFF00</color>
+    <color name="pending9">#9DFF00</color>
+    <color name="pending10">#1AFF00</color>
+
     <color name="washer_history">#FF9898</color>
     <color name="your_thumb_color">#44FF63</color>
     <color name="your_track_color">#588970</color>

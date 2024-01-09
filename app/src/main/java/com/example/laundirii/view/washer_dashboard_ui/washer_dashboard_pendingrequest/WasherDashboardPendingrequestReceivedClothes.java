@@ -79,10 +79,13 @@ public class WasherDashboardPendingrequestReceivedClothes extends AppCompatActiv
                             // change date received PHASE1_ORDER
                             dashboardController.updatePhase1OrderDateReceivedToCurrentDate(selectedOrder.getOrderID() ,getBaseContext());
 
+                            //update courier status to 1
+                            dashboardController.updateCourierStatus(selectedOrder.getCourier().getCourierID(),1,getBaseContext());
+
                             // Send notification
                             //These are the actual message
                             String notificaitonTitle = selectedOrder.getWasher().getShopName()+" - Clothes Succesfully Delivered";
-                            String notificationMessage = "Thank you for the patronage will clean you clothes ASAP";
+                            String notificationMessage = "Thank you for the patronage will clean you clothes as soon as possible";
                             // Send Notification to Client
                             dashboardController.sendNotifications(0,selectedOrder.getClient().getCustomerID(),0,notificaitonTitle,notificationMessage,getBaseContext());
 

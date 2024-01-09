@@ -56,6 +56,7 @@ public class WasherDashboardPendingrequestFragment extends Fragment {
 
         this.order = orders;
 
+        Log.e("WASHER Laviste",""+"bullshit" + "String username" + washerUsername);
         washerDashboardPendingrequestAdapter = new WasherDashboardPendingrequestAdapter(orders, getContext());
 //         washerDashboardPendingrequestAdapter = new WasherDashboardPendingrequestAdapter(washerUsername,getContext());
         recyclerView.setAdapter(washerDashboardPendingrequestAdapter);
