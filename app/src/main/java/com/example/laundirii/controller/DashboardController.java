@@ -271,4 +271,8 @@ public class DashboardController {
     public int getWasherStatus(int washerID, Context baseContext) {
         return washer.getWasherStatus(washerID,baseContext);
     }
+
+    public int updateWasherProfile(int washerID, String shopName, String shopLocation, String shopContact, Double shopRate, Context baseContext) {
+        return washer.updateWasherProfile(washerID,shopName,shopLocation,shopContact,shopRate,baseContext);
+    }
 }

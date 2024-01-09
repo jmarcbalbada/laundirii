@@ -180,4 +180,9 @@ public class Washer implements Serializable {
         dbHelper = new Connect(baseContext);
         return dbHelper.getWasherStatus(washerID);
     }
+
+    public int updateWasherProfile(int washerID, String shopName, String shopLocation, String shopContact, Double shopRate, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        return dbHelper.updateWasherProfile(washerID,shopName,shopLocation,shopContact,shopRate);
+    }
 }

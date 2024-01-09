@@ -2089,7 +2089,6 @@ public class Connect extends SQLiteOpenHelper {
 
 
     public List<Phase2Order> getWasherPhase2ClohtesToReturn(int washerID) {
-//        Log.e("PISTE","washerID" );
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_WASHER_ID = ? AND PHASE2_ORDER_STATUS IN (10,11,12,13,14,15,16,17) OR PHASE2_ORDER_STATUS IN (20) ORDER BY PHASE2_ORDER_STATUS ASC, PHASE2_DATE_COURIER ASC";
         String[] selectionArgs = {String.valueOf(washerID)};
@@ -2282,4 +2281,22 @@ public class Connect extends SQLiteOpenHelper {
         return washerStatus;
     }
 
+    public int updateWasherProfile(int washerID, String shopName, String shopLocation, String shopContact, Double shopRate) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("SHOP_NAME", shopName);
+        values.put("SHOP_LOCATION", shopLocation);
+        values.put("WASHER_CONTACT_NO", shopContact);
+        values.put("RATE_PER_KG", shopRate);
+
+        String whereClause = "WASHER_ID = ?";
+        String[] whereArgs = {String.valueOf(washerID)};
+
+        int rowsAffected = db.update("WASHER", values, whereClause, whereArgs);
+
+        db.close();
+
+        return rowsAffected;
+    }
 }

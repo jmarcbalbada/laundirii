@@ -2,9 +2,11 @@ package com.example.laundirii.view.washer_dashboard_ui;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Switch;
@@ -122,6 +124,8 @@ public class WasherDashboardActivity extends AppCompatActivity {
                             dashboardController.updateWasherStatus(washer.getWasherID(),0,getBaseContext());
 
 
+                            // check if there are pending deliveries and notify the clients
+
                             // Send notification to all phase1 Orders Clients
                             String notificaitonTitle = washer.getShopName() + " - Important Shop Closing Notice";
                             String notificationMessage = "Dear valued customer,\n\n" +
@@ -129,7 +133,8 @@ public class WasherDashboardActivity extends AppCompatActivity {
                                     ", will be close and will reopen on " +
                                     year + "-" + (month + 1) + "-" + dayOfMonth + ".";
 
-
+                            // sending the message using controller
+                            // client with status (0,1,2,3) will receive notification
                             List<Phase1Order> Phase1list = dashboardController.getPendingDeliveriesOnWasher(washer.getWasherID(), getBaseContext());
                             Phase1list.forEach(client -> {dashboardController.sendNotifications(0, client.getClient().getCustomerID(), 0, notificaitonTitle, notificationMessage, getBaseContext());});
 
@@ -139,11 +144,13 @@ public class WasherDashboardActivity extends AppCompatActivity {
                                     year + "-" + (month + 1) + "-" + dayOfMonth +
                                     ". You can process a collect on your clothes before our shop closes. For those with incoming or outcoming deliveries dont worry we will make sure to process you laundry";
 
+                            // sending the message using controller
+                            // client with status (11,12,13,14,15) will receive notification
                             List<Phase2Order> Phase2list = dashboardController.getWasherPhase2ClohtesToReturn(washer.getWasherID(), getBaseContext());
-                            Phase2list.forEach(client -> {dashboardController.sendNotifications(0, client.getClient().getCustomerID(), 0, notificaitonTitle1, notificationMessage2, getBaseContext());});
-
-                            // check if there are pending deliveries
-
+                            Phase2list.forEach(client -> {
+                                if( client.getPhase2OrderStatus() >= 11 && client.getPhase2OrderStatus() <= 15) {
+                                    dashboardController.sendNotifications(0, client.getClient().getCustomerID(), 0, notificaitonTitle1, notificationMessage2, getBaseContext());
+                                }});
 
                             Toast.makeText(this, "Client have been notified", Toast.LENGTH_SHORT).show();
                             // Update washer status to 1 (or your desired status value)
@@ -155,12 +162,31 @@ public class WasherDashboardActivity extends AppCompatActivity {
                             // You can put your custom logic here
                         })
                         .show();
-                washerSwitchStatus.setChecked(washeractive == 1);
-                washerSwitchStatus.setText((washeractive == 1) ? "On" : "Off");
             }
-        });
-        ;
 
+        });
+
+
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.washer_action_profile) {
+            // Handle the profile item click here
+            Intent intent = new Intent(this, WasherDashboardAcitivityProfile.class); // Replace YourProfileActivity with the actual class name for your profile
+            intent.putExtra("washer",washer);
+            startActivity(intent);
+            return true;
+        } else if (id == R.id.washer_action_settings) {
+            // Handle the settings item click here
+            // Add code for settings action
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 
