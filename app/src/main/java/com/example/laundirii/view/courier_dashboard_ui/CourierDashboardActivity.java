@@ -58,7 +58,7 @@ public class CourierDashboardActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.cour_nav_home, R.id.cour_nav_history, R.id.cour_nav_logout, R.id.cour_nav_notification)
+                R.id.cour_nav_home, R.id.cour_nav_history, R.id.cour_nav_notification)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_courier_dashboard);
@@ -93,17 +93,22 @@ public class CourierDashboardActivity extends AppCompatActivity {
             // OFF - COURIER STATUS
             case 0:
                 courierSwitch.setChecked(false);
-                courierSwitch.setText("OFF");
-                boolean hasActive = dashboardController.hasActiveTransactionOnPhase1Order(courier.getCourierID(),this);
-                boolean hasPaymentReceived = dashboardController.hasCourierAlreadyReceivedPaymentPhase1(courier.getCourierID(),this);
-                if(hasActive && !hasPaymentReceived)
+                boolean hasActivePhase1 = dashboardController.hasActiveTransactionOnPhase1Order(courier.getCourierID(),this);
+                boolean hasActivePhase2 = dashboardController.hasActiveTransactionOnPhase2Order(courier.getCourierID(),this);
+                Log.e("ID ON ACTIVITY", courier.getCourierID() + "");
+                Log.e("COURIER STATUS ON ACTIVITY", courier.getStatus() + "");
+                Log.e("PHASE1 ON ACTIVITY", hasActivePhase1 + "");
+                Log.e("PHASE2 ON ACTIVITY", hasActivePhase2 + "");
+                if(hasActivePhase1 || hasActivePhase2)
                 {
                     // do NOT enable switch
                     courierSwitch.setEnabled(false);
+                    courierSwitch.setText("PENDING");
                 }
                 else
                 {
                     courierSwitch.setEnabled(true);
+                    courierSwitch.setText("OFF");
                 }
                 break;
             // ON - COURIER STATUS

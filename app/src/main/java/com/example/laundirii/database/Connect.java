@@ -986,8 +986,25 @@ public class Connect extends SQLiteOpenHelper {
     public boolean hasActiveTransactionOnPhase1Order(int courierID) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT COUNT(*) FROM PHASE1_ORDER " +
-                "WHERE " + PHASE1_ORDER_COURIER_ID + " = ? AND " +
-                PHASE1_ORDER_STATUS + " IN (1, 2, 3, 4)";  // Assuming 1, 2, 3 represent active transaction statuses
+                "WHERE " + PHASE1_ORDER_COURIER_ID + " = ? AND (" +
+                PHASE1_ORDER_STATUS + " IN (1, 2, 3) OR PHASE1_COURIER_STATUS = 0)";  // Assuming 1, 2, 3 represent active transaction statuses
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(courierID)});
+        if (cursor != null) {
+            cursor.moveToFirst();
+            int rowCount = cursor.getInt(0);
+            cursor.close();
+            return rowCount > 0;
+        }
+
+        return false;
+    }
+
+    public boolean hasActiveTransactionOnPhase2Order(int courierID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT COUNT(*) FROM PHASE2_ORDER " +
+                "WHERE " + PHASE2_ORDER_COURIER_ID + " = ? AND (" +
+                PHASE2_ORDER_STATUS + " IN (11,12,13,14,15) OR PHASE2_COURIER_STATUS = 0)";  // Assuming 1, 2, 3 represent active transaction statuses
 
         Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(courierID)});
         if (cursor != null) {
@@ -1035,6 +1052,17 @@ public class Connect extends SQLiteOpenHelper {
         values.put("PHASE1_COURIER_STATUS", newStatus ? 1 : 0);  // Assuming 1 represents ON and 0 represents OFF
 
         int rowsAffected = db.update("PHASE1_ORDER", values, "PHASE1_ORDER_COURIER_ID = ?", new String[]{String.valueOf(courierID)});
+
+        return rowsAffected > 0;
+    }
+
+    public boolean setCourierStatusPhase2OrderOnDatabase(int courierID, boolean newStatus) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("PHASE2_COURIER_STATUS", newStatus ? 1 : 0);  // Assuming 1 represents ON and 0 represents OFF
+
+        int rowsAffected = db.update("PHASE2_ORDER", values, "PHASE2_ORDER_COURIER_ID = ?", new String[]{String.valueOf(courierID)});
 
         return rowsAffected > 0;
     }
@@ -1151,7 +1179,7 @@ public class Connect extends SQLiteOpenHelper {
         // Query the PHASE2_ORDER table for pending collections for the specified client
         String query = "SELECT * FROM PHASE2_ORDER" +
                 " WHERE " + PHASE2_ORDER_CLIENT_ID + " = ? AND " +
-                "(" + PHASE2_ORDER_STATUS + " != -1) ORDER BY " + PHASE2_DATE_PLACED + " DESC";
+                "(" + PHASE2_ORDER_STATUS + " NOT IN (-1,16)) ORDER BY " + PHASE2_DATE_PLACED + " DESC";
 
         String[] selectionArgs = {String.valueOf(clientID)};
         Cursor cursor = db.rawQuery(query, selectionArgs);
@@ -1263,11 +1291,11 @@ public class Connect extends SQLiteOpenHelper {
                 break;
             // Query Courier
             case 1:
-                query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_COURIER_ID = ?";
+                query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_COURIER_ID = ? ORDER BY PHASE1_DATE_PLACED DESC";
                 break;
             // Query Washer
             case 2:
-                query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ?";
+                query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? ORDER BY PHASE1_DATE_PLACED DESC";
                 break;
         }
 
@@ -1354,6 +1382,116 @@ public class Connect extends SQLiteOpenHelper {
         } finally {
             db.close();
         }
+    }
+
+    public List<Phase2Order> getHistoryListOnPhase2Order(String username) {
+        List<Phase2Order> historyList = new ArrayList<>();
+
+        // generalized getHistory for all Actor on Phase 2
+        // 0 - Client , 1 - Courier , 2 - Washer
+        int typeOfUser = 0; // by default
+        int ID = 0;
+        Log.e("INSIDE HISTORY", "USER" + typeOfUser + "" + "ID" + ID);
+        if (checkClientByUsername(username)) {
+            typeOfUser = 0;
+            Client client = getClient(username);
+            ID = client.getCustomerID();
+        } else if (checkCourierByUsername(username)) {
+            typeOfUser = 1;
+            Courier courier = getCourier(username);
+            ID = courier.getCourierID();
+        } else if (checkWasherByUsername(username)) {
+            typeOfUser = 2;
+            Washer washer = getWasher(username);
+            ID = washer.getWasherID();
+        } else {
+            typeOfUser = -1;
+        }
+
+        String query = "";
+        switch (typeOfUser) {
+            // Query Client
+            case 0:
+                query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_CLIENT_ID = ? ORDER BY PHASE2_DATE_PLACED DESC";
+                break;
+            // Query Courier
+            case 1:
+                query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_COURIER_ID = ? ORDER BY PHASE2_DATE_PLACED DESC";
+                break;
+            // Query Washer
+            case 2:
+                query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_WASHER_ID = ? ORDER BY PHASE2_DATE_PLACED DESC";
+                break;
+        }
+
+        String[] selectionArgs = {String.valueOf(ID)};
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+
+        try {
+            while (cursor.moveToNext()) {
+                // Extract column indexes for Phase2Order
+                int orderIDIndex = cursor.getColumnIndex(PHASE2_ORDER_ID);
+                int clientIDIndex = cursor.getColumnIndex(PHASE2_ORDER_CLIENT_ID);
+                int washerIDIndex = cursor.getColumnIndex(PHASE2_ORDER_WASHER_ID);
+                int courierIDIndex = cursor.getColumnIndex(PHASE2_ORDER_COURIER_ID);
+                int courierStatusIndex = cursor.getColumnIndex(PHASE2_ORDER_STATUS);
+                int totalCourierAmountIndex = cursor.getColumnIndex(PHASE2_TOTAL_COURIER_AMOUNT);
+                int dateCourierIndex = cursor.getColumnIndex(PHASE2_DATE_COURIER);
+                int totalDueIndex = cursor.getColumnIndex(PHASE2_TOTAL_DUE);
+                int totalPaidIndex = cursor.getColumnIndex(PHASE2_TOTAL_PAID);
+                int paymentStatusIndex = cursor.getColumnIndex(PHASE2_PAYMENT_STATUS);
+                int dateReceivedIndex = cursor.getColumnIndex(PHASE2_DATE_RECEIVED);
+                int phase2OrderStatusIndex = cursor.getColumnIndex(PHASE2_ORDER_STATUS);
+                int referenceNoIndex = cursor.getColumnIndex(PHASE2_REFERENCE_NO);
+                int datePlacedIndex = cursor.getColumnIndex(PHASE2_DATE_PLACED);
+                int phase1OrderIDIndex = cursor.getColumnIndex(PHASE2_PHASE1_ORDER_ID);
+
+                // Check if the column indexes are valid
+                if (orderIDIndex != -1 && clientIDIndex != -1 && washerIDIndex != -1 &&
+                        courierIDIndex != -1 && courierStatusIndex != -1 &&
+                        totalCourierAmountIndex != -1 && dateCourierIndex != -1 &&
+                        totalDueIndex != -1 && totalPaidIndex != -1 &&
+                        paymentStatusIndex != -1 && dateReceivedIndex != -1 &&
+                        phase2OrderStatusIndex != -1 && referenceNoIndex != -1 &&
+                        datePlacedIndex != -1 && phase1OrderIDIndex != -1) {
+
+                    // Create a new Phase2Order instance using the constructor
+                    Phase2Order historyOrder = new Phase2Order(
+                            cursor.getInt(orderIDIndex),
+                            getClient(cursor.getInt(clientIDIndex)),
+                            getWasher(cursor.getInt(washerIDIndex)),
+                            getCourier(cursor.getInt(courierIDIndex)),
+                            cursor.getInt(courierStatusIndex),
+                            cursor.getDouble(totalCourierAmountIndex),
+                            cursor.getString(dateCourierIndex),
+                            cursor.getDouble(totalDueIndex),
+                            cursor.getDouble(totalPaidIndex),
+                            cursor.getInt(paymentStatusIndex),
+                            cursor.getString(dateReceivedIndex),
+                            cursor.getInt(phase2OrderStatusIndex),
+                            cursor.getString(referenceNoIndex),
+                            cursor.getString(datePlacedIndex),
+                            cursor.getInt(phase1OrderIDIndex)
+                    );
+
+                    Log.e("DATABASE PHASE2ORDER", historyOrder.toString());
+
+                    // Add the order to the history list
+                    historyList.add(historyOrder);
+                } else {
+                    // Handle invalid column indexes, log an error, or throw an exception
+                }
+            }
+        } catch (Exception e) {
+            Log.e("DATABASE ERROR", e.getMessage());
+        } finally {
+            // Close the cursor and database
+            cursor.close();
+        }
+
+        return historyList;
     }
 
     public int getCourierStatus(int courierID) {
@@ -1471,7 +1609,7 @@ public class Connect extends SQLiteOpenHelper {
         Phase1Order pendingDelivery = null;
 
         // Query the PHASE1_ORDER table for pending deliveries for the specified courier
-        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_COURIER_ID = ? AND PHASE1_COURIER_STATUS = 0";
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_COURIER_ID = ? AND (PHASE1_COURIER_STATUS = 0 OR PHASE1_DATE_RECEIVED = '')";
         String[] selectionArgs = {String.valueOf(courierID)};
 
         Cursor cursor = db.rawQuery(query, selectionArgs);
@@ -1514,6 +1652,74 @@ public class Connect extends SQLiteOpenHelper {
                         cursor.getInt(initialLoadIndex),
                         cursor.getInt(orderStatusIndex),
                         cursor.getString(datePlacedIndex)
+                );
+
+                Log.e("pendingDelivery", pendingDelivery.toString());
+            } else {
+                // Handle invalid column indexes, log an error, or throw an exception
+            }
+        }
+
+        // Close the cursor and database
+        cursor.close();
+        db.close();
+
+        return pendingDelivery;
+    }
+
+
+    public Phase2Order getPendingDeliveryOnCourierOnPhase2(int courierID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Phase2Order pendingDelivery = null;
+
+        // Query the PHASE2_ORDER table for pending deliveries for the specified courier
+        String query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_COURIER_ID = ? AND (PHASE2_COURIER_STATUS = 0 OR PHASE2_DATE_RECEIVED = '')";
+        String[] selectionArgs = {String.valueOf(courierID)};
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+
+        if (cursor.moveToFirst()) {
+            // Check if the column index is valid before accessing the cursor
+            int orderIdIndex = cursor.getColumnIndex(PHASE2_ORDER_ID);
+            int clientIdIndex = cursor.getColumnIndex(PHASE2_ORDER_CLIENT_ID);
+            int washerIdIndex = cursor.getColumnIndex(PHASE2_ORDER_WASHER_ID);
+            int courierIdIndex = cursor.getColumnIndex(PHASE2_ORDER_COURIER_ID);
+            int courierStatusIndex = cursor.getColumnIndex(PHASE2_COURIER_STATUS);
+            int totalCourierAmountIndex = cursor.getColumnIndex(PHASE2_TOTAL_COURIER_AMOUNT);
+            int dateCourierIndex = cursor.getColumnIndex(PHASE2_DATE_COURIER);
+            int totalDueIndex = cursor.getColumnIndex(PHASE2_TOTAL_DUE);
+            int totalPaidIndex = cursor.getColumnIndex(PHASE2_TOTAL_PAID);
+            int paymentStatusIndex = cursor.getColumnIndex(PHASE2_PAYMENT_STATUS);
+            int dateReceivedIndex = cursor.getColumnIndex(PHASE2_DATE_RECEIVED);
+            int phase2OrderStatusIndex = cursor.getColumnIndex(PHASE2_ORDER_STATUS);
+            int referenceNoIndex = cursor.getColumnIndex(PHASE2_REFERENCE_NO);
+            int datePlacedIndex = cursor.getColumnIndex(PHASE2_DATE_PLACED);
+            int phase1OrderIDIndex = cursor.getColumnIndex(PHASE2_PHASE1_ORDER_ID);
+
+            if (orderIdIndex != -1 && clientIdIndex != -1 && washerIdIndex != -1 &&
+                    courierIdIndex != -1 && courierStatusIndex != -1 &&
+                    totalCourierAmountIndex != -1 && dateCourierIndex != -1 &&
+                    totalDueIndex != -1 && totalPaidIndex != -1 &&
+                    paymentStatusIndex != -1 && dateReceivedIndex != -1 &&
+                    phase2OrderStatusIndex != -1 && referenceNoIndex != -1 &&
+                    datePlacedIndex != -1 && phase1OrderIDIndex != -1) {
+
+                pendingDelivery = new Phase2Order(
+                        cursor.getInt(orderIdIndex),
+                        getClient(cursor.getInt(clientIdIndex)),
+                        getWasher(cursor.getInt(washerIdIndex)),
+                        getCourier(cursor.getInt(courierIdIndex)),
+                        cursor.getInt(courierStatusIndex),
+                        cursor.getDouble(totalCourierAmountIndex),
+                        cursor.getString(dateCourierIndex),
+                        cursor.getDouble(totalDueIndex),
+                        cursor.getDouble(totalPaidIndex),
+                        cursor.getInt(paymentStatusIndex),
+                        cursor.getString(dateReceivedIndex),
+                        cursor.getInt(phase2OrderStatusIndex),
+                        cursor.getString(referenceNoIndex),
+                        cursor.getString(datePlacedIndex),
+                        cursor.getInt(phase1OrderIDIndex)
                 );
 
                 Log.e("pendingDelivery", pendingDelivery.toString());
@@ -1705,7 +1911,7 @@ public class Connect extends SQLiteOpenHelper {
         values.put(PHASE2_COURIER_STATUS, 0);
         values.put(PHASE2_TOTAL_COURIER_AMOUNT, 50.0);
         values.put(PHASE2_DATE_COURIER, "");
-        values.put(PHASE2_TOTAL_DUE, totalDue);
+        values.put(PHASE2_TOTAL_DUE, totalDue + 50);
         values.put(PHASE2_TOTAL_PAID, 0.0);
         values.put(PHASE2_PAYMENT_STATUS, 0);
         values.put(PHASE2_DATE_RECEIVED, "");
@@ -1953,6 +2159,26 @@ public class Connect extends SQLiteOpenHelper {
 
         // Update statement
         String updateQuery = "UPDATE PHASE1_ORDER SET PHASE1_DATE_RECEIVED = ? WHERE PHASE1_ORDER_ID = ?";
+
+        // Get current date to set in the PHASE1_DATE_COURIER
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = dateFormat.format(date);
+
+        // Execute the update statement and get the number of rows affected
+        SQLiteStatement stmt = db.compileStatement(updateQuery);
+        stmt.bindString(1, formattedDate);
+        stmt.bindLong(2, orderID);
+
+        stmt.execute();
+        db.close();
+    }
+
+    public void updatePhase2OrderDateReceivedToCurrentDate(int orderID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Update statement
+        String updateQuery = "UPDATE PHASE2_ORDER SET PHASE2_DATE_RECEIVED = ? WHERE PHASE2_ORDER_ID = ?";
 
         // Get current date to set in the PHASE1_DATE_COURIER
         Date date = new Date();

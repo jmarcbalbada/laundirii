@@ -7,7 +7,8 @@ import com.example.laundirii.database.Connect;
 import java.io.Serializable;
 import java.util.List;
 
-public class Phase2Order implements Serializable,Orders {
+
+public class Phase2Order implements Serializable, Orders {
     private int orderID;
     private Client client;
     private Washer washer;
@@ -110,15 +111,13 @@ public class Phase2Order implements Serializable,Orders {
                 break;
             case 12: orderStatus = "Courier has arrived to Washer";
                 break;
-            case 13: orderStatus = "Processing1";
+            case 13: orderStatus = "Processing";
                 break;
-            case 14: orderStatus = "Processing2";
+            case 14: orderStatus = "Courier on the way to Client!";
                 break;
-            case 15: orderStatus = "Courier on the way to Client!";
+            case 15: orderStatus = "Courier has arrived to Client!";
                 break;
-            case 16: orderStatus = "Courier has arrived to Client";
-                break;
-            case 17: orderStatus = "Completed!";
+            case 16: orderStatus = "Completed!";
                 break;
 
         }
@@ -181,11 +180,38 @@ public class Phase2Order implements Serializable,Orders {
         return dbHelper.getPendingCollectOnClient(clientID);
     }
 
+    public Phase2Order getPendingDeliveryOnCourierOnPhase2(int courierID, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.getPendingDeliveryOnCourierOnPhase2(courierID);
+    }
+
+    public void updatePhase2OrderDateReceivedToCurrentDate(int orderID, Context context)
+    {
+        dbHelper = new Connect(context);
+        dbHelper.updatePhase2OrderDateReceivedToCurrentDate(orderID);
+    }
+
+    public List<Phase2Order> getHistoryListOnPhase2Order(String username, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.getHistoryListOnPhase2Order(username);
+    }
+
+
     public boolean updateReferenceNo(int clientID,String referenceNo, Context context)
     {
         dbHelper = new Connect(context);
         return dbHelper.updateReferenceNo(clientID,referenceNo);
     }
+
+    public boolean setCourierStatusPhase2OrderOnDatabase(int courierID, boolean status, Context context)
+    {
+        dbHelper = new Connect(context);
+        return dbHelper.setCourierStatusPhase2OrderOnDatabase(courierID, status);
+    }
+
+
 
     public int getPhase2_phase1OrderID() {
         return phase2_phase1OrderID;

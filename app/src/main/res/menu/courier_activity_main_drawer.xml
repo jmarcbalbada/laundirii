@@ -10,12 +10,8 @@
             android:title="@string/courier_home" />
         <item
             android:id="@+id/cour_nav_history"
-            android:icon="@android:drawable/ic_menu_recent_history"
+            android:icon="@android:drawable/ic_menu_view"
             android:title="@string/courier_history" />
-        <item
-            android:id="@+id/cour_nav_logout"
-            android:icon="@android:drawable/ic_menu_search"
-            android:title="@string/courier_pending_request" />
         <item
             android:id="@+id/cour_nav_notification"
             android:icon="@android:drawable/star_big_on"

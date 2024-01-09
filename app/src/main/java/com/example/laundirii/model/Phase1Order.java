@@ -7,7 +7,8 @@ import com.example.laundirii.database.Connect;
 import java.io.Serializable;
 import java.util.List;
 
-public class Phase1Order implements Serializable,Orders {
+
+public class Phase1Order implements Serializable, Orders {
 
     private int orderID;
     private Client client;
