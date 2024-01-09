@@ -2242,4 +2242,44 @@ public class Connect extends SQLiteOpenHelper {
         return test;
 
     }
+
+    public void updateWasherStatus(int washerID, int washerStatus) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Update statement
+        String updateQuery = "UPDATE WASHER SET WASHER_STATUS = ? WHERE WASHER_ID = ?";
+
+
+        // Execute the update statement and get the number of rows affected
+        SQLiteStatement stmt = db.compileStatement(updateQuery);
+        stmt.bindLong(1, washerStatus); // Use bindString for date values
+        stmt.bindLong(2, washerID);
+
+        stmt.execute();
+        db.close();
+    }
+
+    @SuppressLint("Range")
+    public int getWasherStatus(int washerID) {
+        int washerStatus = -1; // Default value or an appropriate default for your use case
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Select statement
+        String selectQuery = "SELECT WASHER_STATUS FROM WASHER WHERE WASHER_ID = ?";
+
+        // Execute the select statement
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(washerID)});
+
+        if (cursor.moveToFirst()) {
+            washerStatus = cursor.getInt(cursor.getColumnIndex("WASHER_STATUS"));
+        }
+
+        // Close the cursor and the database
+        cursor.close();
+        db.close();
+
+        return washerStatus;
+    }
+
 }

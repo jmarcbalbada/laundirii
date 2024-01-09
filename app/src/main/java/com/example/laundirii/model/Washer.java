@@ -170,4 +170,14 @@ public class Washer implements Serializable {
     public void setStatus(boolean status) {
         this.status = status;
     }
+
+    public void updateWasherStatus(int washerID, int washerStatus, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        dbHelper.updateWasherStatus(washerID,washerStatus);
+    }
+
+    public int getWasherStatus(int washerID, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        return dbHelper.getWasherStatus(washerID);
+    }
 }

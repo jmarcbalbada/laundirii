@@ -263,4 +263,12 @@ public class DashboardController {
     public List<Phase2Order> getWasherPhase2ClohtesToReturns(int washerID, Context context) {
         return phase2Order.getWasherPhase2ClohtesToReturns(washerID,context);
     }
+
+    public void updateWasherStatus(int washerID, int washerStatus, Context baseContext) {
+        washer.updateWasherStatus(washerID,washerStatus,baseContext);
+    }
+
+    public int getWasherStatus(int washerID, Context baseContext) {
+        return washer.getWasherStatus(washerID,baseContext);
+    }
 }

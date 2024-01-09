@@ -19,6 +19,9 @@
             app:layout_anchor="@+id/include"
             app:layout_anchorGravity="top|center"
             app:popupTheme="@style/Theme.LaunDirii.PopupOverlay" />
+
+
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <include
@@ -34,6 +37,15 @@
         android:layout_marginBottom="16dp"
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
-
+    <Switch
+        android:id="@+id/washerSwitchStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Switch"
+        android:layout_marginStart="260dp"
+        android:layout_marginTop="20dp"
+        android:textSize="19sp"
+        app:thumbTint="@color/your_thumb_color"
+        app:trackTint="@color/your_track_color" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
