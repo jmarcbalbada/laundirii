@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.washer_dashboard_ui.WasherDashboardActivityEditProfile">
+
+        <Button
+            android:id="@+id/buttonWasherEditProfileConfirm"
+            android:layout_width="107dp"
+            android:layout_height="57dp"
+            android:text="Save"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.899" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="352dp"
+            android:layout_height="95dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.116">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/TextInputWasherShopName"
+                    android:layout_width="match_parent"
+                    android:layout_height="85dp"
+                    android:hint="Shop Name"
+                    android:text="Shop Name"
+                    android:textSize="20dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="352dp"
+            android:layout_height="95dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.294">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/TextInputWasherShopLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="85dp"
+                    android:hint="Shop Location"
+                    android:text="Shop Location"
+                    android:textSize="20dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="352dp"
+            android:layout_height="95dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.474">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/TextInputWasherContactNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="85dp"
+                    android:hint="Contact Number"
+                    android:text="Contact Number"
+                    android:textSize="20dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="352dp"
+            android:layout_height="95dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.669">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/TextInputWasherRate"
+                    android:layout_width="match_parent"
+                    android:layout_height="85dp"
+                    android:hint="Rate Per Kilo Enter a number"
+                    android:text="Rate Per Kilo"
+                    android:textSize="20dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

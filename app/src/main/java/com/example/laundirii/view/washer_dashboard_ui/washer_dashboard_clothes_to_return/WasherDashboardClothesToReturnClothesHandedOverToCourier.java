@@ -38,6 +38,13 @@ public class WasherDashboardClothesToReturnClothesHandedOverToCourier extends Ap
         textViewTotalAmount = findViewById(R.id.textViewTotalAmount);
         textViewContactNumber = findViewById(R.id.textViewContactNumber);
 //
+        textViewClientName.setText("Client Name : " +selectedOrder.getClient().getName());
+        textViewAddress.setText("Order Status : "+selectedOrder.getPhase2OrderStatus());
+        textViewDatePlaced.setText("Date Placed: " + selectedOrder.getDatePlaced());
+        textViewTotalAmount.setText("Total Amount: "+ selectedOrder.getTotalDue());
+        textViewGcashReferenceNumber.setText("Gcash Reference Number: "+ selectedOrder.getReferenceNo());
+        textViewContactNumber.setText("Client Contact Number: "+ selectedOrder.getClient().getContactNo());
+
         buttonReceived = findViewById(R.id.washer_dashboard_fragment_clothes_to_return_receivedButton);
 //        buttonNotReceived = findViewById(R.id.washer_dashboard_fragment_clothes_to_return_notreceivedButton);
 //

@@ -108,21 +108,21 @@ public class WasherDashboardClothesToReturnAdapter extends RecyclerView.Adapter<
     private void setCourierOnTheWayToClientStyle(ClothesToReturnHolder holder, Phase2Order order) {
         initialize(holder,order);
         holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending5));
-        holder.textViewCourierStatus.setText("Pending making sure courier received clothes and payment");
+        holder.textViewCourierStatus.setText("Washer sent the clothes and payment to the courier");
 
     }
 
     private void setPendingConfirmingClientReceivedThePaymentAndClothesStyle(ClothesToReturnHolder holder, Phase2Order order) {
         initialize(holder,order);
         holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending4));
-        holder.textViewCourierStatus.setText("Washer sent the clothes and payment to the courier");
+        holder.textViewCourierStatus.setText("Pending making sure courier received clothes and payment");
 
     }
 
     private void setWasherHandedOverTheClothesAndPaymentsToCourierStyle(ClothesToReturnHolder holder, Phase2Order order) {
         initialize(holder,order);
         holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending3));
-        holder.textViewCourierStatus.setText("Courier Arrived");
+        holder.textViewCourierStatus.setText("Payment Confirmation");
         holder.itemView.setOnClickListener(view->{
             Intent intent = new Intent(view.getContext(), WasherDashboardClothesToReturnClothesHandedOverToCourier.class);
             intent.putExtra("selectedOrder", order);

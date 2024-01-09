@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.laundirii.database.Connect;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Washer implements Serializable {
     private int washerID;
@@ -169,5 +170,25 @@ public class Washer implements Serializable {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public void updateWasherStatus(int washerID, int washerStatus, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        dbHelper.updateWasherStatus(washerID,washerStatus);
+    }
+
+    public int getWasherStatus(int washerID, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        return dbHelper.getWasherStatus(washerID);
+    }
+
+    public int updateWasherProfile(int washerID, String shopName, String shopLocation, String shopContact, Double shopRate, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        return dbHelper.updateWasherProfile(washerID,shopName,shopLocation,shopContact,shopRate);
+    }
+
+    public List<Phase2Order> getWasherPhase2OrderHistory(int washerID, Context context) {
+        dbHelper = new Connect(context);
+        return dbHelper.getWasherPhase2OrderHistory(washerID);
     }
 }
