@@ -174,7 +174,7 @@ public class CurrentFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 boolean success = dashboardController.updatePhase1OrderStatus(phase1Order.getOrderID(), 7, getContext());
-                dashboardController.insertPhase2Order(phase1Order.getClientID(),phase1Order.getWasherID(), phase1Order.getTotalDue(), getContext());
+                dashboardController.insertPhase2Order(phase1Order.getClientID(),phase1Order.getWasherID(), phase1Order.getTotalDue(), phase1Order.getOrderID(), getContext());
                 if(success)
                 {
                     Toast.makeText(getContext(), "Success!", Toast.LENGTH_SHORT).show();

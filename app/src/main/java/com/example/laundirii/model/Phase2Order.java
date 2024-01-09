@@ -40,12 +40,13 @@ public class Phase2Order implements Serializable {
     private int phase2OrderStatus;
     private String referenceNo;
     private String datePlaced;
+    private int phase2_phase1OrderID;
     private Connect dbHelper;
 
     public Phase2Order(int orderID, Client client, Washer washer, Courier courier,
                        int courierStatus, double totalCourierAmount, String dateCourier,
                        double totalDue, double totalPaid, int paymentStatus, String dateReceived,
-                       int phase2OrderStatus, String referenceNo, String datePlaced) {
+                       int phase2OrderStatus, String referenceNo, String datePlaced, int phase2_phase1OrderID) {
         this.orderID = orderID;
         this.client = client;
         this.washer = washer;
@@ -60,6 +61,7 @@ public class Phase2Order implements Serializable {
         this.phase2OrderStatus = phase2OrderStatus;
         this.referenceNo = referenceNo;
         this.datePlaced = datePlaced;
+        this.phase2_phase1OrderID = phase2_phase1OrderID;
     }
 
     public Phase2Order()
@@ -76,6 +78,7 @@ public class Phase2Order implements Serializable {
         phase2OrderStatus = 0;
         referenceNo = "";
         datePlaced = "";
+        phase2_phase1OrderID = 0;
     }
 
     @Override
@@ -177,6 +180,14 @@ public class Phase2Order implements Serializable {
         return dbHelper.updateReferenceNo(clientID,referenceNo);
     }
 
+    public int getPhase2_phase1OrderID() {
+        return phase2_phase1OrderID;
+    }
+
+    public void setPhase2_phase1OrderID(int phase2_phase1OrderID) {
+        this.phase2_phase1OrderID = phase2_phase1OrderID;
+    }
+
     public String getDatePlaced() {
         return datePlaced;
     }
@@ -201,10 +212,10 @@ public class Phase2Order implements Serializable {
         this.phase2OrderStatus = phase2OrderStatus;
     }
 
-    public boolean insertPhase2Order(int clientID, int washerID, double totalDue, Context context)
+    public boolean insertPhase2Order(int clientID, int washerID, double totalDue, int phase2_phase1OrderID, Context context)
     {
         dbHelper = new Connect(context);
-        return dbHelper.insertPhase2Order(clientID,washerID,totalDue);
+        return dbHelper.insertPhase2Order(clientID,washerID,totalDue, phase2_phase1OrderID);
     }
 
     public int getOrderID() {

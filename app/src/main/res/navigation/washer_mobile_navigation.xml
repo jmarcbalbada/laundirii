@@ -33,4 +33,5 @@
         android:name="com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_notification.WasherNotificationFragment"
         android:label="@string/washer_clothes_to_return"
         tools:layout="@layout/washer_dashboard_fragment_clothes_to_return" />
+
 </navigation>

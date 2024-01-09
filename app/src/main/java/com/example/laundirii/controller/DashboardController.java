@@ -85,9 +85,9 @@ public class DashboardController {
         notification.markNotificationsAsRead(ID,typeOfUser,context);
     }
 
-    public boolean insertPhase2Order(int clientID, int washerID, double totalDue,Context context)
+    public boolean insertPhase2Order(int clientID, int washerID, double totalDue, int phase2_phase1OrderID, Context context)
     {
-        return phase2Order.insertPhase2Order(clientID, washerID, totalDue, context);
+        return phase2Order.insertPhase2Order(clientID, washerID, totalDue,phase2_phase1OrderID, context);
     }
 
     public List<Phase2Order> getPendingCollectOnClient(int clientID, Context context)

@@ -118,6 +118,7 @@ public class Connect extends SQLiteOpenHelper {
     public static final String PHASE2_ORDER_STATUS = "PHASE2_ORDER_STATUS";
     public static final String PHASE2_REFERENCE_NO = "PHASE2_REFERENCE_NO";
     public static final String PHASE2_DATE_PLACED = "PHASE2_DATE_PLACED";
+    public static final String PHASE2_PHASE1_ORDER_ID = "PHASE2_PHASE1_ORDER_ID";
 
     // FEEDBACK
     public static final String FEEDBACK_ID = "FEEDBACK_ID";
@@ -198,7 +199,8 @@ public class Connect extends SQLiteOpenHelper {
                 "PHASE2_DATE_RECEIVED TEXT," +
                 "PHASE2_ORDER_STATUS INTEGER," +
                 "PHASE2_REFERENCE_NO TEXT," +
-                "PHASE2_DATE_PLACED TEXT" +
+                "PHASE2_DATE_PLACED TEXT," +
+                "PHASE2_PHASE1_ORDER_ID INTEGER" +
                 ");";
         String createFeedbackTableStatement = "CREATE TABLE FEEDBACK (" +
                 "FEEDBACK_ID INTEGER PRIMARY KEY, " +
@@ -1170,6 +1172,7 @@ public class Connect extends SQLiteOpenHelper {
                 int orderStatusIndex = cursor.getColumnIndex(PHASE2_ORDER_STATUS);
                 int refNoIndex = cursor.getColumnIndex(PHASE2_REFERENCE_NO);
                 int datePlacedIndex = cursor.getColumnIndex(PHASE2_DATE_PLACED);
+                int phase2Phase1OrderIndex = cursor.getColumnIndex(PHASE2_PHASE1_ORDER_ID);
 
                 // Check if the column indexes are valid
                 if (orderIdIndex != -1 && washerIdIndex != -1 && courierIdIndex != -1 &&
@@ -1177,7 +1180,7 @@ public class Connect extends SQLiteOpenHelper {
                         dateCourierIndex != -1 && totalDueIndex != -1 &&
                         totalPaidIndex != -1 && paymentStatusIndex != -1 &&
                         dateReceivedIndex != -1 && orderStatusIndex != -1 &&
-                        refNoIndex != -1 && datePlacedIndex != -1) {
+                        refNoIndex != -1 && datePlacedIndex != -1 && phase2Phase1OrderIndex != -1) {
                     Courier courier;
 
                     if(getCourier(cursor.getInt(courierIdIndex)) == null){
@@ -1203,7 +1206,8 @@ public class Connect extends SQLiteOpenHelper {
                             cursor.getString(dateReceivedIndex),
                             cursor.getInt(orderStatusIndex),
                             cursor.getString(refNoIndex),
-                            cursor.getString(datePlacedIndex)
+                            cursor.getString(datePlacedIndex),
+                            cursor.getInt(phase2Phase1OrderIndex)
                     );
 
                     pendingCollects.add(pendingCollect);
@@ -1692,7 +1696,7 @@ public class Connect extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    public boolean insertPhase2Order(int clientID, int washerID, double totalDue) {
+    public boolean insertPhase2Order(int clientID, int washerID, double totalDue, int phase2_phase1OrderID) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -1707,6 +1711,8 @@ public class Connect extends SQLiteOpenHelper {
         values.put(PHASE2_DATE_RECEIVED, "");
         values.put(PHASE2_ORDER_STATUS, 0);
         values.put(PHASE2_REFERENCE_NO, "");
+        values.put(PHASE2_PHASE1_ORDER_ID, phase2_phase1OrderID);
+
 
         // Set PHASE1_DATE_PLACED to the current date
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
