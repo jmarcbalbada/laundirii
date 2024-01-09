@@ -5,7 +5,6 @@ import android.content.Context;
 import com.example.laundirii.model.Client;
 import com.example.laundirii.model.Courier;
 import com.example.laundirii.model.Notification;
-import com.example.laundirii.model.Order;
 import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.model.Phase2Order;
 import com.example.laundirii.model.Washer;
@@ -17,7 +16,6 @@ public class DashboardController {
     private Client client;
     private Courier courier;
     private Washer washer;
-    private Order order;
     private Phase1Order phase1Order;
     private Phase2Order phase2Order;
     private Notification notification;
@@ -27,7 +25,6 @@ public class DashboardController {
         client = new Client();
         courier = new Courier();
         washer = new Washer();
-        order = new Order();
         phase1Order = new Phase1Order();
         phase2Order = new Phase2Order();
         notification = new Notification();
@@ -64,6 +61,13 @@ public class DashboardController {
     {
         return phase1Order.getPendingDeliveryOnCourier(courierID, context);
     }
+
+    public Phase2Order getPendingDeliveryOnCourierOnPhase2(int courierID, Context context)
+    {
+        return phase2Order.getPendingDeliveryOnCourierOnPhase2(courierID, context);
+    }
+
+
 
     public List<Notification> getNotificationOnClient(int clientID, Context context)
     {
@@ -111,6 +115,13 @@ public class DashboardController {
         return phase1Order.getHistoryList(username,context);
     }
 
+    public List<Phase2Order> getHistoryListOnPhase2Order(String username, Context context)
+    {
+        return phase2Order.getHistoryListOnPhase2Order(username,context);
+    }
+
+
+
     public List<Phase1Order> getPendingRequestOnCourier(Context context)
     {
         return phase1Order.getPendingRequestOnCourier(context);
@@ -143,6 +154,12 @@ public class DashboardController {
         return courier.hasActiveTransactionOnPhase1Order(courierID, context);
     }
 
+    public boolean hasActiveTransactionOnPhase2Order(int courierID, Context context)
+    {
+        return courier.hasActiveTransactionOnPhase2Order(courierID, context);
+    }
+
+
     public boolean hasCourierAlreadyReceivedPaymentPhase1(int courierID, Context context)
     {
         return courier.hasCourierAlreadyReceivedPaymentPhase1(courierID, context);
@@ -152,6 +169,13 @@ public class DashboardController {
     {
         return phase1Order.setCourierStatusPhase1OrderOnDatabase(courierID,status, context);
     }
+
+    public boolean setCourierStatusPhase2OrderOnDatabase(int courierID, boolean status, Context context)
+    {
+        return phase2Order.setCourierStatusPhase2OrderOnDatabase(courierID,status, context);
+    }
+
+
 
     public boolean updateCourierStatus(int courierID, int status, Context context)
     {
@@ -227,6 +251,12 @@ public class DashboardController {
     public void updatePhase1OrderDateReceivedToCurrentDate(int orderID, Context baseContext) {
         phase1Order.updatePhase1OrderDateReceivedToCurrentDate(orderID, baseContext);
     }
+
+    public void updatePhase2OrderDateReceivedToCurrentDate(int orderID, Context context) {
+        phase2Order.updatePhase2OrderDateReceivedToCurrentDate(orderID, context);
+    }
+
+
 
     public void updatePhase1OrderTotalDue(int orderID, double totalDue, Context baseContext) {
         phase1Order.updatePhase1OrderTotalDue(orderID, totalDue,baseContext);

@@ -65,9 +65,10 @@ public class ClientCourierCollectActivity extends AppCompatActivity {
                 }else
                 {
                     boolean success = dashboardController.updateReferenceNo(client.getCustomerID(),refNoTextStr, getBaseContext());
+                    dashboardController.updatePhase2OrderStatus(phase2OrderSelected.getOrderID(), 10, getBaseContext());
                     if(success)
                     {
-                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Waiting for washer to accept!", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {

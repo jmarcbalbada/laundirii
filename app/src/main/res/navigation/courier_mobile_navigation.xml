@@ -18,12 +18,6 @@
         tools:layout="@layout/courier_dashboard_fragment_history" />
 
     <fragment
-        android:id="@+id/cour_nav_logout"
-        android:name="com.example.laundirii.view.courier_dashboard_ui.courier_dashboard_pending_request.CourierPendingRequestFragment"
-        android:label="@string/courier_pending_request"
-        tools:layout="@layout/courier_dashboard_fragment_pending_request" />
-
-    <fragment
         android:id="@+id/cour_nav_notification"
         android:name="com.example.laundirii.view.courier_dashboard_ui.courier_dashboard_notification.CourierNotificationFragment"
         android:label="@string/courier_menu_notification"

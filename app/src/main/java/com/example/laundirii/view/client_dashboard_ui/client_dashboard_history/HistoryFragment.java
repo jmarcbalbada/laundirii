@@ -19,7 +19,9 @@ import com.example.laundirii.R;
 import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.databinding.ClientFragmentHistoryBinding;
 import com.example.laundirii.model.Client;
+import com.example.laundirii.model.Orders;
 import com.example.laundirii.model.Phase1Order;
+import com.example.laundirii.model.Phase2Order;
 import com.example.laundirii.view.client_dashboard_ui.BookServiceActivity;
 import com.example.laundirii.view.client_dashboard_ui.client_dashboard_current.CurrentFragment;
 
@@ -62,9 +64,11 @@ public class HistoryFragment extends Fragment {
 
     public void displayHistory()
     {
-        List<Phase1Order> listHistory = new ArrayList<>();
-        listHistory = dashboardController.getHistoryList(client.getUsername(), this.getActivity());
-        historyClientOrdersAdapter = new ArrayAdapter<Phase1Order>(this.getContext(), android.R.layout.simple_list_item_1, listHistory);
+        List<Orders> listHistory = new ArrayList<>();
+        listHistory.addAll(dashboardController.getHistoryList(client.getUsername(), this.getActivity()));
+        listHistory.addAll(dashboardController.getHistoryListOnPhase2Order(client.getUsername(), this.getActivity()));
+
+        ArrayAdapter<Orders> historyClientOrdersAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, listHistory);
         lv_historyList.setAdapter(historyClientOrdersAdapter);
     }
 

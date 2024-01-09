@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,8 +30,8 @@ import com.example.laundirii.R;
 import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.databinding.CourierDashboardFragmentHomeBinding;
 import com.example.laundirii.model.Courier;
-import com.example.laundirii.model.Order;
 import com.example.laundirii.model.Phase1Order;
+import com.example.laundirii.model.Phase2Order;
 import com.example.laundirii.view.courier_dashboard_ui.CourierDashboardActivity;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class CourierDashboardHomeFragment extends Fragment {
     private ListView lv_pendingOrders;
     public DashboardController dashboardController;
     SharedPreferences courierInfoPreferences;
+    private TextView hasPendingText;
     private Courier courier;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -57,8 +59,13 @@ public class CourierDashboardHomeFragment extends Fragment {
         courierInfoPreferences = this.getActivity().getSharedPreferences("LoginCourierPreferences", 0);
         String courierUsername = courierInfoPreferences.getString("courierUsername", "");
         courier = dashboardController.getCourier(courierUsername, this.getActivity());
-        boolean hasPendingTransaction = dashboardController.hasActiveTransactionOnPhase1Order(courier.getCourierID(), getContext());
-        if(hasPendingTransaction)
+        hasPendingText = root.findViewById(R.id.hasPendingDeliveryText);
+        boolean hasPendingTransactionOnPhase1 = dashboardController.hasActiveTransactionOnPhase1Order(courier.getCourierID(), getContext());
+        Log.e("HASPENDINGONPHASE1", hasPendingTransactionOnPhase1 + "");
+        Log.e("HASPENDINGONPHASE2", hasPendingTransactionOnPhase1 + "");
+        boolean hasPendingTransactionOnPhase2 = dashboardController.hasActiveTransactionOnPhase2Order(courier.getCourierID(), getContext());
+        // if has pending transaction on phase1order
+        if(hasPendingTransactionOnPhase1)
         {
             Phase1Order phase1Order = dashboardController.getPendingDeliveryOnCourier(courier.getCourierID(), getContext());
             if(phase1Order == null)
@@ -71,6 +78,34 @@ public class CourierDashboardHomeFragment extends Fragment {
                 showCustomDialogOnReceivedBooking(phase1Order);
             }
         }
+
+        if(hasPendingTransactionOnPhase2)
+        {
+            Phase2Order pendingDelivery = dashboardController.getPendingDeliveryOnCourierOnPhase2(courier.getCourierID(), this.getActivity());
+            if(pendingDelivery == null)
+            {
+                pendingDelivery = new Phase2Order();
+            }
+
+            switch(pendingDelivery.getPhase2OrderStatus())
+            {
+                case 10:
+                    break;
+                case 11: showPopUpCourierReceivedBookingPhase2(pendingDelivery);
+                    break;
+                case 12:
+                    break;
+                case 13:
+                    break;
+                case 14:
+                    break;
+                case 15:
+                    break;
+                case 16:
+                    break;
+            }
+        }
+
         // display pending orders
         try{
             displayPendingOrders();
@@ -82,24 +117,54 @@ public class CourierDashboardHomeFragment extends Fragment {
         lv_pendingOrders.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Phase1Order selectedOrder = (Phase1Order) parent.getItemAtPosition(position);
-                switch(selectedOrder.getPhase1OrderStatus())
+                Object selectedItem = parent.getItemAtPosition(position);
+
+                if(selectedItem instanceof Phase1Order)
                 {
-                    case -1:
-                        break;
-                    case 0:
-                        break;
-                    case 1: showCustomDialogOnNotifyingClient();
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        break;
-                    case 4: showCustomDialogOnReceivingWasherPaymentPhase1();
-                        break;
-                    case 5:
-                        break;
+                    Phase1Order selectedOrder = (Phase1Order) parent.getItemAtPosition(position);
+                    switch(selectedOrder.getPhase1OrderStatus())
+                    {
+                        case -1:
+                            break;
+                        case 0:
+                            break;
+                        case 1: showCustomDialogOnNotifyingClient();
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                        case 4: showCustomDialogOnReceivingWasherPaymentPhase1();
+                            break;
+                        case 5:
+                            break;
+                    }
+                }else if(selectedItem instanceof Phase2Order)
+                {
+                    Phase2Order selectedOrder = (Phase2Order) parent.getItemAtPosition(position);
+                    switch(selectedOrder.getPhase2OrderStatus())
+                    {
+                        case -1:
+                            break;
+                        case 0:
+                            break;
+                        case 10:
+                            break;
+                        case 11: showPopUpNotifyWasherCourierArrived(selectedOrder);
+                            break;
+                        case 12:
+                            break;
+                        case 13: showCustomDialogOnReceivingWasherPaymentPhase2(selectedOrder);
+                            break;
+                        case 14: showCustomDialogOnNotifyingClientPhase2(selectedOrder);
+                            break;
+                        case 15:
+                            break;
+                        case 16:
+                            break;
+                    }
                 }
+
             }
         });
         return root;
@@ -124,10 +189,13 @@ public class CourierDashboardHomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 boolean success = dashboardController.setCourierStatusPhase1OrderOnDatabase(courier.getCourierID(), true, getContext());
+                dashboardController.setCourierStatusOnDatabase(courier.getCourierID(),true,getContext());
                 displayPendingOrders();
                 if(success)
                 {
+                    courier.setStatus(true);
                     Toast.makeText(getContext(), "Received payment!", Toast.LENGTH_SHORT).show();
+                    lv_pendingOrders.setVisibility(View.GONE);
                 }
                 else
                 {
@@ -145,7 +213,6 @@ public class CourierDashboardHomeFragment extends Fragment {
             }
         });
     }
-
 
 
     private void showCustomDialogOnNotifyingClient()
@@ -225,68 +292,195 @@ public class CourierDashboardHomeFragment extends Fragment {
 
     public void displayPendingOrders() {
         // display pending order
-//        boolean isActive = courier.getCourierStatusOnDb(courier.getCourierID(),this.getActivity()) == 1 ? true : false;
-//        courier.setStatus(isActive);
-//        Log.e("Courier Status", courier.getStatus() + "");
-        boolean hasActive = dashboardController.hasActiveTransactionOnPhase1Order(courier.getCourierID(),getContext());
-        if(!courier.getStatus() && hasActive)
+        boolean hasActiveOnPhase1 = dashboardController.hasActiveTransactionOnPhase1Order(courier.getCourierID(),getContext());
+        boolean hasActiveOnPhase2 = dashboardController.hasActiveTransactionOnPhase2Order(courier.getCourierID(),getContext());
+        Log.e("COURIER STATUS", courier.getStatus() + "");
+        if(!courier.getStatus())
         {
-            Phase1Order pendingDelivery = dashboardController.getPendingDeliveryOnCourier(courier.getCourierID(), this.getActivity());
-            if (pendingDelivery != null) {
-                List<Phase1Order> listPendingDelivery = new ArrayList<>();
-                listPendingDelivery.add(pendingDelivery);
+            // check if has active pending orders on phase 1 or hasn't been paid
+            if(hasActiveOnPhase1)
+            {
+                hasPendingText.setText("");
+                Phase1Order pendingDelivery = dashboardController.getPendingDeliveryOnCourier(courier.getCourierID(), this.getActivity());
+                if (pendingDelivery != null) {
+                    Log.e("PendingDeliveryPhase1", pendingDelivery.toString());
+                    List<Phase1Order> listPendingDelivery = new ArrayList<>();
+                    listPendingDelivery.add(pendingDelivery);
 
-                Log.e("LISTPENDINGDELIVERY", listPendingDelivery.size() + "");
+                    Log.e("LISTPENDINGDELIVERY", listPendingDelivery.size() + "");
 
-                pendingOrdersAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, listPendingDelivery);
-                lv_pendingOrders.setAdapter(pendingOrdersAdapter);
-            } else {
-                // Handle the case when pendingDelivery is null
-                Log.e("LISTPENDINGDELIVERY", "Pending delivery is null");
+                    pendingOrdersAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, listPendingDelivery);
+                    lv_pendingOrders.setAdapter(pendingOrdersAdapter);
+                } else {
+                    // Handle the case when pendingDelivery is null
+                    Log.e("LISTPENDINGDELIVERY", "Pending delivery is null");
+                }
             }
+
+            if(hasActiveOnPhase2)
+            {
+                hasPendingText.setText("");
+                Phase2Order pendingDelivery = dashboardController.getPendingDeliveryOnCourierOnPhase2(courier.getCourierID(), this.getActivity());
+
+                if (pendingDelivery != null) {
+                    Log.e("PendingDeliveryPhase2", pendingDelivery.toString());
+                    List<Phase2Order> listPendingDelivery = new ArrayList<>();
+                    listPendingDelivery.add(pendingDelivery);
+
+                    Log.e("LISTPENDINGDELIVERY", listPendingDelivery.size() + "");
+
+                    pendingOrdersAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, listPendingDelivery);
+                    lv_pendingOrders.setAdapter(pendingOrdersAdapter);
+                }
+            }
+
+            if(!hasActiveOnPhase1 && !hasActiveOnPhase2)
+            {
+                hasPendingText.setText("Turn on status to start accepting orders!");
+            }
+
         }
         else
         {
             // display No pending delivery by creating textview
-            View root = binding.getRoot();
-            lv_pendingOrders.setVisibility(View.GONE);
-            TextView textView = new TextView(getContext());
-
-            textView.setText("No pending delivery for now!");
-            Log.e("TextView Value", textView.getText().toString());
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24); // Set the text size, adjust as needed
-            int currentNightMode = getResources().getConfiguration().uiMode
-                    & Configuration.UI_MODE_NIGHT_MASK;
-            if(currentNightMode == Configuration.UI_MODE_NIGHT_YES)
-            {
-                textView.setTextColor(Color.WHITE);
-            }else {
-                textView.setTextColor(Color.BLACK);
-            }
-
-            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(
-                    ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                    ConstraintLayout.LayoutParams.WRAP_CONTENT
-            );
-
-            params.topToBottom = R.id.text_home;
-            params.topMargin = -1700;
-            params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
-            params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
-            params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
-
-            textView.setLayoutParams(params);
-
-            // Add the TextView to your layout
-            ViewGroup rootView = (ViewGroup) root.getRootView();
-
-            if (rootView != null) {
-                rootView.addView(textView);
-                Log.e("TextViewAdded", "TextView added successfully");
-            } else {
-                Log.e("RootViewNull", "RootView is null");
-            }
+            hasPendingText.setText("No pending delivery for now!");
         }
+    }
+
+    // PHASE 2 POP UPS / DIALOGS
+
+    private void showPopUpCourierReceivedBookingPhase2(Phase2Order phase2Order)
+    {
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.popup_courier_received_booking_phase2, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+        builder.setTitle("Reminder!");
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        TextView textViewDismiss = dialogView.findViewById(R.id.textViewCourierReceivedPhase2DismissButton);
+        TextView textViewContent = dialogView.findViewById(R.id.textViewCourierReceivedPopUpPhase2Content);
+
+        if(textViewContent != null)
+        {
+            textViewContent.setText("COLLECT FROM WASHER TO CLIENT\n\nOrder ID: " + phase2Order.getOrderID()
+                    + "\nClient: " + phase2Order.getClient().getName()
+                    + "\nClient Address: " + phase2Order.getClient().getAddress()
+                    + "\nWasher: " + phase2Order.getWasher().getShopName()
+                    + "\nWasher Address: " + phase2Order.getWasher().getShopLocation()
+            );
+        }
+
+        textViewDismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void showPopUpNotifyWasherCourierArrived(Phase2Order phase2Order)
+    {
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.popup_notify_washer_courier_arrived, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+        builder.setTitle("Reminder!");
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        TextView textViewCancel = dialogView.findViewById(R.id.textViewCourierArrivedWasherTitleCancelButton);
+        TextView textViewNotify = dialogView.findViewById(R.id.textViewCourierArrivedWasherTitleNotifyButton);
+
+        textViewNotify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dashboardController.updatePhase2OrderStatus(phase2Order.getOrderID(),12,getContext());
+                displayPendingOrders();
+                dialog.dismiss();
+
+            }
+        });
+
+        textViewCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void showCustomDialogOnReceivingWasherPaymentPhase2(Phase2Order phase2Order)
+    {
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.popup_courier_received_paymentwasher_phase1, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+        builder.setTitle("Reminder!");
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        TextView textViewNoButton = dialogView.findViewById(R.id.textViewReceivedPaymentNoButton);
+        TextView textViewYesButton = dialogView.findViewById(R.id.textViewReceivedPaymentYesButton);
+
+        textViewYesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dashboardController.updatePhase2OrderStatus(phase2Order.getOrderID(),14,getContext());
+                displayPendingOrders();
+                Toast.makeText(getContext(), "Received payment!", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+
+            }
+        });
+
+        textViewNoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void showCustomDialogOnNotifyingClientPhase2(Phase2Order phase2Order)
+    {
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.popup_notify_client_courier_arrived, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+        builder.setTitle("Reminder!");
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        TextView textViewDismiss = dialogView.findViewById(R.id.textViewCourierArrivedCancelButton);
+        TextView textViewNotify = dialogView.findViewById(R.id.CourierReceivedNotifyButton);
+
+        textViewNotify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dashboardController.updatePhase2OrderStatus(phase2Order.getOrderID(),15,getContext());
+                displayPendingOrders();
+                Toast.makeText(getContext(), "Notified Client!", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+
+            }
+        });
+
+        textViewDismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
     }
 
     @Override
