@@ -7,7 +7,7 @@ import com.example.laundirii.database.Connect;
 import java.io.Serializable;
 import java.util.List;
 
-public class Phase1Order implements Serializable {
+public class Phase1Order implements Serializable, Orders {
 
     private int orderID;
     private Client client;
@@ -299,6 +299,12 @@ public class Phase1Order implements Serializable {
 
     public void setTotalCourierAmount(double totalCourierAmount) {
         this.totalCourierAmount = totalCourierAmount;
+    }
+
+    @Override
+    public void toImplement()
+    {
+
     }
 
     public String getDateCourier() {
