@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textViewClientSelectCollectTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="16dp"
+        android:text="Select Collect Method"
+        android:textStyle="bold"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textViewClientSelectCollectContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="16dp"
+        android:text="Please select your preferred collect method."
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:textSize="16sp" />
+    <TextView
+        android:id="@+id/textViewClientSelectCollectContent2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="90dp"
+        android:layout_marginBottom="16dp"
+        android:layout_below="@id/textViewClientSelectCollectContent"
+        android:text="Note:\n\nSelf-collect is a convenient option where you personally visit the washer shop location
+to retrieve your laundry. Payments are typically made OFFLINE at the shop.\n\nCourier-Collect,
+on the other hand, offers the flexibility of having a courier deliver your laundry directly to your
+doorstep. Payments are made ONLINE through GCash with Reference No.\n\nChoose the option that best suits your preference and enjoy the convenience of our laundry services!"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textViewClientSelectCollectContentNoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewClientSelectCollectContent2"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="8dp"
+        android:text="Not yet"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewClientSelectCollectContentSelfCollect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewClientSelectCollectContent2"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="2dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="8dp"
+        android:text="Self-Collect"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/textViewClientSelectCollectContentCourierCollect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewClientSelectCollectContent2"
+        android:layout_marginStart="210dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="2dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="8dp"
+        android:text="Courier-Collect"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+</RelativeLayout>
+
