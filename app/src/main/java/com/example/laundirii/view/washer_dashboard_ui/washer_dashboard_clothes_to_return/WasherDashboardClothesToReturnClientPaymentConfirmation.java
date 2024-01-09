@@ -3,7 +3,10 @@ package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_clothes_
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +26,7 @@ public class WasherDashboardClothesToReturnClientPaymentConfirmation extends App
     private Phase2Order selectOrder;
 
 
-    DashboardController dashboardController;
+    private DashboardController dashboardController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,45 +96,114 @@ public class WasherDashboardClothesToReturnClientPaymentConfirmation extends App
                     .show();
         });
 
+
+        // NO BUTTON
         this.selectOrder = selectedOrder;
-        buttonNotReceived.setOnClickListener(v ->
-                new AlertDialog.Builder(WasherDashboardClothesToReturnClientPaymentConfirmation.this)
-                        .setTitle("What Happened?")
-                        .setPositiveButton("Gcash Reference Did not match", (dialog1, which1) -> {
-                            // TODO: Logic for Gcash reference did not match
+        buttonNotReceived.setOnClickListener(v -> {
+            new AlertDialog.Builder(WasherDashboardClothesToReturnClientPaymentConfirmation.this)
+                    .setTitle("What Happened?")
+                    .setPositiveButton("Gcash Reference Did not match", (dialog1, which1) -> {
+                        // TODO: Logic for Gcash reference did not match
+                        int Phase2OrderID = selectedOrder.getOrderID();
 
-                            // Send message to the client
-                            String notificationTitle = selectedOrder.getWasher().getShopName() + " - Invalid Gcash Reference";
-                            String notificationMessage = "The payment is insufficient. Please make sure you paid the exact amount or communicate with us.";
-                            // Sending Notification to Client
-                            dashboardController.sendNotifications(0, selectedOrder.getClient().getCustomerID(), 0, notificationTitle, notificationMessage, getBaseContext());
+                        // Send message to the client that gcash reference did not match
+                        String notificationTitle = selectedOrder.getWasher().getShopName() + " - Invalid Gcash Reference";
+                        String notificationMessage = "The reference Gcash is invalid Kindly double check so that we can receive the payment. You can call us at " + selectedOrder.getWasher().getContactNo();
+                        // Sending Notification to Client
+                        dashboardController.sendNotifications(0, selectedOrder.getClient().getCustomerID(), 0, notificationTitle, notificationMessage, getBaseContext());
 
-                            // Set phase1order to 6
-                            // dashboardController.updatePhase1OrderStatus(, getBaseContext());
+                        // Set phase1order to 6
+                        dashboardController.updatePhase1OrderStatus(selectedOrder.getPhase2_phase1OrderID(), 6, getBaseContext());
 
-                            Toast.makeText(getApplicationContext(), "Client has been Notified", Toast.LENGTH_SHORT).show();
+                        // Set phase2Order to -1
+                        dashboardController.updatePhase2OrderStatus(Phase2OrderID, -1, getBaseContext());
 
-                            Intent intent = new Intent(WasherDashboardClothesToReturnClientPaymentConfirmation.this, WasherDashboardActivity.class);
-                            startActivity(intent);
-                        })
-                        .setNegativeButton("Paid Amount is Insufficient", (dialog2, which2) -> {
-                            // TODO: Logic for insufficient amount
+                        Toast.makeText(getApplicationContext(), "Client has been Notified", Toast.LENGTH_SHORT).show();
 
-                            // Send notification to the client that the amount is insufficient
-                            String notificationTitle = selectedOrder.getWasher().getShopName() + " - Insufficient Payment";
-                            String notificationMessage = "The payment is insufficient. Please make sure you paid the exact amount or communicate with us.";
-                            // Sending Notification to Client
-                            dashboardController.sendNotifications(0, selectedOrder.getClient().getCustomerID(), 0, notificationTitle, notificationMessage, getBaseContext());
+                        Intent intent = new Intent(WasherDashboardClothesToReturnClientPaymentConfirmation.this, WasherDashboardActivity.class);
+                        startActivity(intent);
+                    })
+                    .setNegativeButton("Client Insufficient Payment", (dialog2, which2) -> {
+                        // Show a dialog to enter the amount
+                        AlertDialog.Builder amountDialogBuilder = new AlertDialog.Builder(WasherDashboardClothesToReturnClientPaymentConfirmation.this);
+                        amountDialogBuilder.setTitle("Enter Amount Received");
+                        amountDialogBuilder.setMessage("Kindly provide the received amount to notify the client of the remaining outstanding balance.");
 
-                            // Set phase1order to 6
-                            // dashboardController.updatePhase1OrderStatus(, getBaseContext());
+                        final EditText amountInput = new EditText(WasherDashboardClothesToReturnClientPaymentConfirmation.this);
+                        amountInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                        amountDialogBuilder.setView(amountInput);
 
-                            Toast.makeText(getApplicationContext(), "Client has been Notified", Toast.LENGTH_SHORT).show();
-                        })
-                        .setNeutralButton("Not Take action", (dialog3, which3) -> {
+                        // Set up buttons
+                        amountDialogBuilder.setPositiveButton("Continue", (amountDialog, amountWhich) -> {
+                            String amountReceived = amountInput.getText().toString();
+                            // Handle the amount received, and proceed as needed
+
+                            // For example, you can show another dialog
+                            new AlertDialog.Builder(WasherDashboardClothesToReturnClientPaymentConfirmation.this)
+                                    .setTitle("Payment Confirmation")
+                                    .setMessage("s this the correct amount you received? " + amountReceived)
+                                    .setPositiveButton("Yes", (nextDialog, nextWhich) -> {
+                                        // Handle further steps if needed
+                                        double kuwangNiClient = selectedOrder.getTotalDue() - Integer.parseInt(amountReceived) ;
+                                        if(kuwangNiClient < 0){
+                                            new AlertDialog.Builder(WasherDashboardClothesToReturnClientPaymentConfirmation.this)
+                                                    .setTitle("Client Already paid Completely")
+                                                    .setMessage("Client balance is completely paid review the payment")
+                                                    .setNeutralButton("Confirm",(dialog3,which3)->{
+                                            }).show();
+
+//                                            Toast.makeText(getApplicationContext(), "Client is fully paid review the payment ", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "Kuwang ni Client" + kuwangNiClient, Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+                                        Log.e("Kuwang Ni Client",""+ kuwangNiClient);
+
+
+                                        int Phase2OrderID = selectedOrder.getOrderID();
+
+                                        // Send message to the client that gcash reference did not match
+                                        String notificationTitle = selectedOrder.getWasher().getShopName() + " - Insufficient Payment";
+                                        String notificationMessage = "The payment is insufficient. Please make sure you paid the exact amount or communicate with us. Please call us at " + selectedOrder.getWasher().getContactNo();
+                                        // Sending Notification to Client
+                                        dashboardController.sendNotifications(0, selectedOrder.getClient().getCustomerID(), 0, notificationTitle, notificationMessage, getBaseContext());
+
+                                        // Set phase1order to 6
+                                        dashboardController.updatePhase1OrderStatus(selectedOrder.getPhase2_phase1OrderID(), 6, getBaseContext());
+
+                                        // Set phase2Order to -1
+                                        dashboardController.updatePhase2OrderStatus(Phase2OrderID, -1, getBaseContext());
+
+                                        // update Phase1 total due
+                                        dashboardController.updatePhase1OrderTotalDue(selectedOrder.getPhase2_phase1OrderID(),kuwangNiClient,getBaseContext());
+
+                                        Toast.makeText(getApplicationContext(), "Client has been Notified", Toast.LENGTH_SHORT).show();
+
+                                        Intent intent = new Intent(WasherDashboardClothesToReturnClientPaymentConfirmation.this, WasherDashboardActivity.class);
+                                        startActivity(intent);
+
+
+                                        Toast.makeText(getApplicationContext(), "Client has been notified", Toast.LENGTH_SHORT).show();
+                                    })
+                                    .setNegativeButton("No", (nextDialog, nextWhich) -> {
+                                        Toast.makeText(getApplicationContext(), "No Action Taken", Toast.LENGTH_SHORT).show();
+                                    })
+                                    .show();
+                        });
+
+                        amountDialogBuilder.setNegativeButton("Cancel", (amountDialog, amountWhich) -> {
+                            amountDialog.cancel();
                             Toast.makeText(getApplicationContext(), "No Action Taken", Toast.LENGTH_SHORT).show();
-                        })
-                        .show());
+                        });
+
+                        // Show the amount input dialog
+                        amountDialogBuilder.show();
+                    })
+                    .setNeutralButton("Not Take action", (dialog3, which3) -> {
+                        Toast.makeText(getApplicationContext(), "No Action Taken", Toast.LENGTH_SHORT).show();
+                    })
+                    .show();
+        });
+
 
 
     }
