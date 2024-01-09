@@ -896,7 +896,6 @@ public class Connect extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM WASHER WHERE WASHER_ID = ?", new String[]{String.valueOf(washerID)});
 
         if (cursor.moveToFirst()) {
-            Log.e("OLOK","otin ni lapiste" + cursor.getInt(0));
             int usernameColumnIndex = cursor.getColumnIndex(WASHER_USERNAME);
             int passwordColumnIndex = cursor.getColumnIndex(WASHER_PASSWORD);
             int shopNameColumnIndex = cursor.getColumnIndex(SHOP_NAME);
