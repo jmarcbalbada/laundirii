@@ -20,6 +20,7 @@ public class Phase2Order implements Serializable {
     private int paymentStatus;
     private String dateReceived;
 
+
     /*
      -1 - Invalid / Cancelled
      0 - General Pending
@@ -27,12 +28,18 @@ public class Phase2Order implements Serializable {
      COURIER COLLECT:
      10 - Client payment pending (Payment Status should be 1)
      11 - Courier on the way to Washer
+        - status to 12 to notify washer arrival
+
      12 - Courier Arrived (Courier)
-     13 - Washer Hands over the laundry to Courier and pays courier (Processing)
-     14 - Received Client Clean Laundry (Courier must received the payment) (Processing)
-     15 - Courier on the way to Client!
-     16 - Courier arrived to Client
-     17 - Completed!
+        - Washer Hands over the laundry to Courier and pays courier (Processing) set stat
+        - confirm that washer you (handed over the clothes) will set the status to 13
+
+     13 - Received Client Clean Laundry (Courier must received the payment) (Processing)
+        - confirm and will set status to 14
+
+     14 - Courier on the way to Client!
+     15 - Courier arrived to Client
+     16 - Completed!
 
      SELF COLLECT:
      20
@@ -306,8 +313,30 @@ public class Phase2Order implements Serializable {
         this.dateReceived = dateReceived;
     }
 
-    public List<Phase2Order> getWasherPhase2PendingOrder(int washerID, Context context) {
+    public List<Phase2Order> getWasherPhase2ClohtesToReturn(int washerID, Context context) {
         dbHelper = new Connect(context);
-        return dbHelper.getWasherPhase2PendingOrder(washerID);
+        return dbHelper.getWasherPhase2ClohtesToReturn(washerID);
+    }
+
+    public void updatePhase2OrderCourierID(int orderID, int availableCourierID, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        dbHelper.updatePhase2OrderCourierID(orderID,availableCourierID);
+
+    }
+
+    public void updatePhase2OrderStatus(int phase2OrderID, int phase2OrderStatus, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        dbHelper.updatePhase2OrderStatus(phase2OrderID,phase2OrderStatus);
+    }
+
+
+    public void updatePhase2OrderDateCourier(int phase2OrderID, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        dbHelper.updatePhase2OrderDateCourier(phase2OrderID);
+    }
+
+    public List<Phase2Order> getWasherPhase2ClohtesToReturns(int washerID, Context context) {
+        dbHelper = new Connect(context);
+        return dbHelper.getWasherPhase2ClohtesToReturns(washerID);
     }
 }

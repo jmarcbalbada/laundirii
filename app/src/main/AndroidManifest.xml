@@ -13,6 +13,12 @@
         android:theme="@style/Theme.LaunDirii"
         tools:targetApi="31">
         <activity
+            android:name=".view.washer_dashboard_ui.washer_dashboard_clothes_to_return.WasherDashboardClothesToReturnClothesHandedOverToCourier"
+            android:exported="false" />
+        <activity
+            android:name=".view.washer_dashboard_ui.washer_dashboard_clothes_to_return.WasherDashboardClothesToReturnClientPaymentConfirmation"
+            android:exported="false" />
+        <activity
             android:name=".view.washer_dashboard_ui.washer_dashboard_receivedclothes.WasherDashboardPendingrequestToBePickUp"
             android:exported="false" />
         <activity
