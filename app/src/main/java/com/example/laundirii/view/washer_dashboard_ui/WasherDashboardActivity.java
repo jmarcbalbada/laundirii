@@ -157,16 +157,13 @@ public class WasherDashboardActivity extends AppCompatActivity {
                         })
                         .setNegativeButton("No", (dialog, which) -> {
                             washerSwitchStatus.setChecked(true);
-                            washerSwitchStatus.setText("Off");
+                            washerSwitchStatus.setText("On");
                             // Handle when the user cancels closing the shop
                             // You can put your custom logic here
                         })
                         .show();
             }
-
         });
-
-
     }
 
 

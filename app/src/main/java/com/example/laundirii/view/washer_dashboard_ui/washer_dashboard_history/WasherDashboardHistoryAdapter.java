@@ -11,15 +11,17 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.laundirii.R;
+import com.example.laundirii.model.Orders;
 import com.example.laundirii.model.Phase1Order;
+import com.example.laundirii.model.Phase2Order;
 
 import java.util.List;
 
 public class WasherDashboardHistoryAdapter extends RecyclerView.Adapter<WasherDashboardHistoryAdapter.PedingViewHolder> {
-    private List<Phase1Order> orders;
+    private List<Orders> orders;
     Context context;
 
-    public WasherDashboardHistoryAdapter(List<Phase1Order> orders,Context context) {
+    public WasherDashboardHistoryAdapter(List<Orders> orders,Context context) {
         this.orders = orders;
         this.context = context;
     }
@@ -33,21 +35,41 @@ public class WasherDashboardHistoryAdapter extends RecyclerView.Adapter<WasherDa
 
     @Override
     public void onBindViewHolder(@NonNull WasherDashboardHistoryAdapter.PedingViewHolder holder, int position) {
-        Phase1Order order = orders.get(position);
-        holder.textViewOrderId.setText("Order ID: " + order.getOrderID());
-        holder.textViewClientName.setText("Client Name: " + order.getClient().getName());
-        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.washer_history));
-        holder.textViewCourierStatus.setText("Courier Status: " + order.getCourierStatus());
+        Orders order = orders.get(position);
+        // if the history is Phase 1
+
+        if(order instanceof Phase1Order){
+            Phase1Order phase1Order = ((Phase1Order)order);
+            holder.textViewOrderId.setText("To Washer  Order ID: " + phase1Order.getOrderID());
+            holder.textViewClientName.setText("Client Name: " + phase1Order.getClient().getName());
+            if(phase1Order.getPhase1OrderStatus() == -1){
+                holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending9));
+                holder.textViewCourierStatus.setText(" Status: Completed ");
+            }else{
+                holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.washer_history));
+                holder.textViewCourierStatus.setText(" Status: Declined");
+            }
+        }
+        // if the history is Phase 2
+        if(order instanceof Phase2Order){
+            Phase2Order phase2Order = ((Phase2Order)order);
+            holder.textViewOrderId.setText("To Client Order ID: " + phase2Order.getOrderID());
+            holder.textViewClientName.setText("Client Name: " + phase2Order.getClient().getName());
+            holder.textViewCourierStatus.setText("Status: " + phase2Order.getPhase2OrderStatus());
+            if(phase2Order.getPhase2OrderStatus() == -1){
+                holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending9));
+                holder.textViewCourierStatus.setText(" Status: Completed ");
+            }else{
+                holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.washer_history));
+                holder.textViewCourierStatus.setText(" Status: Declined");
+            }
+        }
 
     }
 
     @Override
     public int getItemCount() {
         return orders.size();
-    }
-
-    public void washerMarkReceivedFromCourier() {
-        // Implement the functionality as needed
     }
 
     public static class PedingViewHolder extends RecyclerView.ViewHolder {

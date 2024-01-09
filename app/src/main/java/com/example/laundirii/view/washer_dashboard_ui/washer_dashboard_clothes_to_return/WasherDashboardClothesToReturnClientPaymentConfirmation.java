@@ -45,7 +45,10 @@ public class WasherDashboardClothesToReturnClientPaymentConfirmation extends App
 
         textViewClientName.setText("Client Name : " +selectedOrder.getClient().getName());
         textViewAddress.setText("Order Status : "+selectedOrder.getPhase2OrderStatus());
-        textViewDatePlaced.setText("Date Placed: ");
+        textViewDatePlaced.setText("Date Placed: " + selectedOrder.getDatePlaced());
+        textViewTotalAmount.setText("Total Amount: "+ selectedOrder.getTotalDue());
+        textViewGcashReferenceNumber.setText("Gcash Reference Number: "+ selectedOrder.getReferenceNo());
+        textViewContactNumber.setText("Client Contact Number: "+ selectedOrder.getClient().getContactNo());
         buttonReceived = findViewById(R.id.washer_dashboard_fragment_clothes_to_return_receivedButton);
         buttonNotReceived = findViewById(R.id.washer_dashboard_fragment_clothes_to_return_notreceivedButton);
 
@@ -72,6 +75,12 @@ public class WasherDashboardClothesToReturnClientPaymentConfirmation extends App
 
                         // set phase2order status to 11
                         dashboardController.updatePhase2OrderStatus(Phase2OrderID, 11, getBaseContext());
+
+                        // set phase2 paymentstatus to paid amount
+                        dashboardController.updatePhase2OrderPaymentStatus(Phase2OrderID,1,getBaseContext());
+
+                        // update total paid
+                        dashboardController.updatePhase2OrderTotalPaid(Phase2OrderID,selectedOrder.getTotalDue(),getBaseContext());
 
                         // send notification to client
                         String notificaitonTitle = selectedOrder.getWasher().getShopName()+" - Request Accepted";
@@ -161,6 +170,7 @@ public class WasherDashboardClothesToReturnClientPaymentConfirmation extends App
 
                                         int Phase2OrderID = selectedOrder.getOrderID();
 
+
                                         // Send message to the client that gcash reference did not match
                                         String notificationTitle = selectedOrder.getWasher().getShopName() + " - Insufficient Payment";
                                         String notificationMessage = "The payment is insufficient. Please make sure you paid the exact amount or communicate with us. Please call us at " + selectedOrder.getWasher().getContactNo();
@@ -170,11 +180,16 @@ public class WasherDashboardClothesToReturnClientPaymentConfirmation extends App
                                         // Set phase1order to 6
                                         dashboardController.updatePhase1OrderStatus(selectedOrder.getPhase2_phase1OrderID(), 6, getBaseContext());
 
+                                        dashboardController.updatePhase1OrderTotalPaid(selectedOrder.getPhase2_phase1OrderID(),Integer.parseInt(amountReceived) ,getBaseContext());
+
                                         // Set phase2Order to -1
                                         dashboardController.updatePhase2OrderStatus(Phase2OrderID, -1, getBaseContext());
 
                                         // update Phase1 total due
                                         dashboardController.updatePhase1OrderTotalDue(selectedOrder.getPhase2_phase1OrderID(),kuwangNiClient,getBaseContext());
+
+                                        // update Total Paid
+                                        dashboardController.updatePhase2OrderTotalPaid(Phase2OrderID,Integer.parseInt(amountReceived),getBaseContext());
 
                                         Toast.makeText(getApplicationContext(), "Client has been Notified", Toast.LENGTH_SHORT).show();
 

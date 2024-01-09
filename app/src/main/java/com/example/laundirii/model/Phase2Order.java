@@ -7,7 +7,7 @@ import com.example.laundirii.database.Connect;
 import java.io.Serializable;
 import java.util.List;
 
-public class Phase2Order implements Serializable {
+public class Phase2Order implements Serializable,Orders {
     private int orderID;
     private Client client;
     private Washer washer;
@@ -338,5 +338,25 @@ public class Phase2Order implements Serializable {
     public List<Phase2Order> getWasherPhase2ClohtesToReturns(int washerID, Context context) {
         dbHelper = new Connect(context);
         return dbHelper.getWasherPhase2ClohtesToReturns(washerID);
+    }
+
+    @Override
+    public void toImplement() {
+
+    }
+
+    public void updatePhase2OrderPaymentStatus(int phase2OrderID, int paymentStatus, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        dbHelper.updatePhase2OrderPaymentStatus(phase2OrderID,paymentStatus);
+    }
+
+    public void updatePhase2OrderTotalPaid(int phase2OrderID, double totalDue, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        dbHelper.updatePhase2OrderTotalPaid(phase2OrderID,totalDue);
+    }
+
+    public void updatePhase1OrderTotalPaid(int phase2Phase1OrderID, int totalPaid, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        dbHelper.updatePhase1OrderTotalPaid(phase2Phase1OrderID,totalPaid);
     }
 }

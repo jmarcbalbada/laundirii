@@ -7,7 +7,7 @@ import com.example.laundirii.database.Connect;
 import java.io.Serializable;
 import java.util.List;
 
-public class Phase1Order implements Serializable {
+public class Phase1Order implements Serializable,Orders {
 
     private int orderID;
     private Client client;
@@ -377,9 +377,9 @@ public class Phase1Order implements Serializable {
         return dbHelper.washerAcceptClientRequest(phase1OrderID,availableCourierID);
     }
 
-    public  List<Phase1Order> getWasherHistory(int washerID, Context context) {
+    public  List<Phase1Order> getWasherPhase1OrderHistory(int washerID, Context context) {
         dbHelper = new Connect(context);
-        return dbHelper.getWasherHistory(washerID,context);
+        return dbHelper.getWasherPhase1OrderHistory(washerID,context);
 
     }
 
@@ -412,5 +412,10 @@ public class Phase1Order implements Serializable {
     public void updatePhase1OrderInitialLoad(int orderID, int initialload, Context baseContext) {
         dbHelper = new Connect(baseContext);
         dbHelper.updatePhase1OrderInitialLoad(orderID,initialload);
+    }
+
+    @Override
+    public void toImplement() {
+
     }
 }

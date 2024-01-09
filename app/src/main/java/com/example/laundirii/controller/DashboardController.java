@@ -208,8 +208,8 @@ public class DashboardController {
         return phase1Order.washerAcceptClientRequest(phase1OrderID,availableCourierID,baseContext);
     }
 
-    public List<Phase1Order> getWasherHistory(int washerID, Context context) {
-        return phase1Order.getWasherHistory(washerID,context);
+    public List<Phase1Order> getWasherPhase1OrderHistory(int washerID, Context context) {
+        return phase1Order.getWasherPhase1OrderHistory(washerID,context);
     }
 
     public List<Phase1Order> getWasherReceivedClothes(int washerID, Context context) {
@@ -274,5 +274,21 @@ public class DashboardController {
 
     public int updateWasherProfile(int washerID, String shopName, String shopLocation, String shopContact, Double shopRate, Context baseContext) {
         return washer.updateWasherProfile(washerID,shopName,shopLocation,shopContact,shopRate,baseContext);
+    }
+
+    public List<Phase2Order> getWasherPhase2OrderHistory(int washerID, Context context) {
+        return washer.getWasherPhase2OrderHistory(washerID,context);
+    }
+
+    public void updatePhase2OrderPaymentStatus(int phase2OrderID, int paymentStatus, Context baseContext) {
+        phase2Order.updatePhase2OrderPaymentStatus(phase2OrderID,paymentStatus,baseContext);
+    }
+
+    public void updatePhase2OrderTotalPaid(int phase2OrderID, double totalDue, Context baseContext) {
+        phase2Order.updatePhase2OrderTotalPaid(phase2OrderID,totalDue,baseContext);
+    }
+
+    public void updatePhase1OrderTotalPaid(int phase2Phase1OrderID, int totalPaid, Context baseContext) {
+        phase2Order.updatePhase1OrderTotalPaid(phase2Phase1OrderID,totalPaid,baseContext);
     }
 }
