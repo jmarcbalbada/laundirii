@@ -326,4 +326,15 @@ public class DashboardController {
         phase2Order.updatePhase1OrderTotalPaid(phase2Phase1OrderID,totalPaid,baseContext);
     }
 
+    public List<Phase1Order> getWasherPhase1StatusGetter(int washerID, Context baseContext) {
+        return phase1Order.getWasherPhase1StatusGetter(washerID,baseContext);
+    }
+
+    public List<Phase2Order> getWasherPhase2StatusGetter(int washerID, Context baseContext) {
+        return phase2Order.getWasherPhase2StatusGetter(washerID,baseContext);
+    }
+
+    public int getWasherPhasePendingTransaction(int washerID, Context baseContext) {
+        return phase2Order.getWasherPhasePendingTransaction(washerID,baseContext);
+    }
 }

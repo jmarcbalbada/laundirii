@@ -405,4 +405,18 @@ public class Phase2Order implements Serializable, Orders {
         dbHelper.updatePhase1OrderTotalPaid(phase2Phase1OrderID,totalPaid);
     }
 
+    public List<Phase1Order> getWasherPhase1StatusGetter(int washerID, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        return dbHelper.getWasherPhase1StatusGetter(washerID);
+    }
+
+    public List<Phase2Order> getWasherPhase2StatusGetter(int washerID, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        return dbHelper.getWasherPhase2StatusGetter(washerID);
+    }
+
+    public int getWasherPhasePendingTransaction(int washerID, Context baseContext) {
+        dbHelper = new Connect(baseContext);
+        return dbHelper.getWasherPhasePendingTransaction(washerID);
+    }
 }
