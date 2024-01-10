@@ -385,4 +385,5 @@ public class Phase2Order implements Serializable, Orders {
         dbHelper = new Connect(baseContext);
         dbHelper.updatePhase1OrderTotalPaid(phase2Phase1OrderID,totalPaid);
     }
+
 }

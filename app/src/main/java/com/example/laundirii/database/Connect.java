@@ -1738,7 +1738,7 @@ public class Connect extends SQLiteOpenHelper {
     public List<Phase1Order> getWasherPhase1OrderHistory(int washerID, Context context) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS == -1 OR PHASE1_ORDER_STATUS == 4;";
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS IN ( -1,7) ;";
         String[] selectionArgs = {String.valueOf(washerID)};
 
         Cursor cursor = db.rawQuery(query, selectionArgs);
@@ -2000,22 +2000,20 @@ public class Connect extends SQLiteOpenHelper {
     }
 
     public void setPhase1OrderStatus(int orderID, int phase1OrderStatus) {
+
         SQLiteDatabase db = this.getWritableDatabase();
 
-        try {
-            // Use execSQL for update operation
-            db.execSQL("UPDATE PHASE1_ORDER SET PHASE1_ORDER_STATUS = ? WHERE PHASE1_ORDER_ID = ? ;",
-                    new Object[]{phase1OrderStatus, orderID});
-        } catch (SQLException e) {
-            // Handle the exception (e.g., log it, show an error message, etc.)
-            e.printStackTrace(); // This prints the exception details to the console
-            // You can add your own error handling logic here
-        } finally {
-            // Close the database connection in the finally block to ensure it's always closed
-            if (db != null && db.isOpen()) {
-                db.close();
-            }
-        }
+        // Update statement
+        String updateQuery = "UPDATE PHASE1_ORDER SET PHASE1_ORDER_STATUS = ? WHERE PHASE1_ORDER_ID = ?";
+
+        // Execute the update statement and get the number of rows affected
+        SQLiteStatement stmt = db.compileStatement(updateQuery);
+        stmt.bindLong(1, phase1OrderStatus);
+        stmt.bindLong(2, orderID);
+
+        int rowsAffected = stmt.executeUpdateDelete();
+
+        // Return the number of rows affected
     }
 
     public boolean setReturnPhase1OrderStatus(int orderID, int phase1OrderStatus) {
@@ -2342,8 +2340,17 @@ public class Connect extends SQLiteOpenHelper {
                     int dateReceivedIndex = cursor.getColumnIndex("PHASE2_DATE_RECEIVED");
                     int orderStatusIndex = cursor.getColumnIndex("PHASE2_ORDER_STATUS");
                     int referenceNoIndex = cursor.getColumnIndex("PHASE2_REFERENCE_NO");
+                    int datePlaceOrderIndex = cursor.getColumnIndex("PHASE2_DATE_PLACED");
+                    int phase2OrderPhase1OrderIDIndex = cursor.getColumnIndex("PHASE2_PHASE1_ORDER_ID");
 
                     // Check if the column exists in the cursor before extracting values
+
+                    if(datePlaceOrderIndex != -1){
+                        phase2Order.setDatePlaced(Integer.toString(cursor.getInt(datePlaceOrderIndex)));
+                    }
+                    if(phase2OrderPhase1OrderIDIndex != -1){
+                        phase2Order.setPhase2_phase1OrderID(cursor.getInt(phase2OrderPhase1OrderIDIndex));
+                    }
                     if (orderIDIndex != -1) {
                         phase2Order.setOrderID(cursor.getInt(orderIDIndex));
                     }
@@ -2530,7 +2537,7 @@ public class Connect extends SQLiteOpenHelper {
     public List<Phase2Order> getWasherPhase2OrderHistory(int washerID) {
         SQLiteDatabase db = this.getReadableDatabase();
         // TODO change the history of courrier collect
-        String query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_WASHER_ID = ? AND PHASE2_ORDER_STATUS IN (-1,16) OR PHASE2_ORDER_STATUS IN (20) ORDER BY PHASE2_ORDER_STATUS ASC, PHASE2_DATE_COURIER ASC";
+        String query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_WASHER_ID = ? AND PHASE2_ORDER_STATUS IN (-1,16) OR PHASE2_ORDER_STATUS IN (24) ORDER BY PHASE2_ORDER_STATUS ASC, PHASE2_DATE_COURIER ASC";
         String[] selectionArgs = {String.valueOf(washerID)};
 //
         Cursor cursor = db.rawQuery(query, selectionArgs);
@@ -2665,4 +2672,8 @@ public class Connect extends SQLiteOpenHelper {
         stmt.execute();
         db.close();
     }
+
+
+
+
 }

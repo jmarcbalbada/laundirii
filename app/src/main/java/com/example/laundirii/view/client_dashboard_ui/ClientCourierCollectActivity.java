@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -64,7 +65,8 @@ public class ClientCourierCollectActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Sup", Toast.LENGTH_SHORT).show();
                 }else
                 {
-                    boolean success = dashboardController.updateReferenceNo(client.getCustomerID(),refNoTextStr, getBaseContext());
+                    Log.e("Reference Number GCASHHH",""+refNoTextStr);
+                    boolean success = dashboardController.updateReferenceNo(phase2OrderSelected.getOrderID(),refNoTextStr, getBaseContext());
                     dashboardController.updatePhase2OrderStatus(phase2OrderSelected.getOrderID(), 10, getBaseContext());
                     if(success)
                     {

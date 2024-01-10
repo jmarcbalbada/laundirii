@@ -263,10 +263,9 @@ public class Phase1Order implements Serializable, Orders {
     public int getPhase1OrderStatus() {
         return phase1OrderStatus;
     }
-    public void setPhase1OrderStatus(int phase1OrderStatus , Context context) {
+    public void setPhase1OrderStatuss(int phase1OrderID ,int status ,Context context) {
         dbHelper = new Connect(context);
-        dbHelper.setPhase1OrderStatus(this.orderID,phase1OrderStatus);
-        return;
+        dbHelper.setPhase1OrderStatus(phase1OrderID, status);
     }
 
     public void setPhase1OrderStatus(int phase1OrderStatus) {

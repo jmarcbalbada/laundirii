@@ -2,6 +2,7 @@ package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_history;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,8 @@ public class WasherDashboardHistoryFragment extends Fragment {
         List<Orders> orders = new ArrayList<Orders>();
         orders.addAll(phase1orders);
         orders.addAll(phase2orders);
-
+        Log.e("PRINT SIZE",""+phase1orders.size());
+        Log.e("PRINT SIZE",""+phase2orders.size());
 //        List<Phase1Order> orders = dashboardController.getWaherHistory(washer.getWasherID(), getContext());
 
 

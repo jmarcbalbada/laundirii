@@ -182,6 +182,10 @@ public class DashboardController {
         return courier.updateCourierStatusOnConnect(courierID,status, context);
     }
 
+    public void updatePhase1OrderStatuss(int phase1OrderID, int status, Context context)
+    {
+        phase1Order.setPhase1OrderStatuss(phase1OrderID,status, context);
+    }
     public boolean updatePhase1OrderStatus(int phase1OrderID, int status, Context context)
     {
         if(context == null)
@@ -321,4 +325,5 @@ public class DashboardController {
     public void updatePhase1OrderTotalPaid(int phase2Phase1OrderID, int totalPaid, Context baseContext) {
         phase2Order.updatePhase1OrderTotalPaid(phase2Phase1OrderID,totalPaid,baseContext);
     }
+
 }

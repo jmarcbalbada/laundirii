@@ -42,12 +42,12 @@ public class WasherDashboardHistoryAdapter extends RecyclerView.Adapter<WasherDa
             Phase1Order phase1Order = ((Phase1Order)order);
             holder.textViewOrderId.setText("To Washer  Order ID: " + phase1Order.getOrderID());
             holder.textViewClientName.setText("Client Name: " + phase1Order.getClient().getName());
-            if(phase1Order.getPhase1OrderStatus() == -1){
-                holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending9));
-                holder.textViewCourierStatus.setText(" Status: Completed ");
-            }else{
+            if(phase1Order.getPhase1OrderStatus() == -1 ){
                 holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.washer_history));
                 holder.textViewCourierStatus.setText(" Status: Declined");
+            }else{
+                holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending9));
+                holder.textViewCourierStatus.setText(" Status: Completed ");
             }
         }
         // if the history is Phase 2
@@ -56,12 +56,12 @@ public class WasherDashboardHistoryAdapter extends RecyclerView.Adapter<WasherDa
             holder.textViewOrderId.setText("To Client Order ID: " + phase2Order.getOrderID());
             holder.textViewClientName.setText("Client Name: " + phase2Order.getClient().getName());
             holder.textViewCourierStatus.setText("Status: " + phase2Order.getPhase2OrderStatus());
-            if(phase2Order.getPhase2OrderStatus() == -1){
-                holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending9));
-                holder.textViewCourierStatus.setText(" Status: Completed ");
-            }else{
+            if(phase2Order.getPhase2OrderStatus() == -1 ){
                 holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.washer_history));
                 holder.textViewCourierStatus.setText(" Status: Declined");
+            }else{
+                holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending9));
+                holder.textViewCourierStatus.setText(" Status: Completed ");
             }
         }
 
