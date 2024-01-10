@@ -81,8 +81,8 @@ public class WasherDashboardPendingrequestReceivedClothes extends AppCompatActiv
 
                             // Send notification
                             //These are the actual message
-                            String notificaitonTitle = selectedOrder.getWasher().getShopName()+" - Clothes Succesfully Delivered";
-                            String notificationMessage = "Thank you for the patronage will clean you clothes as soon as possible";
+                            String notificaitonTitle = selectedOrder.getWasher().getShopName()+" - Clothes Successfully Delivered";
+                            String notificationMessage = "Thank you for the patronage will clean your clothes as soon as possible";
                             // Send Notification to Client
                             dashboardController.sendNotifications(0,selectedOrder.getClient().getCustomerID(),0,notificaitonTitle,notificationMessage,getBaseContext());
 

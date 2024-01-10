@@ -1,6 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteX="-1dp"
+    tools:layout_editor_absoluteY="39dp">
 
+    <TextView
+        android:id="@+id/textViewSelfCollectActivityTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Self-Collect"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.054" />
+
+    <TextView
+        android:id="@+id/textViewSelfCollectActivityHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="How it works:"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.126"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.126" />
+
+    <TextView
+        android:id="@+id/textViewSelfCollectActivityContent"
+        android:layout_width="353dp"
+        android:layout_height="wrap_content"
+        android:text="1. Click Proceed button to finalize SELF-COLLECT.
+        \n2. Go to Washer's Shop Location indicated in the transaction list.
+        \n3. Pay the Washer through cash or agreed offline payment.
+        \n4. Once approved, Washer will update the status of the transaction.
+        \n5. NOTE: Only pay the exact amount on your total due.
+        \n6. This method only works in OFFLINE payment."
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.586"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.207" />
+
+
+    <Button
+        android:id="@+id/textViewSelfCollectActivityProceedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Proceed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.838"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.686" />
+
+    <Button
+        android:id="@+id/textViewSelfCollectActivityCancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.181"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.686" />
 </androidx.constraintlayout.widget.ConstraintLayout>

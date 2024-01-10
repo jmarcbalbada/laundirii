@@ -84,6 +84,14 @@ public class BookServiceActivity extends AppCompatActivity {
                                 if(inserted)
                                 {
                                     Toast.makeText(getApplicationContext(), "Booked successfully!", Toast.LENGTH_SHORT).show();
+                                    String notificationTitle = "You received a booking from " + client.getName() + "!";
+                                    String notificationMessage = "Please review the transaction and start accepting orders! ";
+                                    //send notification to washer
+                                    dashboardController.sendNotifications(washer.getWasherID(),0,0,notificationTitle,notificationMessage,getBaseContext());
+                                    //send notification to client
+                                    notificationTitle = "We received your booking!";
+                                    notificationMessage = "Your order is being reviewed by the Washer!";
+                                    dashboardController.sendNotifications(0,client.getCustomerID(),0,notificationTitle,notificationMessage,getBaseContext());
                                     Intent intent = new Intent(BookServiceActivity.this, ClientDashboardActivity.class);
                                     startActivity(intent);
                                 }

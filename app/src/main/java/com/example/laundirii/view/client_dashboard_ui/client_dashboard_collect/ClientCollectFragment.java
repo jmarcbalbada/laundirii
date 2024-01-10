@@ -65,6 +65,8 @@ public class ClientCollectFragment extends Fragment {
                         break;
                     case 15: showCustomDialogOnReceivingCleanLaundryFromCourier(selectedOrder);
                         break;
+                    case 21: showCustomDialogOnReceivingCleanLaundryFromWasher(selectedOrder);
+                        break;
                 }
             }
         });
@@ -157,6 +159,7 @@ public class ClientCollectFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(requireContext(), ClientSelfCollectActivity.class);
+                intent.putExtra("PHASE2_ORDER_EXTRA",phase2Order);
                 startActivity(intent);
                 dialog.dismiss();
             }
@@ -196,12 +199,57 @@ public class ClientCollectFragment extends Fragment {
                 boolean success = dashboardController.setCourierStatusPhase2OrderOnDatabase(phase2Order.getCourier().getCourierID(), true, getContext());
                 if(success)
                 {
+                    // send notif to courier
+                    String notificationTitle = "Client received the laundry!";
+                    String notificationMessage = "Client under the order ID " + phase2Order.getOrderID() + " has received the laundry. Thank you for your service.";
+                    dashboardController.sendNotifications(0, 0,phase2Order.getCourierID(),notificationTitle,notificationMessage,getContext());
+                    dashboardController.sendNotifications(phase2Order.getWasherID(), 0,0,notificationTitle,notificationMessage,getContext());
+
+                    notificationTitle = "Transaction completed!";
+                    notificationMessage = "Order under the order ID " + phase2Order.getOrderID() + " been completed. Thank you for using Laundiri!";
+                    dashboardController.sendNotifications(0, phase2Order.getClientID(),0,notificationTitle,notificationMessage,getContext());
                     Toast.makeText(getContext(), "Completed!", Toast.LENGTH_SHORT).show();
 
                 }else
                 {
                     Toast.makeText(getContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
                 }
+                displayCollectOrders();
+                dialog.dismiss();
+
+            }
+        });
+
+        textViewNoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    // SELF - COLLECT
+    private void showCustomDialogOnReceivingCleanLaundryFromWasher(Phase2Order phase2Order)
+    {
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.popup_client_received_clean_laundry_washer, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+        builder.setTitle("Reminder!");
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        TextView textViewNoButton = dialogView.findViewById(R.id.textViewReceivedCleanLaundryWasherNoButton);
+        TextView textViewYesButton = dialogView.findViewById(R.id.textViewReceivedCleanLaundryWasherYesButton);
+
+        textViewYesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dashboardController.updatePhase2OrderStatus(phase2Order.getOrderID(),22,getContext());
+                dashboardController.updatePhase2OrderDateReceivedToCurrentDate(phase2Order.getOrderID(), getContext());
+                Toast.makeText(getContext(), "Completed!", Toast.LENGTH_SHORT).show();
                 displayCollectOrders();
                 dialog.dismiss();
 
