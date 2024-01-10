@@ -7,7 +7,6 @@ public class Feedback implements Serializable {
     private int feedbackID;
     private String comment;
     private int rating;
-
     public Feedback()
     {
         comment = "";

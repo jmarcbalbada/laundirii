@@ -58,7 +58,7 @@ public class WasherDashboardClothesToReturnClothesHandedOverToCourier extends Ap
 
                     // notify client thet courier receivedt the clothes
                     String notificaitonTitle = selectedOrder.getWasher().getShopName()+" - Clothes Received by the Couruier";
-                    String notificationMessage = "Courier Received the Clothes";
+                    String notificationMessage = "Courier Received the Clothes and on the way to you.";
                     // Sending Notification to Client
                     dashboardController.sendNotifications(0,selectedOrder.getClient().getCustomerID(),0,notificaitonTitle,notificationMessage,getBaseContext());
 
