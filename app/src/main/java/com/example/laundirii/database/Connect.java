@@ -2674,6 +2674,296 @@ public class Connect extends SQLiteOpenHelper {
     }
 
 
+    public List<Phase1Order> getWasherPhase1StatusGetter(int washerID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS IN (0,1,2,3,4,5,6) ORDER BY PHASE1_ORDER_STATUS ;";
+        String[] selectionArgs = {String.valueOf(washerID)};
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        List<Phase1Order> OrderToReceiveList = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+
+                Date currentDate = new Date();
+                String dateString = cursor.getString(13);
+
+// Parse the date string into a Date object
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                Date formattedDate = null;
+                try {
+                    formattedDate = simpleDateFormat.parse(dateString);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
 
 
+// Check if the formatted date is 5 minutes or more greater than the current date
+                boolean result = isFiveMinutesGreater( formattedDate,currentDate);
+
+                // dont store if phase1order is greater than 1 minute
+                if(result == true && cursor.getInt(12) == 0){
+                    continue;
+                }
+
+                Phase1Order addOrder = new Phase1Order();
+                addOrder.setOrderID(cursor.getInt(0));
+                addOrder.setClient(this.getClient(cursor.getInt(1)));
+                addOrder.setWasher(this.getWasher(cursor.getInt(2)));
+                addOrder.setCourier(this.getCourier(cursor.getInt(3)));
+                addOrder.setCourierStatus(cursor.getInt(4));
+                addOrder.setTotalCourierAmount(cursor.getFloat(5));
+                addOrder.setDateCourier(cursor.getString(6));
+                addOrder.setTotalDue(cursor.getFloat(7));
+                addOrder.setTotalPaid(cursor.getFloat(8));
+                addOrder.setPaymentStatus(cursor.getInt(9));
+                addOrder.setDateReceived(cursor.getString(10));
+                addOrder.setInitialLoad(cursor.getInt(11));
+                addOrder.setPhase1OrderStatus(cursor.getInt(12));
+                addOrder.setDatePlaced(cursor.getString(13));
+
+                OrderToReceiveList.add(addOrder);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        this.getReadableDatabase().close();
+
+        return OrderToReceiveList;
+    }
+
+    public List<Phase2Order> getWasherPhase2StatusGetter(int washerID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // TODO change the courrier Collect
+        String query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_WASHER_ID = ? AND PHASE2_ORDER_STATUS IN (0,10,11,12,13,14,15) OR PHASE2_ORDER_STATUS IN (20,21,22) ORDER BY PHASE2_ORDER_STATUS ASC, PHASE2_DATE_COURIER ASC";
+        String[] selectionArgs = {String.valueOf(washerID)};
+//
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        List<Phase2Order> phase2OrderList = new ArrayList<>();
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    Phase2Order phase2Order = new Phase2Order();
+                    // Populate the Phase2Order object with data from the cursor
+
+                    int orderIDIndex = cursor.getColumnIndex("PHASE2_ORDER_ID");
+                    int clientIDIndex = cursor.getColumnIndex("PHASE2_ORDER_CLIENT_ID");
+                    int washerIDIndex = cursor.getColumnIndex("PHASE2_ORDER_WASHER_ID");
+                    int courierIDIndex = cursor.getColumnIndex("PHASE2_ORDER_COURIER_ID");
+                    int courierStatusIndex = cursor.getColumnIndex("PHASE2_COURIER_STATUS");
+                    int totalCourierAmountIndex = cursor.getColumnIndex("PHASE2_TOTAL_COURIER_AMOUNT");
+                    int dateCourierIndex = cursor.getColumnIndex("PHASE2_DATE_COURIER");
+                    int totalDueIndex = cursor.getColumnIndex("PHASE2_TOTAL_DUE");
+                    int totalPaidIndex = cursor.getColumnIndex("PHASE2_TOTAL_PAID");
+                    int paymentStatusIndex = cursor.getColumnIndex("PHASE2_PAYMENT_STATUS");
+                    int dateReceivedIndex = cursor.getColumnIndex("PHASE2_DATE_RECEIVED");
+                    int orderStatusIndex = cursor.getColumnIndex("PHASE2_ORDER_STATUS");
+                    int referenceNoIndex = cursor.getColumnIndex("PHASE2_REFERENCE_NO");
+                    int datePlaceOrderIndex = cursor.getColumnIndex("PHASE2_DATE_PLACED");
+                    int phase2OrderPhase1OrderIDIndex = cursor.getColumnIndex("PHASE2_PHASE1_ORDER_ID");
+
+                    // Check if the column exists in the cursor before extracting values
+
+                    if(datePlaceOrderIndex != -1){
+                        phase2Order.setDatePlaced(Integer.toString(cursor.getInt(datePlaceOrderIndex)));
+                    }
+                    if(phase2OrderPhase1OrderIDIndex != -1){
+                        phase2Order.setPhase2_phase1OrderID(cursor.getInt(phase2OrderPhase1OrderIDIndex));
+                    }
+                    if (orderIDIndex != -1) {
+                        phase2Order.setOrderID(cursor.getInt(orderIDIndex));
+                    }
+
+                    if (clientIDIndex != -1) {
+                        phase2Order.setClient(this.getClient(cursor.getInt(clientIDIndex)));
+                    }
+
+                    if (washerIDIndex != -1) {
+                        phase2Order.setWasher(this.getWasher(cursor.getInt(washerIDIndex)));
+                    }
+
+                    if (courierIDIndex != -1) {
+                        phase2Order.setCourier(this.getCourier(cursor.getInt(courierIDIndex)));
+                    }
+
+                    if (courierStatusIndex != -1) {
+                        phase2Order.setCourierStatus(cursor.getInt(courierStatusIndex));
+                    }
+
+                    if (totalCourierAmountIndex != -1) {
+                        phase2Order.setTotalCourierAmount(cursor.getFloat(totalCourierAmountIndex));
+                    }
+
+                    if (dateCourierIndex != -1) {
+                        phase2Order.setDateCourier(cursor.getString(dateCourierIndex));
+                    }
+
+                    if (totalDueIndex != -1) {
+                        phase2Order.setTotalDue(cursor.getFloat(totalDueIndex));
+                    }
+
+                    if (totalPaidIndex != -1) {
+                        phase2Order.setTotalPaid(cursor.getFloat(totalPaidIndex));
+                    }
+
+                    if (paymentStatusIndex != -1) {
+                        phase2Order.setPaymentStatus(cursor.getInt(paymentStatusIndex));
+                    }
+
+                    if (dateReceivedIndex != -1) {
+                        phase2Order.setDateReceived(cursor.getString(dateReceivedIndex));
+                    }
+
+                    if (orderStatusIndex != -1) {
+                        phase2Order.setPhase2OrderStatus(cursor.getInt(orderStatusIndex));
+                    }
+
+                    if (referenceNoIndex != -1) {
+                        phase2Order.setReferenceNo(cursor.getString(referenceNoIndex));
+                    }
+
+                    phase2OrderList.add(phase2Order);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+            db.close();
+        }
+
+        return phase2OrderList;
+    }
+
+    public int getWasherPhasePendingTransaction(int washerID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS IN (0,1,2,3,4,5,6) ORDER BY PHASE1_ORDER_STATUS ;";
+        String[] selectionArgs = {String.valueOf(washerID)};
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        List<Phase1Order> OrderToReceiveList = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                Phase1Order addOrder = new Phase1Order();
+                addOrder.setOrderID(cursor.getInt(0));
+                addOrder.setClient(this.getClient(cursor.getInt(1)));
+                addOrder.setWasher(this.getWasher(cursor.getInt(2)));
+                addOrder.setCourier(this.getCourier(cursor.getInt(3)));
+                addOrder.setCourierStatus(cursor.getInt(4));
+                addOrder.setTotalCourierAmount(cursor.getFloat(5));
+                addOrder.setDateCourier(cursor.getString(6));
+                addOrder.setTotalDue(cursor.getFloat(7));
+                addOrder.setTotalPaid(cursor.getFloat(8));
+                addOrder.setPaymentStatus(cursor.getInt(9));
+                addOrder.setDateReceived(cursor.getString(10));
+                addOrder.setInitialLoad(cursor.getInt(11));
+                addOrder.setPhase1OrderStatus(cursor.getInt(12));
+                addOrder.setDatePlaced(cursor.getString(13));
+
+                OrderToReceiveList.add(addOrder);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        db = this.getReadableDatabase();
+        // TODO change the courrier Collect
+        query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_WASHER_ID = ? AND PHASE2_ORDER_STATUS IN (0,10,11,12,13,14,15) OR PHASE2_ORDER_STATUS IN (20,21,22) ORDER BY PHASE2_ORDER_STATUS ASC, PHASE2_DATE_COURIER ASC";
+        selectionArgs = new String[]{String.valueOf(washerID)};
+//
+        cursor = db.rawQuery(query, selectionArgs);
+        List<Phase2Order> phase2OrderList = new ArrayList<>();
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    Phase2Order phase2Order = new Phase2Order();
+                    // Populate the Phase2Order object with data from the cursor
+
+                    int orderIDIndex = cursor.getColumnIndex("PHASE2_ORDER_ID");
+                    int clientIDIndex = cursor.getColumnIndex("PHASE2_ORDER_CLIENT_ID");
+                    int washerIDIndex = cursor.getColumnIndex("PHASE2_ORDER_WASHER_ID");
+                    int courierIDIndex = cursor.getColumnIndex("PHASE2_ORDER_COURIER_ID");
+                    int courierStatusIndex = cursor.getColumnIndex("PHASE2_COURIER_STATUS");
+                    int totalCourierAmountIndex = cursor.getColumnIndex("PHASE2_TOTAL_COURIER_AMOUNT");
+                    int dateCourierIndex = cursor.getColumnIndex("PHASE2_DATE_COURIER");
+                    int totalDueIndex = cursor.getColumnIndex("PHASE2_TOTAL_DUE");
+                    int totalPaidIndex = cursor.getColumnIndex("PHASE2_TOTAL_PAID");
+                    int paymentStatusIndex = cursor.getColumnIndex("PHASE2_PAYMENT_STATUS");
+                    int dateReceivedIndex = cursor.getColumnIndex("PHASE2_DATE_RECEIVED");
+                    int orderStatusIndex = cursor.getColumnIndex("PHASE2_ORDER_STATUS");
+                    int referenceNoIndex = cursor.getColumnIndex("PHASE2_REFERENCE_NO");
+                    int datePlaceOrderIndex = cursor.getColumnIndex("PHASE2_DATE_PLACED");
+                    int phase2OrderPhase1OrderIDIndex = cursor.getColumnIndex("PHASE2_PHASE1_ORDER_ID");
+
+                    // Check if the column exists in the cursor before extracting values
+
+                    if(datePlaceOrderIndex != -1){
+                        phase2Order.setDatePlaced(Integer.toString(cursor.getInt(datePlaceOrderIndex)));
+                    }
+                    if(phase2OrderPhase1OrderIDIndex != -1){
+                        phase2Order.setPhase2_phase1OrderID(cursor.getInt(phase2OrderPhase1OrderIDIndex));
+                    }
+                    if (orderIDIndex != -1) {
+                        phase2Order.setOrderID(cursor.getInt(orderIDIndex));
+                    }
+
+                    if (clientIDIndex != -1) {
+                        phase2Order.setClient(this.getClient(cursor.getInt(clientIDIndex)));
+                    }
+
+                    if (washerIDIndex != -1) {
+                        phase2Order.setWasher(this.getWasher(cursor.getInt(washerIDIndex)));
+                    }
+
+                    if (courierIDIndex != -1) {
+                        phase2Order.setCourier(this.getCourier(cursor.getInt(courierIDIndex)));
+                    }
+
+                    if (courierStatusIndex != -1) {
+                        phase2Order.setCourierStatus(cursor.getInt(courierStatusIndex));
+                    }
+
+                    if (totalCourierAmountIndex != -1) {
+                        phase2Order.setTotalCourierAmount(cursor.getFloat(totalCourierAmountIndex));
+                    }
+
+                    if (dateCourierIndex != -1) {
+                        phase2Order.setDateCourier(cursor.getString(dateCourierIndex));
+                    }
+
+                    if (totalDueIndex != -1) {
+                        phase2Order.setTotalDue(cursor.getFloat(totalDueIndex));
+                    }
+
+                    if (totalPaidIndex != -1) {
+                        phase2Order.setTotalPaid(cursor.getFloat(totalPaidIndex));
+                    }
+
+                    if (paymentStatusIndex != -1) {
+                        phase2Order.setPaymentStatus(cursor.getInt(paymentStatusIndex));
+                    }
+
+                    if (dateReceivedIndex != -1) {
+                        phase2Order.setDateReceived(cursor.getString(dateReceivedIndex));
+                    }
+
+                    if (orderStatusIndex != -1) {
+                        phase2Order.setPhase2OrderStatus(cursor.getInt(orderStatusIndex));
+                    }
+
+                    if (referenceNoIndex != -1) {
+                        phase2Order.setReferenceNo(cursor.getString(referenceNoIndex));
+                    }
+
+                    phase2OrderList.add(phase2Order);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+            db.close();
+        }
+
+
+        return OrderToReceiveList.size() +phase2OrderList.size() ;
+    }
 }
