@@ -199,7 +199,7 @@ public class WasherDashboardClothesToReturnClientPaymentConfirmation extends App
 
                                         // update Phase1 total due
                                         // TODO - 50 kuwang ni client hardcoded
-                                        dashboardController.updatePhase1OrderTotalDue(selectedOrder.getPhase2_phase1OrderID(),kuwangNiClient-50,getBaseContext());
+                                        dashboardController.updatePhase1OrderTotalDue(selectedOrder.getPhase2_phase1OrderID(),kuwangNiClient-selectedOrder.getTotalCourierAmount(),getBaseContext());
 
                                         // Send message to the client that gcash reference did not match
                                         String notificationTitle = selectedOrder.getWasher().getShopName() + " - Insufficient Payment";

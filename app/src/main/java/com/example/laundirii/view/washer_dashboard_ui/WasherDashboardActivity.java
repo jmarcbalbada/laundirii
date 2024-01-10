@@ -234,11 +234,6 @@ public class WasherDashboardActivity extends AppCompatActivity {
             intent.putExtra("washer",washer);
             startActivity(intent);
             return true;
-        } else if (id == R.id.washer_action_settings) {
-            // Handle the settings item click here
-            // Add code for settings action
-            return true;
-            //TODO LOGOOUT
         }else if (id == R.id.washer_action_logout) {
             // Handle the logout item click here
             // Clear SharedPreferences

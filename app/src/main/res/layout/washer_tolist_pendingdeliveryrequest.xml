@@ -16,8 +16,8 @@
         android:text="Order ID" />
 
     <TextView
-        android:padding="10px"
         android:id="@+id/textViewClientName"
+        android:padding="10px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20dp"

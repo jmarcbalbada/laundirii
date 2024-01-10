@@ -19,19 +19,55 @@
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.151" />
+        app:layout_constraintVertical_bias="0.092" />
 
     <TextView
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_activity_description"
-        android:layout_width="259dp"
-        android:layout_height="139dp"
-        android:text="Notify the client that there clothes are already clean. They will process a pick up and will send you the payment"
-        android:textAlignment="center"
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_pendingrequest_activity_customer_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Customer Number: "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.241" />
+        app:layout_constraintVertical_bias="0.425" />
+
+    <TextView
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_pendingrequest_activity_courier_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Courier Number: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.485" />
+
+    <TextView
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_totalamount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Initial Total Amount: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.596" />
+
+    <TextView
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_deliveryfee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delivery fee: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.644" />
 
 
     <TextView
@@ -44,67 +80,7 @@
         app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.358" />
-
-    <TextView
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_pendingrequest_activity_couriername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Courier Name: "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.474"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.415" />
-
-    <TextView
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_pendingrequest_activity_customer_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Customer Number: "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.483" />
-
-    <TextView
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_pendingrequest_activity_courier_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Courier Number: "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.544" />
-
-    <TextView
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_InitialLoad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Initial Load: "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.595" />
-
-    <TextView
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_totalamount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Initial Total Amount: "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.654" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <TextView
         android:id="@+id/washer_dashboard_fragment_pendingrequest_pendingrequest_activity_dateplaced"
@@ -116,7 +92,44 @@
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.703" />
+        app:layout_constraintVertical_bias="0.693" />
+
+    <TextView
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_InitialLoad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Initial Load: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.537" />
+
+    <TextView
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_pendingrequest_activity_couriername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Courier Name: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.474"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.358" />
+
+    <TextView
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_activity_description"
+        android:layout_width="259dp"
+        android:layout_height="139dp"
+        android:text="Notify the client that there clothes are already clean. They will process a pick up and will send you the payment"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.172" />
+
 
     <Button
         android:id="@+id/washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_acceptbutton"

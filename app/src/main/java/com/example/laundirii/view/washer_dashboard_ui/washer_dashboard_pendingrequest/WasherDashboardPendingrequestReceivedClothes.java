@@ -18,7 +18,7 @@ import com.example.laundirii.view.washer_dashboard_ui.WasherDashboardActivity;
 public class WasherDashboardPendingrequestReceivedClothes extends AppCompatActivity {
 
     DashboardController dashboardController;
-    TextView ClientNameText, InitialLoad,TotalAmount, dateplaced,status,description,phonenumber,courname,cournumber;
+    TextView ClientNameText, InitialLoad,TotalAmount, dateplaced,status,description,phonenumber,courname,cournumber,deliveryfee;
     Button notReceivedButton, receivedButton;
 
     @Override
@@ -30,6 +30,7 @@ public class WasherDashboardPendingrequestReceivedClothes extends AppCompatActiv
         // Locate the button ID
         Phase1Order selectedOrder = (Phase1Order) getIntent().getSerializableExtra("selectedOrder");
 
+        deliveryfee = findViewById(R.id.washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_deliveryfee);
         courname = findViewById(R.id.washer_dashboard_fragment_pendingrequest_pendingrequest_activity_couriername);
         cournumber = findViewById(R.id.washer_dashboard_fragment_pendingrequest_pendingrequest_activity_courier_number);
         phonenumber = findViewById(R.id.washer_dashboard_fragment_pendingrequest_pendingrequest_activity_customer_number);
@@ -45,12 +46,12 @@ public class WasherDashboardPendingrequestReceivedClothes extends AppCompatActiv
         // Set Value of Buttons and Text
         cournumber.setText("Courier Contact Number"+ selectedOrder.getCourier().getContactNo());
         courname.setText("Courier Name: " + selectedOrder.getCourier().getName());
-
+        deliveryfee.setText("Delivery Fee: "+ selectedOrder.getTotalCourierAmount());
         phonenumber.setText("Customer Contact Number: " +selectedOrder.getClient().getContactNo());
         ClientNameText.setText("Client Name: "+selectedOrder.getClient(getBaseContext()).getName());
         InitialLoad.setText("Initial Laundry Weight:" + selectedOrder.getInitialLoad()+" KG");
         TotalAmount.setText("Expected to Earn:" +( selectedOrder.getInitialLoad() *selectedOrder.getWasher().getRatePerKg()));
-        description.setText("Rider on the way to you. If the rider arrive click the received button");
+        description.setText("Rider on the way to you. If the rider arrive pay the delivery fee press and the received button. The delivery fee will be added to the client total due.");
         dateplaced.setText("Date Book: " + selectedOrder.getDatePlaced());
         status.setText("Progress Status: Booking Confirmation" );
 

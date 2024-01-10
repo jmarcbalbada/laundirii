@@ -2346,7 +2346,7 @@ public class Connect extends SQLiteOpenHelper {
                     // Check if the column exists in the cursor before extracting values
 
                     if(datePlaceOrderIndex != -1){
-                        phase2Order.setDatePlaced(Integer.toString(cursor.getInt(datePlaceOrderIndex)));
+                        phase2Order.setDatePlaced((cursor.getString(datePlaceOrderIndex)));
                     }
                     if(phase2OrderPhase1OrderIDIndex != -1){
                         phase2Order.setPhase2_phase1OrderID(cursor.getInt(phase2OrderPhase1OrderIDIndex));
@@ -2537,7 +2537,7 @@ public class Connect extends SQLiteOpenHelper {
     public List<Phase2Order> getWasherPhase2OrderHistory(int washerID) {
         SQLiteDatabase db = this.getReadableDatabase();
         // TODO change the history of courrier collect
-        String query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_WASHER_ID = ? AND PHASE2_ORDER_STATUS IN (-1,16) OR PHASE2_ORDER_STATUS IN (24) ORDER BY PHASE2_ORDER_STATUS ASC, PHASE2_DATE_COURIER ASC";
+        String query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_WASHER_ID = ? AND PHASE2_ORDER_STATUS IN (-1,16) OR PHASE2_ORDER_STATUS IN (22) ORDER BY PHASE2_ORDER_STATUS ASC, PHASE2_DATE_COURIER ASC";
         String[] selectionArgs = {String.valueOf(washerID)};
 //
         Cursor cursor = db.rawQuery(query, selectionArgs);
@@ -2562,6 +2562,17 @@ public class Connect extends SQLiteOpenHelper {
                     int dateReceivedIndex = cursor.getColumnIndex("PHASE2_DATE_RECEIVED");
                     int orderStatusIndex = cursor.getColumnIndex("PHASE2_ORDER_STATUS");
                     int referenceNoIndex = cursor.getColumnIndex("PHASE2_REFERENCE_NO");
+                    int datePlaceOrderIndex = cursor.getColumnIndex("PHASE2_DATE_PLACED");
+                    int phase2OrderPhase1OrderIDIndex = cursor.getColumnIndex("PHASE2_PHASE1_ORDER_ID");
+
+                    // Check if the column exists in the cursor before extracting values
+
+                    if(datePlaceOrderIndex != -1){
+                        phase2Order.setDatePlaced(cursor.getString(datePlaceOrderIndex));
+                    }
+                    if(phase2OrderPhase1OrderIDIndex != -1){
+                        phase2Order.setPhase2_phase1OrderID(cursor.getInt(phase2OrderPhase1OrderIDIndex));
+                    }
 
                     // Check if the column exists in the cursor before extracting values
                     if (orderIDIndex != -1) {
@@ -2743,7 +2754,7 @@ public class Connect extends SQLiteOpenHelper {
                     // Check if the column exists in the cursor before extracting values
 
                     if(datePlaceOrderIndex != -1){
-                        phase2Order.setDatePlaced(Integer.toString(cursor.getInt(datePlaceOrderIndex)));
+                        phase2Order.setDatePlaced(cursor.getString(datePlaceOrderIndex));
                     }
                     if(phase2OrderPhase1OrderIDIndex != -1){
                         phase2Order.setPhase2_phase1OrderID(cursor.getInt(phase2OrderPhase1OrderIDIndex));
@@ -2876,7 +2887,7 @@ public class Connect extends SQLiteOpenHelper {
                     // Check if the column exists in the cursor before extracting values
 
                     if(datePlaceOrderIndex != -1){
-                        phase2Order.setDatePlaced(Integer.toString(cursor.getInt(datePlaceOrderIndex)));
+                        phase2Order.setDatePlaced(cursor.getString(datePlaceOrderIndex));
                     }
                     if(phase2OrderPhase1OrderIDIndex != -1){
                         phase2Order.setPhase2_phase1OrderID(cursor.getInt(phase2OrderPhase1OrderIDIndex));
@@ -2944,4 +2955,34 @@ public class Connect extends SQLiteOpenHelper {
 
         return OrderToReceiveList.size() +phase2OrderList.size() ;
     }
+
+    public int getPhase1LaundryWeight(int phase1OrderID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int initialLoad = -1; // Default value if not found
+
+        // Define the columns to be retrieved
+        String[] projection = { "PHASE1_INITIAL_LOAD" };
+
+        // Specify the WHERE clause
+        String selection = "PHASE1_ORDER_ID = ?";
+        String[] selectionArgs = { String.valueOf(phase1OrderID) };
+
+        // Execute the query
+        Cursor cursor = db.query("PHASE1_ORDER", projection, selection, selectionArgs, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            // Retrieve the initial load from the cursor
+            initialLoad = cursor.getInt(cursor.getColumnIndex("PHASE1_INITIAL_LOAD"));
+
+            // Close the cursor to avoid resource leaks
+            cursor.close();
+        }
+
+        // Close the database connection
+        db.close();
+
+        return initialLoad;
+    }
+
+
 }

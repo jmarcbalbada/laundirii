@@ -419,4 +419,9 @@ public class Phase2Order implements Serializable, Orders {
         dbHelper = new Connect(baseContext);
         return dbHelper.getWasherPhasePendingTransaction(washerID);
     }
+
+    public int getPhase1LaundryWeight(int phase2Phase1OrderID,Context context) {
+        dbHelper = new Connect(context);
+        return dbHelper.getPhase1LaundryWeight(phase2Phase1OrderID);
+    }
 }
