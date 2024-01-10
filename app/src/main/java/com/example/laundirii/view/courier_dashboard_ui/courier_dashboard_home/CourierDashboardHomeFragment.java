@@ -128,13 +128,13 @@ public class CourierDashboardHomeFragment extends Fragment {
                             break;
                         case 0:
                             break;
-                        case 1: showCustomDialogOnNotifyingClient();
+                        case 1: showCustomDialogOnNotifyingClient(selectedOrder);
                             break;
                         case 2:
                             break;
                         case 3:
                             break;
-                        case 4: showCustomDialogOnReceivingWasherPaymentPhase1();
+                        case 4: showCustomDialogOnReceivingWasherPaymentPhase1(selectedOrder);
                             break;
                         case 5:
                             break;
@@ -170,7 +170,7 @@ public class CourierDashboardHomeFragment extends Fragment {
         return root;
     }
 
-    private void showCustomDialogOnReceivingWasherPaymentPhase1()
+    private void showCustomDialogOnReceivingWasherPaymentPhase1(Phase1Order phase1Order)
     {
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.popup_courier_received_paymentwasher_phase1, null);
 
@@ -195,6 +195,10 @@ public class CourierDashboardHomeFragment extends Fragment {
                 {
                     courier.setStatus(true);
                     Toast.makeText(getContext(), "Received payment!", Toast.LENGTH_SHORT).show();
+                    //send notification to washer
+                    String notificationTitle = "Courier has received your payment!";
+                    String notificationMessage = "Thank you for the payment.";
+                    dashboardController.sendNotifications(phase1Order.getWasherID(), 0,0,notificationTitle,notificationMessage,getContext());
                     lv_pendingOrders.setVisibility(View.GONE);
                 }
                 else
@@ -215,7 +219,7 @@ public class CourierDashboardHomeFragment extends Fragment {
     }
 
 
-    private void showCustomDialogOnNotifyingClient()
+    private void showCustomDialogOnNotifyingClient(Phase1Order phase1Order)
     {
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.popup_notify_client_courier_arrived, null);
 
@@ -238,6 +242,10 @@ public class CourierDashboardHomeFragment extends Fragment {
                 if(success)
                 {
                     Toast.makeText(getContext(), "Notified Client!", Toast.LENGTH_SHORT).show();
+                    //send notification to client
+                    String notificationTitle = "Your courier has arrived";
+                    String notificationMessage = "Please hand-over the laundry to courier";
+                    dashboardController.sendNotifications(0,phase1Order.getClientID(),0,notificationTitle,notificationMessage,getContext());
                 }
                 else
                 {
@@ -402,6 +410,10 @@ public class CourierDashboardHomeFragment extends Fragment {
             public void onClick(View view) {
                 dashboardController.updatePhase2OrderStatus(phase2Order.getOrderID(),12,getContext());
                 displayPendingOrders();
+                //send notification to washer
+                String notificationTitle = "Your courier has arrived!";
+                String notificationMessage = "Your courier under order ID " + phase2Order.getOrderID() + " has arrived. Please prepare the laundry.";
+                dashboardController.sendNotifications(phase2Order.getWasherID(), 0,0,notificationTitle,notificationMessage,getContext());
                 dialog.dismiss();
 
             }
@@ -435,6 +447,10 @@ public class CourierDashboardHomeFragment extends Fragment {
             public void onClick(View view) {
                 dashboardController.updatePhase2OrderStatus(phase2Order.getOrderID(),14,getContext());
                 displayPendingOrders();
+                //send notification to washer
+                String notificationTitle = "Courier has received your payment!";
+                String notificationMessage = "Thank you for the payment.";
+                dashboardController.sendNotifications(phase2Order.getWasherID(), 0,0,notificationTitle,notificationMessage,getContext());
                 Toast.makeText(getContext(), "Received payment!", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
 
@@ -469,6 +485,10 @@ public class CourierDashboardHomeFragment extends Fragment {
             public void onClick(View view) {
                 dashboardController.updatePhase2OrderStatus(phase2Order.getOrderID(),15,getContext());
                 displayPendingOrders();
+                //send notification to washer
+                String notificationTitle = "Your courier has arrived!";
+                String notificationMessage = "Your courier under order ID " + phase2Order.getOrderID() + " has arrived. Please get the laundry and confirm the transaction to complete.";
+                dashboardController.sendNotifications(0, phase2Order.getClientID(),0,notificationTitle,notificationMessage,getContext());
                 Toast.makeText(getContext(), "Notified Client!", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
 

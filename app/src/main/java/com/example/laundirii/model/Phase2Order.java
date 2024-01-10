@@ -43,7 +43,9 @@ public class Phase2Order implements Serializable, Orders {
      16 - Completed!
 
      SELF COLLECT:
-     20
+     20 - Client on the way to Washer!
+     21 - Washer Received the payment!
+     22 - Completed!
      */
     private int phase2OrderStatus;
     private String referenceNo;
@@ -119,7 +121,13 @@ public class Phase2Order implements Serializable, Orders {
                 break;
             case 16: orderStatus = "Completed!";
                 break;
-
+            // SELF - COLLECT
+            case 20: orderStatus = "Client on the way to Washer!";
+                break;
+            case 21: orderStatus = "Washer received the payment!";
+                break;
+            case 22: orderStatus = "Completed!";
+                break;
         }
 
         if(phase2OrderStatus >= 10 && phase2OrderStatus <= 19)
@@ -137,7 +145,7 @@ public class Phase2Order implements Serializable, Orders {
                     "Date Placed:\t" + this.datePlaced + "\n" +
                     "Payment Status: \t" + paymentStat + "\n";
         }
-        else if(phase2OrderStatus >= 20)
+        else if(phase2OrderStatus >= 20 && phase2OrderStatus <= 23)
         {
             return "SELF COLLECT from Washer to Client:" + "\n" +
                     "Order ID: \t" + orderID + "\n" +
@@ -249,6 +257,17 @@ public class Phase2Order implements Serializable, Orders {
     {
         dbHelper = new Connect(context);
         return dbHelper.insertPhase2Order(clientID,washerID,totalDue, phase2_phase1OrderID);
+    }
+
+    public int getCourierID(){
+        return courier.getCourierID();
+    }
+    public int getClientID(){
+        return client.getCustomerID();
+    }
+    public int getWasherID()
+    {
+        return washer.getWasherID();
     }
 
     public int getOrderID() {

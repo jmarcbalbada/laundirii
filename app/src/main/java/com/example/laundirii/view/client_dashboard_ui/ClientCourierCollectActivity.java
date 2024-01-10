@@ -70,6 +70,10 @@ public class ClientCourierCollectActivity extends AppCompatActivity {
                     dashboardController.updatePhase2OrderStatus(phase2OrderSelected.getOrderID(), 10, getBaseContext());
                     if(success)
                     {
+                        // send notification to washer
+                        String notificationTitle = "[COURIER-COLLECT] - Client booked for collect laundry!";
+                        String notificationMessage = "Client under the order ID " + phase2OrderSelected.getOrderID() + " selected Courier-Collect, please review the payment.";
+                        dashboardController.sendNotifications(phase2OrderSelected.getWasherID(), 0,0,notificationTitle,notificationMessage,getBaseContext());
                         Toast.makeText(getApplicationContext(), "Waiting for washer to accept!", Toast.LENGTH_SHORT).show();
                     }
                     else

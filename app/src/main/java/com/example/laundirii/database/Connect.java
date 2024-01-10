@@ -1179,7 +1179,7 @@ public class Connect extends SQLiteOpenHelper {
         // Query the PHASE2_ORDER table for pending collections for the specified client
         String query = "SELECT * FROM PHASE2_ORDER" +
                 " WHERE " + PHASE2_ORDER_CLIENT_ID + " = ? AND " +
-                "(" + PHASE2_ORDER_STATUS + " NOT IN (-1,16)) ORDER BY " + PHASE2_DATE_PLACED + " DESC";
+                "(" + PHASE2_ORDER_STATUS + " NOT IN (-1,16,22)) ORDER BY " + PHASE2_DATE_PLACED + " DESC";
 
         String[] selectionArgs = {String.valueOf(clientID)};
         Cursor cursor = db.rawQuery(query, selectionArgs);
@@ -1287,15 +1287,15 @@ public class Connect extends SQLiteOpenHelper {
         switch (typeOfUser) {
             // Query Client
             case 0:
-                query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_CLIENT_ID = ? ORDER BY PHASE1_DATE_PLACED DESC";
+                query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_CLIENT_ID = ? AND (PHASE1_ORDER_STATUS IN (-1,7)) ORDER BY PHASE1_DATE_PLACED DESC";
                 break;
             // Query Courier
             case 1:
-                query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_COURIER_ID = ? ORDER BY PHASE1_DATE_PLACED DESC";
+                query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_COURIER_ID = ? AND (PHASE1_ORDER_STATUS IN (-1,7)) ORDER BY PHASE1_DATE_PLACED DESC";
                 break;
             // Query Washer
             case 2:
-                query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? ORDER BY PHASE1_DATE_PLACED DESC";
+                query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND (PHASE1_ORDER_STATUS IN (-1,7)) ORDER BY PHASE1_DATE_PLACED DESC";
                 break;
         }
 
@@ -1412,15 +1412,15 @@ public class Connect extends SQLiteOpenHelper {
         switch (typeOfUser) {
             // Query Client
             case 0:
-                query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_CLIENT_ID = ? ORDER BY PHASE2_DATE_PLACED DESC";
+                query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_CLIENT_ID = ? AND (PHASE2_ORDER_STATUS IN (-1,16,22)) ORDER BY PHASE2_DATE_PLACED DESC";
                 break;
             // Query Courier
             case 1:
-                query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_COURIER_ID = ? ORDER BY PHASE2_DATE_PLACED DESC";
+                query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_COURIER_ID = ? AND (PHASE2_ORDER_STATUS IN (-1,16,22)) ORDER BY PHASE2_DATE_PLACED DESC";
                 break;
             // Query Washer
             case 2:
-                query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_WASHER_ID = ? ORDER BY PHASE2_DATE_PLACED DESC";
+                query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_WASHER_ID = ? AND (PHASE2_ORDER_STATUS IN (-1,16,22)) ORDER BY PHASE2_DATE_PLACED DESC";
                 break;
         }
 
@@ -1840,7 +1840,7 @@ public class Connect extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         List<Washer> retrieveWashers = new ArrayList<>();
 
-        String query = "SELECT * FROM WASHER";
+        String query = "SELECT * FROM WASHER WHERE WASHER_STATUS = 1";
         Cursor cursor = db.rawQuery(query, null);
         try {
             while (cursor.moveToNext()) {

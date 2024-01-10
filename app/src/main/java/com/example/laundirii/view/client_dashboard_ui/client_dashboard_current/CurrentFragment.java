@@ -177,6 +177,9 @@ public class CurrentFragment extends Fragment {
                 dashboardController.insertPhase2Order(phase1Order.getClientID(),phase1Order.getWasherID(), phase1Order.getTotalDue(), phase1Order.getOrderID(), getContext());
                 if(success)
                 {
+                    String notificationTitle = "Ready to collect order initiated!";
+                    String notificationMessage = "Proceed to Ready to Collect orders tab to select SELF-COLLECT or COURIER-COLLECT option";
+                    dashboardController.sendNotifications(0, phase1Order.getClientID(), 0,notificationTitle,notificationMessage,getContext());
                     Toast.makeText(getContext(), "Success!", Toast.LENGTH_SHORT).show();
                 }
                 else
@@ -244,6 +247,14 @@ public class CurrentFragment extends Fragment {
                 if(success)
                 {
                     Toast.makeText(getContext(), "Success!", Toast.LENGTH_SHORT).show();
+                    //send notification to courier
+                    String notificationTitle = "Client has handed over the laundry to courier!";
+                    String notificationMessage = "Please hand over the laundry to washer to proceed.";
+                    dashboardController.sendNotifications(0,0,phase1Order.getCourier().getCourierID(),notificationTitle,notificationMessage,getContext());
+
+                    //send notification to washer
+                    notificationMessage = "Wait for the courier to hand over the laundry!";
+                    dashboardController.sendNotifications(phase1Order.getWasherID(),0,0,notificationTitle,notificationMessage,getContext());
                 }
                 else
                 {
