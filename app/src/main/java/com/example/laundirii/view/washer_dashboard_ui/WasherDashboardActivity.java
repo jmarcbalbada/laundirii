@@ -112,6 +112,10 @@ public class WasherDashboardActivity extends AppCompatActivity {
             washerSwitchStatus.setChecked(true);
         }
 
+        // TODO: auto cancel if more that 2days and still not settle the deliveries
+
+
+        // send notification penalty
 
 
         washerSwitchStatus.setOnCheckedChangeListener((compoundButton, isChecked) -> {
@@ -166,9 +170,14 @@ public class WasherDashboardActivity extends AppCompatActivity {
 
                             // send notification to all phase2 Orders Clients
                             String notificaitonTitle1 = washer.getShopName() + " - Shop Closing Notice";
-                            String notificationMessage2 = "We will be closing our shop and expected to be back on " +
-                                    year + "-" + (month + 1) + "-" + dayOfMonth +
-                                    ". You can process a collect on your clothes before our shop closes. For those with incoming or outcoming deliveries dont worry we will make sure to process you laundry";
+                            String notificationMessage2 = "We will be closing our shop and expected \n" +
+                                    "to be back on " + year + "-" + (month + 1) + "-" + dayOfMonth +"." +
+                                    "You can collect your clothes within 2 days.\n"+
+                                    "\nYou also can process a collect on your \n" +
+                                    "clothes before our shop closes. For \n" +
+                                    "those with incoming or outcoming deliveries \n" +
+                                    "dont worry we will make sure to process you \n" +
+                                    "laundry";
 
                             // sending the message using controller
 //                            List<Phase2Order> Phase2list = dashboardController.getWasherPhase2ClohtesToReturn(washer.getWasherID(), getBaseContext());

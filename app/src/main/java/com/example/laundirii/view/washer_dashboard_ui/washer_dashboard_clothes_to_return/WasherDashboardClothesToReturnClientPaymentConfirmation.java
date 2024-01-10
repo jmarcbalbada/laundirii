@@ -85,8 +85,8 @@ public class WasherDashboardClothesToReturnClientPaymentConfirmation extends App
                         dashboardController.updatePhase2OrderTotalPaid(Phase2OrderID,selectedOrder.getTotalDue(),getBaseContext());
 
                         // send notification to client
-                        String notificaitonTitle = selectedOrder.getWasher().getShopName()+" - Request Accepted";
-                        String notificationMessage = "Courier is coming to collect the clothes" ;
+                        String notificaitonTitle = selectedOrder.getWasher().getShopName()+" - Payment Successful";
+                        String notificationMessage = "Courier is coming to collect the clothes in the laundry" ;
                         // Sending Notification to Client
                         dashboardController.sendNotifications(0,selectedOrder.getClient().getCustomerID(),0,notificaitonTitle,notificationMessage,getBaseContext());
 
@@ -153,7 +153,7 @@ public class WasherDashboardClothesToReturnClientPaymentConfirmation extends App
                             // For example, you can show another dialog
                             new AlertDialog.Builder(WasherDashboardClothesToReturnClientPaymentConfirmation.this)
                                     .setTitle("Payment Confirmation")
-                                    .setMessage("s this the correct amount you received? " + amountReceived)
+                                    .setMessage("You received from customer" + amountReceived + "?")
                                     .setPositiveButton("Yes", (nextDialog, nextWhich) -> {
                                         // Handle further steps if needed
                                         double kuwangNiClient = selectedOrder.getTotalDue() - Integer.parseInt(amountReceived) ;
@@ -163,9 +163,27 @@ public class WasherDashboardClothesToReturnClientPaymentConfirmation extends App
                                                     .setMessage("Client balance is completely paid review the payment")
                                                     .setNeutralButton("Confirm",(dialog3,which3)->{
                                             }).show();
+                                            Toast.makeText(getApplicationContext(), "Client is fully paid review the payment ", Toast.LENGTH_SHORT).show();
 
-//                                            Toast.makeText(getApplicationContext(), "Client is fully paid review the payment ", Toast.LENGTH_SHORT).show();
-                                            Toast.makeText(getApplicationContext(), "Kuwang ni Client" + kuwangNiClient, Toast.LENGTH_SHORT).show();
+                                            // send message to self and client
+                                            String notificationTitle = "System Notice - Insufficient Payment request";
+                                            String notificationMessage = "Base on the received value the client is \n" +
+                                                    " fully paid. We have cancel the transaction\n" +
+                                                    " and double check the payment received ";
+                                            dashboardController.sendNotifications(selectedOrder.getWasher().getWasherID(), 0, 0, notificationTitle, notificationMessage, getBaseContext());
+
+                                            notificationTitle = selectedOrder.getWasher().getShopName() + " - Booking Cancellation";
+                                            notificationMessage = "We apologize for the cancellation we need to " +
+                                                    "double check the payment Gcash Reference. You can\n" +
+                                                    " now book another transaction. You can contact at \n" +
+                                                    "us "+ selectedOrder.getWasher().getContactNo();
+                                            dashboardController.sendNotifications(0, selectedOrder.getClient().getCustomerID(), 0, notificationTitle, notificationMessage, getBaseContext());
+
+                                            // redirect to dashboard
+                                            Intent intent = new Intent(WasherDashboardClothesToReturnClientPaymentConfirmation.this, WasherDashboardActivity.class);
+                                            startActivity(intent);
+
+
                                             return;
                                         }
                                         Log.e("Kuwang Ni Client",""+ kuwangNiClient);
