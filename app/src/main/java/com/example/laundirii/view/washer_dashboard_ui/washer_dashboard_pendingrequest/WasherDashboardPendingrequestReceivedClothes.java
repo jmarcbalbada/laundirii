@@ -18,7 +18,7 @@ import com.example.laundirii.view.washer_dashboard_ui.WasherDashboardActivity;
 public class WasherDashboardPendingrequestReceivedClothes extends AppCompatActivity {
 
     DashboardController dashboardController;
-    TextView ClientNameText, orderID,InitialLoad,TotalAmount;
+    TextView ClientNameText, InitialLoad,TotalAmount, dateplaced,status,description,phonenumber,courname,cournumber;
     Button notReceivedButton, receivedButton;
 
     @Override
@@ -29,6 +29,13 @@ public class WasherDashboardPendingrequestReceivedClothes extends AppCompatActiv
 
         // Locate the button ID
         Phase1Order selectedOrder = (Phase1Order) getIntent().getSerializableExtra("selectedOrder");
+
+        courname = findViewById(R.id.washer_dashboard_fragment_pendingrequest_pendingrequest_activity_couriername);
+        cournumber = findViewById(R.id.washer_dashboard_fragment_pendingrequest_pendingrequest_activity_courier_number);
+        phonenumber = findViewById(R.id.washer_dashboard_fragment_pendingrequest_pendingrequest_activity_customer_number);
+        dateplaced = findViewById(R.id.washer_dashboard_fragment_pendingrequest_pendingrequest_activity_dateplaced);
+        status = findViewById(R.id.washer_dashboard_fragment_pendingrequest_activity_status3);
+        description = findViewById(R.id.washer_dashboard_fragment_pendingrequest_activity_description);
         ClientNameText = findViewById(R.id.washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_clientNameText);
         InitialLoad = findViewById(R.id.washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_InitialLoad);
         TotalAmount = findViewById(R.id.washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_totalamount);
@@ -36,9 +43,17 @@ public class WasherDashboardPendingrequestReceivedClothes extends AppCompatActiv
         receivedButton = findViewById(R.id.washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_acceptbutton);
 
         // Set Value of Buttons and Text
+        cournumber.setText("Courier Contact Number"+ selectedOrder.getCourier().getContactNo());
+        courname.setText("Courier Name: " + selectedOrder.getCourier().getName());
+
+        phonenumber.setText("Customer Contact Number: " +selectedOrder.getClient().getContactNo());
         ClientNameText.setText("Client Name: "+selectedOrder.getClient(getBaseContext()).getName());
-        InitialLoad.setText("Initial Load:" + selectedOrder.getInitialLoad());
-        TotalAmount.setText("Initial Total Amount: " + ((selectedOrder.getInitialLoad()*selectedOrder.getWasher().getRatePerKg() )+ selectedOrder.getTotalCourierAmount()) );
+        InitialLoad.setText("Initial Laundry Weight:" + selectedOrder.getInitialLoad()+" KG");
+        TotalAmount.setText("Expected to Earn:" +( selectedOrder.getInitialLoad() *selectedOrder.getWasher().getRatePerKg()));
+        description.setText("Rider on the way to you. If the rider arrive click the received button");
+        dateplaced.setText("Date Book: " + selectedOrder.getDatePlaced());
+        status.setText("Progress Status: Booking Confirmation" );
+
 
 
         // Cancel the booking request of the customer

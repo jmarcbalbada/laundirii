@@ -20,7 +20,7 @@ import com.example.laundirii.view.washer_dashboard_ui.WasherDashboardActivity;
 public class WasherDashboardClothesToReturnClientPaymentConfirmation extends AppCompatActivity {
 
     private TextView textViewClientName, textViewAddress, textViewDatePlaced, textViewTotalAmount,
-            textViewGcashReferenceNumber, textViewContactNumber;
+            textViewGcashReferenceNumber, textViewContactNumber, textViewDescription,textViewStatus;
 
     private Button buttonReceived, buttonNotReceived;
     private Phase2Order selectOrder;
@@ -36,21 +36,23 @@ public class WasherDashboardClothesToReturnClientPaymentConfirmation extends App
 
         // Find TextViews by their IDs
         Phase2Order selectedOrder = (Phase2Order) getIntent().getSerializableExtra("selectedOrder");
+        textViewStatus = findViewById(R.id.washer_dashboard_fragment_clothesto_to_return_payment_confirmation_status_acitivty);
+        textViewDescription = findViewById(R.id.washer_dashboard_fragment_clothesto_to_return_payment_confirmation_description_acitivty);
         textViewClientName = findViewById(R.id.textViewClientName);
-        textViewAddress = findViewById(R.id.textViewAddress);
         textViewDatePlaced = findViewById(R.id.textViewDatePlaced);
         textViewTotalAmount = findViewById(R.id.textViewTotalAmount);
         textViewGcashReferenceNumber = findViewById(R.id.textViewGcashReferenceNumber);
         textViewContactNumber = findViewById(R.id.textViewContactNumber);
 
         textViewClientName.setText("Client Name : " +selectedOrder.getClient().getName());
-        textViewAddress.setText("Address : "+selectedOrder.getClient().getAddress());
         textViewDatePlaced.setText("Date Placed: " + selectedOrder.getDatePlaced());
         textViewTotalAmount.setText("Total Amount: "+ selectedOrder.getTotalDue());
-
-        Log.e("GCASH ref",""+ selectedOrder.getReferenceNo());
         textViewGcashReferenceNumber.setText("Gcash Reference Number: "+ selectedOrder.getReferenceNo());
         textViewContactNumber.setText("Client Contact Number: "+ selectedOrder.getClient().getContactNo());
+        textViewStatus.setText("Progress Status: Client Payment Confirmation");
+        textViewDescription.setText("Check Gcash reference number and the amount if it matches the payment of the client before handing the clothes over.\n " +
+                "\nNote: the payment here include the delivery fee for the courier back and forth");
+
         buttonReceived = findViewById(R.id.washer_dashboard_fragment_clothes_to_return_receivedButton);
         buttonNotReceived = findViewById(R.id.washer_dashboard_fragment_clothes_to_return_notreceivedButton);
 

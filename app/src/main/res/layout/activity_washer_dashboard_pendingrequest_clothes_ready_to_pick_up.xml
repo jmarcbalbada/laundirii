@@ -7,28 +7,91 @@
     tools:context=".view.washer_dashboard_ui.washer_dashboard_receivedclothes.WasherDashboardPendingrequestClothesReadyToPickUp">
 
     <TextView
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_clothesreadytopickup_total_amount"
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_clothesreadytopickup_activity_status2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Total Amount: "
+        android:background="@color/pending8"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="Progress Status"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.528" />
+        app:layout_constraintVertical_bias="0.151" />
+
+
+    <TextView
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_clothesreadytopickup_activity_description2"
+        android:layout_width="259dp"
+        android:layout_height="139dp"
+        android:text="Notify the client that there clothes are already clean. They will process a pick up and will send you the payment"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.241" />
 
     <TextView
         android:id="@+id/washer_dashboard_fragment_pendingrequest_clothesreadytopickupt_initial_load"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Clothes Weight: "
+        android:text="Initial Clothes Weight: "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.469" />
+        app:layout_constraintVertical_bias="0.62" />
+
+    <Button
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_clothesreadytopickup_activity_accept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ready To Pick Up"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.803" />
+
+    <TextView
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_clothesreadytopickup_total_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Client Total Due: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.485"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.681" />
+
+    <TextView
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_clothesreadytopickup_activity_dateplaced"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date Placed: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.516" />
+
+    <TextView
+        android:id="@+id/washer_dashboard_fragment_pendingrequest_clothesreadytopickup_activity_phonenumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phone Number: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.522"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.57" />
 
     <TextView
         android:id="@+id/washer_dashboard_fragment_pendingrequest_clothesreadytopickup_activity_clientname"
@@ -40,18 +103,6 @@
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.391" />
-
-
-    <Button
-        android:id="@+id/washer_dashboard_fragment_pendingrequest_clothesreadytopickup_activity_accept"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ready To Pick Up"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.644" />
+        app:layout_constraintVertical_bias="0.457" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

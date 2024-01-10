@@ -18,7 +18,8 @@ import com.example.laundirii.view.washer_dashboard_ui.WasherDashboardActivity;
 public class WasherDashboardPendingrequestRequestConfirmation extends AppCompatActivity {
 
     DashboardController dashboardController;
-    TextView  ClientNameText, orderID,InitialLoad,TotalAmount;
+    TextView ClientNameText, InitialLoad,TotalAmount, dateplaced,status,description,phonenumber;
+
     Button cancelledButton, acceptButton;
 
 
@@ -30,6 +31,10 @@ public class WasherDashboardPendingrequestRequestConfirmation extends AppCompatA
 
         // Locate the button ID
         Phase1Order selectedOrder = (Phase1Order) getIntent().getSerializableExtra("selectedOrder");
+        phonenumber = findViewById(R.id.washer_dashboard_fragment_pendingrequest_requestconfirmation_activity_customerphonenumber);
+        dateplaced = findViewById(R.id.washer_dashboard_fragment_pendingrequest_requestconfirmation_activity_dateplaced);
+        status = findViewById(R.id.washer_dashboard_fragment_pendingrequest_requestsconfirmation_activity_status);
+        description = findViewById(R.id.washer_dashboard_fragment_pendingrequest_requestconfirmation_activity_description2);
         ClientNameText = findViewById(R.id.washer_dashboard_fragment_pendingrequest_confirmation_acitivity_clientNameText);
         InitialLoad = findViewById(R.id.washer_dashboard_fragment_pendingrequest_confirmation_acitivity_InitialLoad);
         TotalAmount = findViewById(R.id.washer_dashboard_fragment_pendingrequest_confirmation_acitivity_totalamount);
@@ -38,8 +43,13 @@ public class WasherDashboardPendingrequestRequestConfirmation extends AppCompatA
 
         // Set Value of Buttons and Text
         ClientNameText.setText("Client Name: "+selectedOrder.getClient(getBaseContext()).getName());
-        InitialLoad.setText("Initial Load:" + selectedOrder.getInitialLoad());
-        TotalAmount.setText("Total Amount:" + selectedOrder.getTotalDue());
+        InitialLoad.setText("Initial Laundry Weight:" + selectedOrder.getInitialLoad() + " KG");
+        TotalAmount.setText("Expected to Earn:" +( selectedOrder.getInitialLoad() *selectedOrder.getWasher().getRatePerKg()) );
+        description.setText("Client Book a Laundry Appointment.\n Expected charge of laundry = "+(selectedOrder.getInitialLoad()*selectedOrder.getWasher().getRatePerKg())+".\nRider Delivery Fee: "+selectedOrder.getTotalCourierAmount()+".\nExpected Client charge: "+((selectedOrder.getInitialLoad()*selectedOrder.getWasher().getRatePerKg())+ selectedOrder.getTotalCourierAmount()) );
+        dateplaced.setText("Date Book: " + selectedOrder.getDatePlaced());
+        status.setText("Progress Status: Booking Confirmation" );
+        phonenumber.setText("Customer Contact Number: "+ selectedOrder.getClient().getContactNo());
+
 
 
         // Cancel the booking request of the customer

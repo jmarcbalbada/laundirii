@@ -17,8 +17,8 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class WasherDashboardPendingrequestClothestoweight extends AppCompatActivity {
     DashboardController dashboardController;
-    TextView ClientNameText, orderID,InitialLoad,TotalAmount;
-    Button cancelledButton, acceptButton;
+    TextView ClientNameText, InitialLoad,TotalAmount, dateplaced,status,description,phonenumber;
+    Button  acceptButton;
     TextInputEditText finalvalue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,18 +27,27 @@ public class WasherDashboardPendingrequestClothestoweight extends AppCompatActiv
 
         dashboardController = new DashboardController();
 
+
         // Locate the button ID
         Phase1Order selectedOrder = (Phase1Order) getIntent().getSerializableExtra("selectedOrder");
         ClientNameText = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothestoweight_activity_clientname);
         InitialLoad = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothestoweight_initial_load);
         TotalAmount = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothestoweight_total_amount);
         acceptButton = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothestoweight_activity_accept);
+        dateplaced = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothestoweight_activity_dateplaced);
+        status = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothestoweight_activity_status);
+        description = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothestoweight_activity_description);
         finalvalue = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothestoweight_activity_finalvalue);
+        phonenumber = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothestoweight_activity_phonenumber);
 
         // Set Value of Buttons and Text
         ClientNameText.setText("Client Name: " + selectedOrder.getClient(getBaseContext()).getName());
-        InitialLoad.setText("Initial Load:" + selectedOrder.getInitialLoad());
-        TotalAmount.setText("Total Amount: " + ((selectedOrder.getInitialLoad()*selectedOrder.getWasher().getRatePerKg() )+ selectedOrder.getTotalCourierAmount()) );
+        InitialLoad.setText("Initial Laundry Weight:" + selectedOrder.getInitialLoad() + " KG");
+        TotalAmount.setText("Initial Client Balance: " + ((selectedOrder.getInitialLoad()*selectedOrder.getWasher().getRatePerKg() )+ selectedOrder.getTotalCourierAmount()) );
+        description.setText("Calibrating the weight of the laundry to make that the client will pay the right amount");
+        dateplaced.setText("Date Placed: " + selectedOrder.getDatePlaced());
+        status.setText("Progress Status: Weight Calibration " );
+        phonenumber.setText("Customer Phone Number: "+ selectedOrder.getClient().getContactNo());
 //        int finalInitialLoad ;
 //        try {
 

@@ -28,7 +28,7 @@ import com.example.laundirii.view.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
-public class CourierDashboardActivity extends AppCompatActivity {
+public class CourierDashboardActivity extends AppCompatActivity{
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityCourierDashboardBinding binding;
@@ -134,6 +134,7 @@ public class CourierDashboardActivity extends AppCompatActivity {
                     dashboardController.setCourierStatusOnDatabase(courier.getCourierID(),false,CourierDashboardActivity.this.getApplicationContext());
                     courierSwitch.setText("OFF");
                 }
+                recreate();
             }
         });
     }
@@ -177,6 +178,9 @@ public class CourierDashboardActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
+        if(id == R.id.courier_action_refresh) {
+            recreate();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -193,5 +197,6 @@ public class CourierDashboardActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
 
 }
