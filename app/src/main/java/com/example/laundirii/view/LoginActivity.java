@@ -1,18 +1,16 @@
 package com.example.laundirii.view;
 
 
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.laundirii.R;
 import com.example.laundirii.controller.DashboardController;
@@ -71,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 int type = typeOfUser(username);
                 // check if successful
+                // TODO Implement redirect to dashboard when log in
                 switch (type) {
                     case 0:
                         if(loginController.loginClient(username,password,LoginActivity.this))

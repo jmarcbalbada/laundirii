@@ -7,6 +7,7 @@ import com.example.laundirii.database.Connect;
 import java.io.Serializable;
 import java.util.List;
 
+
 public class Phase1Order implements Serializable, Orders {
 
     private int orderID;
@@ -262,10 +263,9 @@ public class Phase1Order implements Serializable, Orders {
     public int getPhase1OrderStatus() {
         return phase1OrderStatus;
     }
-    public void setPhase1OrderStatus(int phase1OrderStatus , Context context) {
+    public void setPhase1OrderStatuss(int phase1OrderID ,int status ,Context context) {
         dbHelper = new Connect(context);
-        dbHelper.setPhase1OrderStatus(this.orderID,phase1OrderStatus);
-        return;
+        dbHelper.setPhase1OrderStatus(phase1OrderID, status);
     }
 
     public void setPhase1OrderStatus(int phase1OrderStatus) {
@@ -299,12 +299,6 @@ public class Phase1Order implements Serializable, Orders {
 
     public void setTotalCourierAmount(double totalCourierAmount) {
         this.totalCourierAmount = totalCourierAmount;
-    }
-
-    @Override
-    public void toImplement()
-    {
-
     }
 
     public String getDateCourier() {
@@ -383,9 +377,9 @@ public class Phase1Order implements Serializable, Orders {
         return dbHelper.washerAcceptClientRequest(phase1OrderID,availableCourierID);
     }
 
-    public  List<Phase1Order> getWasherHistory(int washerID, Context context) {
+    public  List<Phase1Order> getWasherPhase1OrderHistory(int washerID, Context context) {
         dbHelper = new Connect(context);
-        return dbHelper.getWasherHistory(washerID,context);
+        return dbHelper.getWasherPhase1OrderHistory(washerID,context);
 
     }
 
@@ -418,5 +412,10 @@ public class Phase1Order implements Serializable, Orders {
     public void updatePhase1OrderInitialLoad(int orderID, int initialload, Context baseContext) {
         dbHelper = new Connect(baseContext);
         dbHelper.updatePhase1OrderInitialLoad(orderID,initialload);
+    }
+
+    @Override
+    public void toImplement() {
+
     }
 }

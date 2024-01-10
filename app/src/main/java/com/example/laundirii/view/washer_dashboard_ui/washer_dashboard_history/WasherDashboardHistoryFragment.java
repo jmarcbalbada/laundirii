@@ -2,6 +2,7 @@ package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_history;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.laundirii.R;
 import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.databinding.WasherDashboardFragmentHistoryBinding;
+import com.example.laundirii.model.Orders;
 import com.example.laundirii.model.Phase1Order;
+import com.example.laundirii.model.Phase2Order;
 import com.example.laundirii.model.Washer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WasherDashboardHistoryFragment extends Fragment {
@@ -42,8 +46,19 @@ public class WasherDashboardHistoryFragment extends Fragment {
         washerInfoPreferences = this.getActivity().getSharedPreferences("LoginWasherPreferences", 0);
         String washerUsername = washerInfoPreferences.getString("washerUsername", "");
         washer = dashboardController.getWasher(washerUsername, this.getActivity());
-        List<Phase1Order> orders = dashboardController.getWasherHistory(washer.getWasherID(),getContext());
+
+
+        // TODO implement History
+        List<Phase1Order> phase1orders = dashboardController.getWasherPhase1OrderHistory(washer.getWasherID(),getContext());
+        List<Phase2Order> phase2orders = dashboardController.getWasherPhase2OrderHistory(washer.getWasherID(),getContext());
+
+        List<Orders> orders = new ArrayList<Orders>();
+        orders.addAll(phase1orders);
+        orders.addAll(phase2orders);
+        Log.e("PRINT SIZE",""+phase1orders.size());
+        Log.e("PRINT SIZE",""+phase2orders.size());
 //        List<Phase1Order> orders = dashboardController.getWaherHistory(washer.getWasherID(), getContext());
+
 
         washerDashboardHistoryAdapter = new WasherDashboardHistoryAdapter(orders,getContext());
         recyclerView.setAdapter(washerDashboardHistoryAdapter);

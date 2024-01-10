@@ -31,13 +31,19 @@ public class WasherDashboardClothesToReturnClothesHandedOverToCourier extends Ap
 
         Phase2Order selectedOrder = (Phase2Order) getIntent().getSerializableExtra("selectedOrder");
         dashboardController = new DashboardController();
-//
+////
         textViewClientName = findViewById(R.id.textViewClientName);
         textViewAddress = findViewById(R.id.textViewAddress);
         textViewDatePlaced = findViewById(R.id.textViewDatePlaced);
         textViewTotalAmount = findViewById(R.id.textViewTotalAmount);
         textViewContactNumber = findViewById(R.id.textViewContactNumber);
-//
+////
+        textViewClientName.setText("Client Name : " +selectedOrder.getClient().getName());
+        textViewAddress.setText("Address : "+selectedOrder.getClient().getAddress());
+        textViewDatePlaced.setText("Date Placed: " + selectedOrder.getDatePlaced());
+        textViewTotalAmount.setText("Total Amount: "+ selectedOrder.getTotalDue());
+        textViewContactNumber.setText("Client Contact Number: "+ selectedOrder.getClient().getContactNo());
+
         buttonReceived = findViewById(R.id.washer_dashboard_fragment_clothes_to_return_receivedButton);
 //        buttonNotReceived = findViewById(R.id.washer_dashboard_fragment_clothes_to_return_notreceivedButton);
 //

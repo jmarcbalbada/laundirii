@@ -182,6 +182,10 @@ public class DashboardController {
         return courier.updateCourierStatusOnConnect(courierID,status, context);
     }
 
+    public void updatePhase1OrderStatuss(int phase1OrderID, int status, Context context)
+    {
+        phase1Order.setPhase1OrderStatuss(phase1OrderID,status, context);
+    }
     public boolean updatePhase1OrderStatus(int phase1OrderID, int status, Context context)
     {
         if(context == null)
@@ -232,8 +236,8 @@ public class DashboardController {
         return phase1Order.washerAcceptClientRequest(phase1OrderID,availableCourierID,baseContext);
     }
 
-    public List<Phase1Order> getWasherHistory(int washerID, Context context) {
-        return phase1Order.getWasherHistory(washerID,context);
+    public List<Phase1Order> getWasherPhase1OrderHistory(int washerID, Context context) {
+        return phase1Order.getWasherPhase1OrderHistory(washerID,context);
     }
 
     public List<Phase1Order> getWasherReceivedClothes(int washerID, Context context) {
@@ -293,4 +297,33 @@ public class DashboardController {
     public List<Phase2Order> getWasherPhase2ClohtesToReturns(int washerID, Context context) {
         return phase2Order.getWasherPhase2ClohtesToReturns(washerID,context);
     }
+
+    public void updateWasherStatus(int washerID, int washerStatus, Context baseContext) {
+        washer.updateWasherStatus(washerID,washerStatus,baseContext);
+    }
+
+    public int getWasherStatus(int washerID, Context baseContext) {
+        return washer.getWasherStatus(washerID,baseContext);
+    }
+
+    public int updateWasherProfile(int washerID, String shopName, String shopLocation, String shopContact, Double shopRate, Context baseContext) {
+        return washer.updateWasherProfile(washerID,shopName,shopLocation,shopContact,shopRate,baseContext);
+    }
+
+    public List<Phase2Order> getWasherPhase2OrderHistory(int washerID, Context context) {
+        return washer.getWasherPhase2OrderHistory(washerID,context);
+    }
+
+    public void updatePhase2OrderPaymentStatus(int phase2OrderID, int paymentStatus, Context baseContext) {
+        phase2Order.updatePhase2OrderPaymentStatus(phase2OrderID,paymentStatus,baseContext);
+    }
+
+    public void updatePhase2OrderTotalPaid(int phase2OrderID, double totalDue, Context baseContext) {
+        phase2Order.updatePhase2OrderTotalPaid(phase2OrderID,totalDue,baseContext);
+    }
+
+    public void updatePhase1OrderTotalPaid(int phase2Phase1OrderID, int totalPaid, Context baseContext) {
+        phase2Order.updatePhase1OrderTotalPaid(phase2Phase1OrderID,totalPaid,baseContext);
+    }
+
 }
