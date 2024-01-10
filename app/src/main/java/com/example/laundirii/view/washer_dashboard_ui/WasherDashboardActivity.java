@@ -27,6 +27,7 @@ import com.example.laundirii.databinding.ActivityWasherDashboardUiBinding;
 import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.model.Phase2Order;
 import com.example.laundirii.model.Washer;
+import com.example.laundirii.view.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -165,8 +166,12 @@ public class WasherDashboardActivity extends AppCompatActivity {
                             // client with status (0,1,2,3) will receive notification
 //                            List<Phase1Order> Phase1list = dashboardController.getPendingDeliveriesOnWasher(washer.getWasherID(), getBaseContext());
                             //TODO send notifiction to phase1 order 0,1,2,3,4,5,6
+
                             List<Phase1Order> Phase1list = dashboardController.getWasherPhase1StatusGetter(washer.getWasherID(),getBaseContext());
-                            Phase1list.forEach(client -> {dashboardController.sendNotifications(0, client.getClient().getCustomerID(), 0, notificaitonTitle, notificationMessage, getBaseContext());});
+                            Log.e("PHASE1 LLIST","" + Phase1list.size() );
+                            Log.e("PHASE1 LLIST","" + washer.getWasherID() );
+                            Phase1list.forEach(client -> {
+                                dashboardController.sendNotifications(0, client.getClient().getCustomerID(), 0, notificaitonTitle, notificationMessage, getBaseContext());});
 
                             // send notification to all phase2 Orders Clients
                             String notificaitonTitle1 = washer.getShopName() + " - Shop Closing Notice";
@@ -232,6 +237,21 @@ public class WasherDashboardActivity extends AppCompatActivity {
         } else if (id == R.id.washer_action_settings) {
             // Handle the settings item click here
             // Add code for settings action
+            return true;
+            //TODO LOGOOUT
+        }else if (id == R.id.washer_action_logout) {
+            // Handle the logout item click here
+            // Clear SharedPreferences
+            SharedPreferences sharedPreferences = getSharedPreferences("LoginWasherPreferences", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.apply();
+
+            // Redirect to LoginActivity
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+
             return true;
         }
 

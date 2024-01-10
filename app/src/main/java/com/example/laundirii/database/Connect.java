@@ -2677,35 +2677,13 @@ public class Connect extends SQLiteOpenHelper {
     public List<Phase1Order> getWasherPhase1StatusGetter(int washerID) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS IN (0,1,2,3,4,5,6) ORDER BY PHASE1_ORDER_STATUS ;";
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS IN (0,1,2,3,4,5,6);";
         String[] selectionArgs = {String.valueOf(washerID)};
 
         Cursor cursor = db.rawQuery(query, selectionArgs);
         List<Phase1Order> OrderToReceiveList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-
-                Date currentDate = new Date();
-                String dateString = cursor.getString(13);
-
-// Parse the date string into a Date object
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                Date formattedDate = null;
-                try {
-                    formattedDate = simpleDateFormat.parse(dateString);
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
-
-
-// Check if the formatted date is 5 minutes or more greater than the current date
-                boolean result = isFiveMinutesGreater( formattedDate,currentDate);
-
-                // dont store if phase1order is greater than 1 minute
-                if(result == true && cursor.getInt(12) == 0){
-                    continue;
-                }
-
                 Phase1Order addOrder = new Phase1Order();
                 addOrder.setOrderID(cursor.getInt(0));
                 addOrder.setClient(this.getClient(cursor.getInt(1)));
@@ -2721,12 +2699,12 @@ public class Connect extends SQLiteOpenHelper {
                 addOrder.setInitialLoad(cursor.getInt(11));
                 addOrder.setPhase1OrderStatus(cursor.getInt(12));
                 addOrder.setDatePlaced(cursor.getString(13));
-
+                Log.e("PHASE1 LISTT",""+cursor.getInt(0));
                 OrderToReceiveList.add(addOrder);
             } while (cursor.moveToNext());
         }
         cursor.close();
-        this.getReadableDatabase().close();
+        db.close();
 
         return OrderToReceiveList;
     }

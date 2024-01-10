@@ -83,18 +83,48 @@ public class WasherDashboardClothesToReturnAdapter extends RecyclerView.Adapter<
                 // completed
                 setPhase2OrderCompleteTransactionStyle(holder,order);
                 break;
+            case 20:
+                // client is on the way
+                setPhase2OrderSelfCollectClientOnTheWay(holder,order);
+                break;
+            case 21:
+                // messagee did you received the payment?
+                setPhase2OrderSelfCollectWasherReceivedPayment(holder,order);
+                break;
         }
+    }
+
+    private void setPhase2OrderSelfCollectClientOnTheWay(ClothesToReturnHolder holder, Phase2Order order) {
+        initialize(holder,order);
+        holder.textViewOrderId.setText("Client Collect");
+        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending5));
+        holder.textViewCourierStatus.setText("Client on the way");
+    }
+
+    private void setPhase2OrderSelfCollectWasherReceivedPayment(ClothesToReturnHolder holder, Phase2Order order) {
+        initialize(holder,order);
+        holder.textViewOrderId.setText("Client Collect");
+        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending10));
+        holder.textViewCourierStatus.setText("Payment Confirmation");
+        holder.itemView.setOnClickListener(view->{
+            Intent intent = new Intent(view.getContext(), WasherDashboardClothesToReturnClothesHandedOverToCourier.class);
+            intent.putExtra("selectedOrder", order);
+            view.getContext().startActivity(intent);
+        });
+
+
     }
 
     private void setPhase2OrderCompleteStyle(ClothesToReturnHolder holder, Phase2Order order) {
         initialize(holder,order);
+        holder.textViewOrderId.setText("Courier Collect");
         holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.washer_rider_on_the_way_here));
         holder.textViewCourierStatus.setText("Transaction Completed");
     }
 
     private void setPhase2OrderCompleteTransactionStyle(ClothesToReturnHolder holder, Phase2Order order) {
         initialize(holder,order);
-        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending7));
+        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending10));
         holder.textViewCourierStatus.setText("Completed");
     }
 
@@ -151,7 +181,8 @@ public class WasherDashboardClothesToReturnAdapter extends RecyclerView.Adapter<
 
 
     private void initialize(ClothesToReturnHolder holder,Phase2Order order){
-        holder.textViewOrderId.setText("Order ID: " + order.getOrderID() +" -- Order Status: " + order.getPhase2OrderStatus()  );
+        holder.textViewOrderId.setText("Courier Collect");
+//        holder.textViewOrderId.setText("Order ID: " + order.getOrderID() +" -- Order Status: " + order.getPhase2OrderStatus()  );
         holder.textViewClientName.setText("Client Name: " + order.getClient().getName());
         holder.textViewCourierStatus.setText("Pending Waiting For Approval");
         holder.textViewReference.setText("");

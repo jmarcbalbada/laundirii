@@ -48,7 +48,7 @@ public class WasherDashboardPendingrequestRequestConfirmation extends AppCompatA
             public void onClick(View v) {
                 new AlertDialog.Builder(WasherDashboardPendingrequestRequestConfirmation.this)
                         .setTitle("Confirmation")
-                        .setMessage("Are you sure you want to show the toast?")
+                        .setMessage("Are you sure you want to cancel the request?")
                         .setPositiveButton("Yes", (dialog, which) -> {
                             // set status to -1
 

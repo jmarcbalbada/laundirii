@@ -11,4 +11,8 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/washer_action_logout"
+        android:title="Logout"
+        app:showAsAction="never" />
 </menu>
