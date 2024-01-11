@@ -17,8 +17,9 @@ import com.example.laundirii.view.washer_dashboard_ui.WasherDashboardActivity;
 
 public class WasherDashboardPendingrequestClothesReadyToPickUp extends AppCompatActivity {
     DashboardController dashboardController;
-    TextView ClientNameText, orderID,InitialLoad,TotalAmount;
-    Button cancelledButton, readyToPickUpButton;
+    TextView ClientNameText, InitialLoad,TotalAmount, dateplaced,status,description,phonenumber;
+
+    Button readyToPickUpButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,17 +27,27 @@ public class WasherDashboardPendingrequestClothesReadyToPickUp extends AppCompat
 
         dashboardController = new DashboardController();
 
+
+//        "Notify the client that there clothes are already clean. They will process a pick up and will send you the payment"
         // Locate the button ID
         Phase1Order selectedOrder = (Phase1Order) getIntent().getSerializableExtra("selectedOrder");
+        phonenumber = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothesreadytopickup_activity_phonenumber);
+        dateplaced = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothesreadytopickup_activity_dateplaced);
+        status = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothesreadytopickup_activity_status2);
+        description = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothesreadytopickup_activity_description2);
         ClientNameText = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothesreadytopickup_activity_clientname);
         InitialLoad = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothesreadytopickupt_initial_load);
         TotalAmount = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothesreadytopickup_total_amount);
         readyToPickUpButton = findViewById(R.id.washer_dashboard_fragment_pendingrequest_clothesreadytopickup_activity_accept);
 
         // Set Value of Buttons and Text
+        status.setText("Progress Status: Completion Confirmation");
+        dateplaced.setText("Date Placed: " + selectedOrder.getDatePlaced());
+        description.setText("Notify the client that their clothes are ready to pick up. They will process a collect option and will send you the payment in you GCASH number. Make sure you have a gcash account to receive the payment");
         ClientNameText.setText("Client Name: " + selectedOrder.getClient(getBaseContext()).getName());
-        InitialLoad.setText("Initial Load:" + selectedOrder.getInitialLoad());
+        InitialLoad.setText("Initial Load:" + selectedOrder.getInitialLoad() +" KG");
         TotalAmount.setText("Total Amount:" + selectedOrder.getTotalDue());
+        phonenumber.setText("Customer Phone Number: "+ selectedOrder.getClient().getContactNo());
 
 
         // Accept the booking request of the customer

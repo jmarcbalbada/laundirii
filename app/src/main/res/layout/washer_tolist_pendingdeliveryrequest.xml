@@ -16,12 +16,41 @@
         android:text="Order ID" />
 
     <TextView
-        android:padding="10px"
         android:id="@+id/textViewClientName"
+        android:padding="10px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20dp"
         android:text="Client Name" />
+    <TextView
+        android:id="@+id/textViewLaundryDatePlaced"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20px"
+        android:shadowColor="@color/black"
+        android:text="Date Placed"
+        android:textColor="@color/black"
+        android:typeface="monospace" />
+
+
+    <TextView
+        android:id="@+id/textViewLaundryWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20px"
+        android:shadowColor="@color/black"
+        android:text="Laundry Weight"
+        android:textColor="@color/black"
+        android:typeface="monospace" />
+    <TextView
+        android:id="@+id/textViewPendingBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20px"
+        android:shadowColor="@color/black"
+        android:text="Pending Balance"
+        android:textColor="@color/black"
+        android:typeface="monospace" />
 
     <TextView
         android:padding="20px"

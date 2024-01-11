@@ -337,4 +337,8 @@ public class DashboardController {
     public int getWasherPhasePendingTransaction(int washerID, Context baseContext) {
         return phase2Order.getWasherPhasePendingTransaction(washerID,baseContext);
     }
+
+    public int getPhase1LaundryWeight(int phase2Phase1OrderID, Context baseContext) {
+        return phase2Order.getPhase1LaundryWeight(phase2Phase1OrderID,baseContext);
+    }
 }

@@ -21,7 +21,6 @@
             app:popupTheme="@style/Theme.LaunDirii.PopupOverlay" />
 
 
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <include

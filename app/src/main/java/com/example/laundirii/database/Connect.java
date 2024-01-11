@@ -2346,7 +2346,7 @@ public class Connect extends SQLiteOpenHelper {
                     // Check if the column exists in the cursor before extracting values
 
                     if(datePlaceOrderIndex != -1){
-                        phase2Order.setDatePlaced(Integer.toString(cursor.getInt(datePlaceOrderIndex)));
+                        phase2Order.setDatePlaced((cursor.getString(datePlaceOrderIndex)));
                     }
                     if(phase2OrderPhase1OrderIDIndex != -1){
                         phase2Order.setPhase2_phase1OrderID(cursor.getInt(phase2OrderPhase1OrderIDIndex));
@@ -2537,7 +2537,7 @@ public class Connect extends SQLiteOpenHelper {
     public List<Phase2Order> getWasherPhase2OrderHistory(int washerID) {
         SQLiteDatabase db = this.getReadableDatabase();
         // TODO change the history of courrier collect
-        String query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_WASHER_ID = ? AND PHASE2_ORDER_STATUS IN (-1,16) OR PHASE2_ORDER_STATUS IN (24) ORDER BY PHASE2_ORDER_STATUS ASC, PHASE2_DATE_COURIER ASC";
+        String query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_WASHER_ID = ? AND PHASE2_ORDER_STATUS IN (-1,16) OR PHASE2_ORDER_STATUS IN (22) ORDER BY PHASE2_ORDER_STATUS ASC, PHASE2_DATE_COURIER ASC";
         String[] selectionArgs = {String.valueOf(washerID)};
 //
         Cursor cursor = db.rawQuery(query, selectionArgs);
@@ -2562,6 +2562,17 @@ public class Connect extends SQLiteOpenHelper {
                     int dateReceivedIndex = cursor.getColumnIndex("PHASE2_DATE_RECEIVED");
                     int orderStatusIndex = cursor.getColumnIndex("PHASE2_ORDER_STATUS");
                     int referenceNoIndex = cursor.getColumnIndex("PHASE2_REFERENCE_NO");
+                    int datePlaceOrderIndex = cursor.getColumnIndex("PHASE2_DATE_PLACED");
+                    int phase2OrderPhase1OrderIDIndex = cursor.getColumnIndex("PHASE2_PHASE1_ORDER_ID");
+
+                    // Check if the column exists in the cursor before extracting values
+
+                    if(datePlaceOrderIndex != -1){
+                        phase2Order.setDatePlaced(cursor.getString(datePlaceOrderIndex));
+                    }
+                    if(phase2OrderPhase1OrderIDIndex != -1){
+                        phase2Order.setPhase2_phase1OrderID(cursor.getInt(phase2OrderPhase1OrderIDIndex));
+                    }
 
                     // Check if the column exists in the cursor before extracting values
                     if (orderIDIndex != -1) {
@@ -2677,35 +2688,13 @@ public class Connect extends SQLiteOpenHelper {
     public List<Phase1Order> getWasherPhase1StatusGetter(int washerID) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS IN (0,1,2,3,4,5,6) ORDER BY PHASE1_ORDER_STATUS ;";
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS IN (0,1,2,3,4,5,6);";
         String[] selectionArgs = {String.valueOf(washerID)};
 
         Cursor cursor = db.rawQuery(query, selectionArgs);
         List<Phase1Order> OrderToReceiveList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-
-                Date currentDate = new Date();
-                String dateString = cursor.getString(13);
-
-// Parse the date string into a Date object
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                Date formattedDate = null;
-                try {
-                    formattedDate = simpleDateFormat.parse(dateString);
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
-
-
-// Check if the formatted date is 5 minutes or more greater than the current date
-                boolean result = isFiveMinutesGreater( formattedDate,currentDate);
-
-                // dont store if phase1order is greater than 1 minute
-                if(result == true && cursor.getInt(12) == 0){
-                    continue;
-                }
-
                 Phase1Order addOrder = new Phase1Order();
                 addOrder.setOrderID(cursor.getInt(0));
                 addOrder.setClient(this.getClient(cursor.getInt(1)));
@@ -2721,12 +2710,12 @@ public class Connect extends SQLiteOpenHelper {
                 addOrder.setInitialLoad(cursor.getInt(11));
                 addOrder.setPhase1OrderStatus(cursor.getInt(12));
                 addOrder.setDatePlaced(cursor.getString(13));
-
+                Log.e("PHASE1 LISTT",""+cursor.getInt(0));
                 OrderToReceiveList.add(addOrder);
             } while (cursor.moveToNext());
         }
         cursor.close();
-        this.getReadableDatabase().close();
+        db.close();
 
         return OrderToReceiveList;
     }
@@ -2765,7 +2754,7 @@ public class Connect extends SQLiteOpenHelper {
                     // Check if the column exists in the cursor before extracting values
 
                     if(datePlaceOrderIndex != -1){
-                        phase2Order.setDatePlaced(Integer.toString(cursor.getInt(datePlaceOrderIndex)));
+                        phase2Order.setDatePlaced(cursor.getString(datePlaceOrderIndex));
                     }
                     if(phase2OrderPhase1OrderIDIndex != -1){
                         phase2Order.setPhase2_phase1OrderID(cursor.getInt(phase2OrderPhase1OrderIDIndex));
@@ -2898,7 +2887,7 @@ public class Connect extends SQLiteOpenHelper {
                     // Check if the column exists in the cursor before extracting values
 
                     if(datePlaceOrderIndex != -1){
-                        phase2Order.setDatePlaced(Integer.toString(cursor.getInt(datePlaceOrderIndex)));
+                        phase2Order.setDatePlaced(cursor.getString(datePlaceOrderIndex));
                     }
                     if(phase2OrderPhase1OrderIDIndex != -1){
                         phase2Order.setPhase2_phase1OrderID(cursor.getInt(phase2OrderPhase1OrderIDIndex));
@@ -2966,4 +2955,34 @@ public class Connect extends SQLiteOpenHelper {
 
         return OrderToReceiveList.size() +phase2OrderList.size() ;
     }
+
+    public int getPhase1LaundryWeight(int phase1OrderID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int initialLoad = -1; // Default value if not found
+
+        // Define the columns to be retrieved
+        String[] projection = { "PHASE1_INITIAL_LOAD" };
+
+        // Specify the WHERE clause
+        String selection = "PHASE1_ORDER_ID = ?";
+        String[] selectionArgs = { String.valueOf(phase1OrderID) };
+
+        // Execute the query
+        Cursor cursor = db.query("PHASE1_ORDER", projection, selection, selectionArgs, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            // Retrieve the initial load from the cursor
+            initialLoad = cursor.getInt(cursor.getColumnIndex("PHASE1_INITIAL_LOAD"));
+
+            // Close the cursor to avoid resource leaks
+            cursor.close();
+        }
+
+        // Close the database connection
+        db.close();
+
+        return initialLoad;
+    }
+
+
 }

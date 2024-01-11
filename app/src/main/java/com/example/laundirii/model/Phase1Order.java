@@ -421,6 +421,6 @@ public class Phase1Order implements Serializable, Orders {
 
     public List<Phase1Order> getWasherPhase1StatusGetter(int washerID, Context baseContext) {
         dbHelper = new Connect(baseContext);
-        return dbHelper.getWasherPhase1StatusGetter(orderID);
+        return dbHelper.getWasherPhase1StatusGetter(washerID);
     }
 }

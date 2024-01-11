@@ -52,13 +52,25 @@ public class WasherDashboardHistoryFragment extends Fragment {
         List<Phase1Order> phase1orders = dashboardController.getWasherPhase1OrderHistory(washer.getWasherID(),getContext());
         List<Phase2Order> phase2orders = dashboardController.getWasherPhase2OrderHistory(washer.getWasherID(),getContext());
 
-        List<Orders> orders = new ArrayList<Orders>();
+        List<Orders> orders = new ArrayList<>();
         orders.addAll(phase1orders);
         orders.addAll(phase2orders);
-        Log.e("PRINT SIZE",""+phase1orders.size());
-        Log.e("PRINT SIZE",""+phase2orders.size());
 //        List<Phase1Order> orders = dashboardController.getWaherHistory(washer.getWasherID(), getContext());
+        Log.e("Phase1Order",""+phase1orders.size());
+        Log.e("Phase2Order",""+phase2orders.size());
 
+        phase1orders.forEach(order->{
+            Log.e("Phase1Order",""+order);
+        });
+        orders.forEach(order->{
+            if(order instanceof Phase2Order){
+                Log.e("Phase2Order",""+order);
+            }
+            if(order instanceof Phase1Order){
+                Log.e("Phase1Order",""+order);
+
+            }
+        });
 
         washerDashboardHistoryAdapter = new WasherDashboardHistoryAdapter(orders,getContext());
         recyclerView.setAdapter(washerDashboardHistoryAdapter);

@@ -11,19 +11,55 @@
         android:id="@+id/textViewOrderId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="10px"
         android:text="Order ID" />
 
     <TextView
         android:id="@+id/textViewClientName"
+        android:padding="10px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="20dp"
         android:text="Client Name" />
+    <TextView
+        android:id="@+id/textViewCourierName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20px"
+        android:text="Courier Name:"
+        android:textColor="@color/black"
+        android:typeface="monospace" />
+    <TextView
+        android:id="@+id/textViewLaundryWeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20px"
+        android:shadowColor="@color/black"
+        android:text="Laundry Weight:"
+        android:textColor="@color/black"
+        android:typeface="monospace" />
 
     <TextView
-        android:id="@+id/textViewCourierStatus"
+        android:id="@+id/textViewLaundryDatePlaced"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20px"
+        android:shadowColor="@color/black"
+        android:text="Date Placed"
+        android:textColor="@color/black"
+        android:typeface="monospace" />
+
+    <TextView
+        android:id="@+id/textViewStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Courier Status" />
+        android:padding="10dp"
+        android:shadowColor="@color/black"
+        android:background="@color/pending5"
+        android:text="Status"
+        android:textColor="@color/black"
+        android:typeface="monospace" />
+
 
     <!-- Add other TextViews or UI components as needed -->
 

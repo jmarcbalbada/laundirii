@@ -83,25 +83,64 @@ public class WasherDashboardClothesToReturnAdapter extends RecyclerView.Adapter<
                 // completed
                 setPhase2OrderCompleteTransactionStyle(holder,order);
                 break;
+            case 20:
+                // client is on the way
+                setPhase2OrderSelfCollectClientOnTheWay(holder,order);
+                break;
+            case 21:
+                // messagee did you received the payment?
+                setPhase2OrderSelfCollectWasherReceivedPayment(holder,order);
+                break;
+            case 22:
+                // messagee did you received the payment?
+                setPhase2SelfCollectCompletedStyle(holder,order);
+                break;
+
         }
     }
 
-    private void setPhase2OrderCompleteStyle(ClothesToReturnHolder holder, Phase2Order order) {
+    private void setPhase2SelfCollectCompletedStyle(ClothesToReturnHolder holder, Phase2Order order) {
         initialize(holder,order);
-        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.washer_rider_on_the_way_here));
-        holder.textViewCourierStatus.setText("Transaction Completed");
+        holder.textViewOrderId.setText("Client Collect");
+
+    }
+
+    private void setPhase2OrderSelfCollectClientOnTheWay(ClothesToReturnHolder holder, Phase2Order order) {
+        initialize(holder,order);
+        holder.textViewOrderId.setText("Client Collect");
+        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending5));
+        holder.textViewCourierStatus.setText("Client on the way");
+        holder.itemView.setOnClickListener(view->{
+            Intent intent = new Intent(view.getContext(), WasherDashboardClothesToReturnClothesHandedToClientActivity.class);
+            intent.putExtra("selectedOrder", order);
+            view.getContext().startActivity(intent);
+        });
+    }
+
+    private void setPhase2OrderSelfCollectWasherReceivedPayment(ClothesToReturnHolder holder, Phase2Order order) {
+        initialize(holder,order);
+        holder.textViewOrderId.setText("Client Collect");
+        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending10));
+        holder.textViewCourierStatus.setText("Payment Confirmation");
+        holder.itemView.setOnClickListener(view->{
+            Intent intent = new Intent(view.getContext(), WasherDashboardClothesToReturnClothesHandedOverToCourier.class);
+            intent.putExtra("selectedOrder", order);
+            view.getContext().startActivity(intent);
+        });
+
+
     }
 
     private void setPhase2OrderCompleteTransactionStyle(ClothesToReturnHolder holder, Phase2Order order) {
         initialize(holder,order);
-        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending7));
-        holder.textViewCourierStatus.setText("Completed");
+        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending10));
+        holder.textViewCourierStatus.setText("Pending Client Collect Confirmation");
     }
 
     private void setCourierArrivedStyle(ClothesToReturnHolder holder, Phase2Order order) {
         initialize(holder,order);
-        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending6));
-        holder.textViewCourierStatus.setText("Courier Arrived");
+        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending8));
+        holder.textViewCourierStatus.setText("Courier Arrived to Client");
 
     }
 
@@ -114,14 +153,14 @@ public class WasherDashboardClothesToReturnAdapter extends RecyclerView.Adapter<
 
     private void setPendingConfirmingClientReceivedThePaymentAndClothesStyle(ClothesToReturnHolder holder, Phase2Order order) {
         initialize(holder,order);
-        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending4));
+        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending5));
         holder.textViewCourierStatus.setText("Courier Payment Confirmation");
 
     }
 
     private void setWasherHandedOverTheClothesAndPaymentsToCourierStyle(ClothesToReturnHolder holder, Phase2Order order) {
         initialize(holder,order);
-        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending3));
+        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending5));
         holder.textViewCourierStatus.setText("Laundry Hand Over");
         holder.itemView.setOnClickListener(view->{
             Intent intent = new Intent(view.getContext(), WasherDashboardClothesToReturnClothesHandedOverToCourier.class);
@@ -132,14 +171,16 @@ public class WasherDashboardClothesToReturnAdapter extends RecyclerView.Adapter<
 
     private void setCourierOnTheWayToWasherStyle(ClothesToReturnHolder holder, Phase2Order order) {
         initialize(holder,order);
-        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending2));
-        holder.textViewCourierStatus.setText("Courier On The Way To You");
+        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending5));
+        holder.textViewCourierStatus.setText("Courier On The Way To Washer");
 
     }
 
     private void setClientPaymentConfirmationStyle(ClothesToReturnHolder holder, Phase2Order order) {
         initialize(holder,order);
-        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending1));
+        holder.textViewCourierName.setText("");
+        holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending4));
+        holder.textViewPaymentStatus.setText("Client Balance: " +order.getTotalDue());
         holder.textViewCourierStatus.setText("Payment Confirmation");
         holder.itemView.setOnClickListener(view->{
             Intent intent = new Intent(view.getContext(), WasherDashboardClothesToReturnClientPaymentConfirmation.class);
@@ -151,10 +192,15 @@ public class WasherDashboardClothesToReturnAdapter extends RecyclerView.Adapter<
 
 
     private void initialize(ClothesToReturnHolder holder,Phase2Order order){
-        holder.textViewOrderId.setText("Order ID: " + order.getOrderID() +" -- Order Status: " + order.getPhase2OrderStatus()  );
+        holder.textViewOrderId.setText("Courier Pick Up");
         holder.textViewClientName.setText("Client Name: " + order.getClient().getName());
         holder.textViewCourierStatus.setText("Pending Waiting For Approval");
-        holder.textViewReference.setText("");
+        holder.textViewCourierStatus.setText("Payment Status: Paid");
+        holder.textViewDatePlaced.setText("Date Placed: "+ order.getDatePlaced());
+        // there is a chance there is no courier yet if the payment has not process yet
+        if(order.getCourier() != null){
+        holder.textViewCourierName.setText("Courier Name: "+ order.getCourier().getName());
+        }
     }
 
     @Override
@@ -166,7 +212,10 @@ public class WasherDashboardClothesToReturnAdapter extends RecyclerView.Adapter<
         TextView textViewClientName;
         TextView textViewOrderId;
         TextView textViewCourierStatus;
-        TextView textViewReference;
+
+        TextView textViewDatePlaced;
+        TextView textViewPaymentStatus;
+        TextView textViewCourierName;
 
 
         public ClothesToReturnHolder(@NonNull View itemView) {
@@ -174,7 +223,10 @@ public class WasherDashboardClothesToReturnAdapter extends RecyclerView.Adapter<
             textViewOrderId = itemView.findViewById(R.id.textViewOrderId);
             textViewClientName = itemView.findViewById(R.id.textViewClientName);
             textViewCourierStatus = itemView.findViewById(R.id.textViewCourierStatus);
-            textViewReference = itemView.findViewById(R.id.textViewReference);
+            textViewDatePlaced = itemView.findViewById(R.id.textViewDatePlaced);
+            textViewPaymentStatus = itemView.findViewById(R.id.textViewPaymentStatus);
+            textViewCourierName = itemView.findViewById(R.id.textViewCourierName);
+
             // Initialize other TextViews or UI components as needed
         }
     }

@@ -17,7 +17,7 @@ import com.example.laundirii.view.washer_dashboard_ui.WasherDashboardActivity;
 public class WasherDashboardClothesToReturnClothesHandedOverToCourier extends AppCompatActivity {
 
     private TextView textViewClientName, textViewAddress, textViewDatePlaced, textViewTotalAmount,
-            textViewGcashReferenceNumber, textViewContactNumber;
+            textViewContactNumber, TextViewCourierName,TextViewCourierNumber,TextViewStatus,TextViewDescription;
 
     private Button buttonReceived, buttonNotReceived;
 
@@ -33,16 +33,23 @@ public class WasherDashboardClothesToReturnClothesHandedOverToCourier extends Ap
         dashboardController = new DashboardController();
 ////
         textViewClientName = findViewById(R.id.textViewClientName);
-        textViewAddress = findViewById(R.id.textViewAddress);
         textViewDatePlaced = findViewById(R.id.textViewDatePlaced);
         textViewTotalAmount = findViewById(R.id.textViewTotalAmount);
         textViewContactNumber = findViewById(R.id.textViewContactNumber);
+        TextViewCourierName = findViewById(R.id.textViewCourierName);
+        TextViewCourierNumber = findViewById(R.id.textViewCourierNumber);
+        TextViewStatus = findViewById(R.id.textViewStatus);
+        TextViewDescription = findViewById(R.id.textViewDescription);
+
+
 ////
         textViewClientName.setText("Client Name : " +selectedOrder.getClient().getName());
-        textViewAddress.setText("Address : "+selectedOrder.getClient().getAddress());
         textViewDatePlaced.setText("Date Placed: " + selectedOrder.getDatePlaced());
-        textViewTotalAmount.setText("Total Amount: "+ selectedOrder.getTotalDue());
+        textViewTotalAmount.setText("Delivery Fee: Php 50");
         textViewContactNumber.setText("Client Contact Number: "+ selectedOrder.getClient().getContactNo());
+        TextViewCourierNumber.setText("Courier Contact Number: " + selectedOrder.getCourier().getContactNo());
+        TextViewStatus.setText("Progress Status: Payment Confirmation");
+        TextViewDescription.setText("Pay the courier for the delivery fee and hand over the clothes to deliver the clothes back to the client");
 
         buttonReceived = findViewById(R.id.washer_dashboard_fragment_clothes_to_return_receivedButton);
 //        buttonNotReceived = findViewById(R.id.washer_dashboard_fragment_clothes_to_return_notreceivedButton);

@@ -1,30 +1,20 @@
 package com.example.laundirii.view.courier_dashboard_ui.courier_dashboard_home;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.laundirii.R;
 import com.example.laundirii.controller.DashboardController;
@@ -32,7 +22,6 @@ import com.example.laundirii.databinding.CourierDashboardFragmentHomeBinding;
 import com.example.laundirii.model.Courier;
 import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.model.Phase2Order;
-import com.example.laundirii.view.courier_dashboard_ui.CourierDashboardActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,7 +125,7 @@ public class CourierDashboardHomeFragment extends Fragment {
                             break;
                         case 4: showCustomDialogOnReceivingWasherPaymentPhase1(selectedOrder);
                             break;
-                        case 5:
+                        case 5: showCustomDialogOnReceivingWasherPaymentPhase1(selectedOrder);
                             break;
                     }
                 }else if(selectedItem instanceof Phase2Order)

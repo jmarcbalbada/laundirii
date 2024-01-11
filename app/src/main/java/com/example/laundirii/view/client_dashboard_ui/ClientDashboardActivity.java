@@ -1,30 +1,28 @@
 package com.example.laundirii.view.client_dashboard_ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Menu;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.laundirii.R;
-import com.example.laundirii.controller.DashboardController;
-import com.example.laundirii.model.Client;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.laundirii.R;
+import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.databinding.ActivityClientDashboardBinding;
+import com.example.laundirii.model.Client;
+import com.example.laundirii.view.LoginActivity;
+import com.google.android.material.navigation.NavigationView;
 
 public class ClientDashboardActivity extends AppCompatActivity {
 
@@ -106,6 +104,22 @@ public class ClientDashboardActivity extends AppCompatActivity {
                 notificationCounter.setVisibility(View.GONE);
             }
         }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.client_action_logout){
+            SharedPreferences sharedPreferences = getSharedPreferences("LoginClientPreferences", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.apply();
+
+            // Redirect to LoginActivity
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

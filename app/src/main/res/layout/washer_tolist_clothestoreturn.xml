@@ -23,16 +23,35 @@
         android:layout_height="wrap_content"
         android:textSize="20dp"
         android:text="Client Name" />
+
     <TextView
         android:padding="20px"
         android:shadowColor="@color/black"
         android:textColor="@color/black"
-        android:id="@+id/textViewReference"
+        android:id="@+id/textViewDatePlaced"
         android:typeface="monospace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Gcash Reference Number: " />
+        android:text="Date Placed" />
 
+    <TextView
+        android:padding="20px"
+        android:shadowColor="@color/black"
+        android:textColor="@color/black"
+        android:id="@+id/textViewPaymentStatus"
+        android:typeface="monospace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Payment Status: Paid" />
+    <TextView
+        android:padding="20px"
+        android:shadowColor="@color/black"
+        android:textColor="@color/black"
+        android:id="@+id/textViewCourierName"
+        android:typeface="monospace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Courier Name: " />
     <TextView
         android:padding="20px"
         android:shadowColor="@color/black"

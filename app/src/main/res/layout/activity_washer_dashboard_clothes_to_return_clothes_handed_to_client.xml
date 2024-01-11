@@ -4,25 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.washer_dashboard_ui.washer_dashboard_clothes_to_return.WasherDashboardClothesToReturnClientPaymentConfirmation">
+    tools:context=".view.washer_dashboard_ui.washer_dashboard_clothes_to_return.WasherDashboardClothesToReturnClothesHandedToClientActivity">
+
 
     <TextView
-        android:id="@+id/washer_dashboard_fragment_clothesto_to_return_payment_confirmation_description_acitivty"
-        android:layout_width="252dp"
-        android:layout_height="178dp"
-        android:text="Description"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.237" />
-
-    <TextView
-        android:id="@+id/washer_dashboard_fragment_clothesto_to_return_payment_confirmation_status_acitivty"
+        android:id="@+id/textViewStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/washer_rider_on_the_way_to_customer"
+        android:background="@color/pending9"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:text="Progress Status"
@@ -31,7 +20,32 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.108" />
+        app:layout_constraintVertical_bias="0.148" />
+
+    <TextView
+        android:id="@+id/textViewDescription"
+        android:layout_width="246dp"
+        android:layout_height="96dp"
+        android:text="Description"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.214" />
+
+    <TextView
+        android:id="@+id/textViewContactNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contact Number: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.433" />
 
     <TextView
         android:id="@+id/textViewClientName"
@@ -42,65 +56,43 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.433" />
+        app:layout_constraintVertical_bias="0.384" />
 
     <TextView
-        android:id="@+id/textViewGcashReferenceNumber"
+        android:id="@+id/textViewLaundryWeight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Gcash Reference Number : "
+        android:text="Laundry Weight"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.567" />
+        app:layout_constraintVertical_bias="0.485" />
 
     <Button
         android:id="@+id/washer_dashboard_fragment_clothes_to_return_receivedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Received"
+        android:text="Hand Over"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.77"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.849" />
-
-    <Button
-        android:id="@+id/washer_dashboard_fragment_clothes_to_return_notreceivedButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Not Received"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.236"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.849" />
+        app:layout_constraintVertical_bias="0.68" />
 
     <TextView
-        android:id="@+id/textViewContactNumber"
+        android:id="@+id/textViewChargeAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Contact Number: "
+        android:text="Total Charge"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.713" />
-
-    <TextView
-        android:id="@+id/textViewTotalAmount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Total Amount Received: "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.633" />
+        app:layout_constraintVertical_bias="0.535" />
 
     <TextView
         android:id="@+id/textViewDatePlaced"
@@ -109,9 +101,10 @@
         android:text="Date Placed: "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.498" />
+        app:layout_constraintVertical_bias="0.596" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
