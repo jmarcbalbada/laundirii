@@ -15,6 +15,7 @@ public class Courier implements Serializable {
     private String plateNo;
     //courier status to identify if courier wanted to accept bookint
     private boolean status;
+    private int overAllRating;
     Connect dbHelper;
 
 
@@ -39,7 +40,7 @@ public class Courier implements Serializable {
         this.status = stat;
     }
 
-    public Courier(int courierID, String user,String pass,String name,String contact,String plate, boolean stat)
+    public Courier(int courierID, String user,String pass,String name,String contact,String plate, boolean stat, int overAllRating)
     {
         this.courierID = courierID;
         this.username = user;
@@ -48,6 +49,7 @@ public class Courier implements Serializable {
         this.contactNo = contact;
         this.plateNo = plate;
         this.status = stat;
+        this.overAllRating = overAllRating;
     }
 
     public boolean loginCourier(String username, String password, Context context)
@@ -64,10 +66,10 @@ public class Courier implements Serializable {
     }
 
     // REGISTER
-    public boolean insertCourier(String username, String password, String name, String contactNo, String plateNo, int courierStatus, Context context)
+    public boolean insertCourier(String username, String password, String name, String contactNo, String plateNo, int courierStatus, int overAllRating, Context context)
     {
         dbHelper = new Connect(context);
-        return dbHelper.insertCourier(username,password,name,contactNo,plateNo,courierStatus);
+        return dbHelper.insertCourier(username,password,name,contactNo,plateNo,overAllRating, courierStatus);
     }
     public Courier getCourier(int courierID, Context context)
     {
@@ -121,6 +123,14 @@ public class Courier implements Serializable {
 //    }
 
     // GETTERS AND SETTERS
+
+    public int getOverAllRating() {
+        return overAllRating;
+    }
+
+    public void setOverAllRating(int overAllRating) {
+        this.overAllRating = overAllRating;
+    }
 
     public int getCourierID()
     {
@@ -196,7 +206,8 @@ public class Courier implements Serializable {
         return "Courier ID: " + courierID + "\n"
                 + "Name: " + name + "\n"
                 + "Contact No: " + contactNo + "\n"
-                + "Plate No: " + contactNo + "\n";
+                + "Plate No: " + contactNo + "\n"
+                + "Rating: " + overAllRating + "\n";
     }
 
     public int availableCourier(Context context){

@@ -47,6 +47,7 @@ public class CurrentFragment extends Fragment {
     private DashboardController dashboardController;
     private Button bookServiceButton;
     private Date currentDate; // Added to store the current date and time
+    private Handler handler;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class CurrentFragment extends Fragment {
         Log.e("thisClient", client.toString());
         lv_pendingOrders = root.findViewById(R.id.current_transaction);
         bookServiceButton = root.findViewById(R.id.btn_book_service);
+        handler = new Handler(Looper.getMainLooper());
         checkPopupStatus();
         displayPendingOrders();
 
@@ -300,7 +302,7 @@ public class CurrentFragment extends Fragment {
 
     // timer is active iff the Current fragment is displaying/resume
     private void updateTimerAsync(List<Phase1Order> phase1OrderList) {
-        final Handler handler = new Handler(Looper.getMainLooper());
+//        final Handler handler = new Handler(Looper.getMainLooper());
 
         handler.post(new Runnable() {
             @Override
@@ -338,7 +340,7 @@ public class CurrentFragment extends Fragment {
 
     // timer is active iff the dialog is active and showing
     private void updateTimerAsync(final Phase1Order phase1Order, final TextView timerTextView, AlertDialog dialog) {
-        final Handler handler = new Handler(Looper.getMainLooper());
+//        final Handler handler = new Handler(Looper.getMainLooper());
 
         handler.post(new Runnable() {
             @Override
@@ -461,6 +463,7 @@ public class CurrentFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        handler.removeCallbacksAndMessages(null);
         binding = null;
     }
 }

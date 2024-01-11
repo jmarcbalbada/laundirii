@@ -47,6 +47,7 @@ public class Connect extends SQLiteOpenHelper {
     public static final String COURIER_CONTACT_NO = "COURIER_CONTACT_NO";
     public static final String COURIER_PLATE_NO = "COURIER_PLATE_NO";
     public static final String COURIER_STATUS = "COURIER_STATUS";
+    public static final String COURIER_OVERALL_RATING = "COURIER_OVERALL_RATING";
 
     //Washer
 
@@ -58,6 +59,7 @@ public class Connect extends SQLiteOpenHelper {
     public static final String WASHER_CONTACT_NO = "WASHER_CONTACT_NO";
     public static final String WASHER_STATUS = "WASHER_STATUS";
     public static final String RATE_PER_KG = "RATE_PER_KG";
+    public static final String WASHER_OVERALL_RATING = "WASHER_OVERALL_RATING";
 
     // ORDER
 //    public static final String ORDER_ID = "ORDER_ID";
@@ -122,9 +124,14 @@ public class Connect extends SQLiteOpenHelper {
 
     // FEEDBACK
     public static final String FEEDBACK_ID = "FEEDBACK_ID";
-    public static final String FEEDBACK_ORDER_ID = "FEEDBACK_ORDER_ID";
-    public static final String COMMENT = "COMMENT";
+    public static final String FEEDBACK_COMMENT = "FEEDBACK_COMMENT";
     public static final String RATING = "RATING";
+    public static final String FEEDBACK_CLIENT_ID = "FEEDBACK_CLIENT_ID";
+    public static final String FEEDBACK_COURIER_ID = "FEEDBACK_COURIER_ID";
+    public static final String FEEDBACK_WASHER_ID = "FEEDBACK_WASHER_ID";
+    public static final String FEEDBACK_PHASE1_ID = "FEEDBACK_WASHER_ID";
+    public static final String FEEDBACK_PHASE2_ID = "FEEDBACK_PHASE2_ID";
+    public static final String FEEDBACK_HAS_RATED = "FEEDBACK_HAS_RATED";
 
     public Connect(@Nullable Context context) {
         super(context, "laundiri.db", null, 1);
@@ -137,10 +144,10 @@ public class Connect extends SQLiteOpenHelper {
                 "CLIENT_NAME TEXT, CLIENT_CONTACT_NO TEXT, CLIENT_ADDRESS TEXT, PAYMENT_INFO INTEGER);";
         String createCourierTableStatement = "CREATE TABLE COURIER (COURIER_ID INTEGER PRIMARY KEY, " +
                 "COURIER_USERNAME TEXT NOT NULL, COURIER_PASSWORD TEXT NOT NULL, COURIER_NAME TEXT, " +
-                "COURIER_CONTACT_NO TEXT, COURIER_PLATE_NO TEXT, COURIER_STATUS INTEGER);";
+                "COURIER_CONTACT_NO TEXT, COURIER_PLATE_NO TEXT, COURIER_STATUS INTEGER, COURIER_OVERALL_RATING INTEGER);";
         String createWasherTableStatement = "CREATE TABLE WASHER (WASHER_ID INTEGER PRIMARY KEY, " +
                 "WASHER_USERNAME TEXT NOT NULL, WASHER_PASSWORD TEXT NOT NULL, SHOP_NAME TEXT, " +
-                "SHOP_LOCATION TEXT, WASHER_CONTACT_NO TEXT, WASHER_STATUS INTEGER, RATE_PER_KG REAL);";
+                "SHOP_LOCATION TEXT, WASHER_CONTACT_NO TEXT, WASHER_STATUS INTEGER, RATE_PER_KG REAL, WASHER_OVERALL_RATING INTEGER);";
 //        String createOrderTableStatement = "CREATE TABLE ORDER_TABLE (" +
 //                "ORDER_ID INTEGER PRIMARY KEY, " +
 //                "ORDER_CLIENT_ID INTEGER, " +
@@ -204,9 +211,14 @@ public class Connect extends SQLiteOpenHelper {
                 ");";
         String createFeedbackTableStatement = "CREATE TABLE FEEDBACK (" +
                 "FEEDBACK_ID INTEGER PRIMARY KEY, " +
-                "ORDER_ID INTEGER, " +
-                "COMMENT TEXT, " +
-                "RATING INTEGER" +
+                "FEEDBACK_COMMENT TEXT, " +
+                "RATING INTEGER, " +
+                "FEEDBACK_CLIENT_ID INTEGER," +
+                "FEEDBACK_COURIER_ID INTEGER," +
+                "FEEDBACK_WASHER_ID INTEGER," +
+                "FEEDBACK_PHASE1_ID INTEGER," +
+                "FEEDBACK_PHASE2_ID INTEGER," +
+                "FEEDBACK_HAS_RATED INTEGER" +
                 ");";
         db.execSQL(createFeedbackTableStatement);
         db.execSQL(createPhase1OrderTableStatement);
@@ -583,7 +595,7 @@ public class Connect extends SQLiteOpenHelper {
 
     // INSERT COURIER (REGISTER)
 
-    public boolean insertCourier(String username, String password, String name, String contactNo, String plateNo, int courierStatus) {
+    public boolean insertCourier(String username, String password, String name, String contactNo, String plateNo, int courierStatus, int overAllRating) {
         SQLiteDatabase db = this.getWritableDatabase();
         boolean isInserted = false;
 
@@ -595,6 +607,7 @@ public class Connect extends SQLiteOpenHelper {
             values.put(COURIER_CONTACT_NO, contactNo);
             values.put(COURIER_PLATE_NO, plateNo);
             values.put(COURIER_STATUS, courierStatus);
+            values.put(COURIER_OVERALL_RATING, overAllRating);
 
             long newRowId = db.insert("COURIER", null, values);
 
@@ -612,7 +625,7 @@ public class Connect extends SQLiteOpenHelper {
     }
 
     // INSERT WASHER (REGISTER)
-    public boolean insertWasher(String username, String password, String shopName, String shopLocation, String contactNo, int washerStatus, double ratePerKg) {
+    public boolean insertWasher(String username, String password, String shopName, String shopLocation, String contactNo, int washerStatus, double ratePerKg, int overAllRating) {
         SQLiteDatabase db = this.getWritableDatabase();
         boolean isInserted = false;
 
@@ -625,6 +638,7 @@ public class Connect extends SQLiteOpenHelper {
             values.put(WASHER_CONTACT_NO, contactNo);
             values.put(WASHER_STATUS, washerStatus);
             values.put(RATE_PER_KG, ratePerKg);
+            values.put(WASHER_OVERALL_RATING, overAllRating);
 
             long newRowId = db.insert("WASHER", null, values);
 
@@ -819,6 +833,7 @@ public class Connect extends SQLiteOpenHelper {
             int contactNoColumnIndex = cursor.getColumnIndex(COURIER_CONTACT_NO);
             int plateNoColumnIndex = cursor.getColumnIndex(COURIER_PLATE_NO);
             int statusColumnIndex = cursor.getColumnIndex(COURIER_STATUS);
+            int overAllRatingColumnIndex = cursor.getColumnIndex(COURIER_OVERALL_RATING);
 
             // Check if the column indexes are valid
             if (courierIDColumnIndex != -1 && usernameColumnIndex != -1 && passwordColumnIndex != -1 &&
@@ -833,7 +848,8 @@ public class Connect extends SQLiteOpenHelper {
                         cursor.getString(nameColumnIndex),
                         cursor.getString(contactNoColumnIndex),
                         cursor.getString(plateNoColumnIndex),
-                        cursor.getInt(statusColumnIndex) != 0
+                        cursor.getInt(statusColumnIndex) != 0,
+                        cursor.getInt(overAllRatingColumnIndex)
                 );
             } else {
                 // Handle invalid column indexes, log an error, or throw an exception
@@ -862,6 +878,8 @@ public class Connect extends SQLiteOpenHelper {
             int contactNoColumnIndex = cursor.getColumnIndex(COURIER_CONTACT_NO);
             int plateNoColumnIndex = cursor.getColumnIndex(COURIER_PLATE_NO);
             int statusColumnIndex = cursor.getColumnIndex(COURIER_STATUS);
+            int overAllRatingColumnIndex = cursor.getColumnIndex(COURIER_OVERALL_RATING);
+
 
             // Check if the column indexes are valid
             if (usernameColumnIndex != -1 && passwordColumnIndex != -1 &&
@@ -876,7 +894,8 @@ public class Connect extends SQLiteOpenHelper {
                         cursor.getString(nameColumnIndex),
                         cursor.getString(contactNoColumnIndex),
                         cursor.getString(plateNoColumnIndex),
-                        cursor.getInt(statusColumnIndex) != 0
+                        cursor.getInt(statusColumnIndex) != 0,
+                        cursor.getInt(overAllRatingColumnIndex)
                 );
             } else {
                 // Handle invalid column indexes, log an error, or throw an exception
@@ -907,6 +926,7 @@ public class Connect extends SQLiteOpenHelper {
             int contactNoColumnIndex = cursor.getColumnIndex(WASHER_CONTACT_NO);
             int ratePerKgColumnIndex = cursor.getColumnIndex(RATE_PER_KG);
             int statusColumnIndex = cursor.getColumnIndex(WASHER_STATUS);
+            int overAllRatingColumnIndex = cursor.getColumnIndex(WASHER_OVERALL_RATING);
 
             // Check if the column indexes are valid
             if (usernameColumnIndex != -1 && passwordColumnIndex != -1 &&
@@ -923,7 +943,8 @@ public class Connect extends SQLiteOpenHelper {
                         cursor.getString(shopLocationColumnIndex),
                         cursor.getString(contactNoColumnIndex),
                         cursor.getDouble(ratePerKgColumnIndex),
-                        cursor.getInt(statusColumnIndex) != 0
+                        cursor.getInt(statusColumnIndex) != 0,
+                        cursor.getInt(overAllRatingColumnIndex)
                 );
             } else {
                 // Handle invalid column indexes, log an error, or throw an exception
@@ -953,6 +974,7 @@ public class Connect extends SQLiteOpenHelper {
             int contactNoColumnIndex = cursor.getColumnIndex(WASHER_CONTACT_NO);
             int ratePerKgColumnIndex = cursor.getColumnIndex(RATE_PER_KG);
             int statusColumnIndex = cursor.getColumnIndex(WASHER_STATUS);
+            int overAllRatingColumnIndex = cursor.getColumnIndex(WASHER_OVERALL_RATING);
 
             // Check if the column indexes are valid
             if (washerIDColumnIndex != -1 && passwordColumnIndex != -1 &&
@@ -969,7 +991,8 @@ public class Connect extends SQLiteOpenHelper {
                         cursor.getString(shopLocationColumnIndex),
                         cursor.getString(contactNoColumnIndex),
                         cursor.getDouble(ratePerKgColumnIndex),
-                        cursor.getInt(statusColumnIndex) != 0
+                        cursor.getInt(statusColumnIndex) != 0,
+                        cursor.getInt(overAllRatingColumnIndex)
                 );
             } else {
                 // Handle invalid column indexes, log an error, or throw an exception
@@ -1369,6 +1392,323 @@ public class Connect extends SQLiteOpenHelper {
         return pendingDeliveries;
     }
 
+//    public boolean insertFeedback(int clientID, String comment, int rating, int courierID,
+//                                  int washerID, int orderID, int typeOfOrder) {
+//        Log.e("INSIDE INSERTFBCK", "");
+//        Log.e("CLIENTID", "" + clientID);
+//        Log.e("commentStr", "" + comment);
+//        Log.e("roundedRating", "" + rating);
+//        Log.e("GetCourierID", "" + courierID);
+//        Log.e("WasherID", "" + washerID);
+//        Log.e("phase1Order.getOrderID()", "" + orderID);
+//        Log.e("typeOfOrder", "" + typeOfOrder);
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues feedbackValues = new ContentValues();
+//
+//        // Set common values for both Phase1Order and Phase2Order
+//        feedbackValues.put(FEEDBACK_COMMENT, comment);
+//        feedbackValues.put(RATING, rating);
+//        feedbackValues.put(FEEDBACK_CLIENT_ID, clientID);
+//        feedbackValues.put(FEEDBACK_COURIER_ID, courierID);
+//        feedbackValues.put(FEEDBACK_WASHER_ID, washerID);
+//
+//        // Set values specific to Phase1Order or Phase2Order
+//        if(typeOfOrder == 1)
+//        {
+//            feedbackValues.put(FEEDBACK_PHASE1_ID, orderID);
+//        }
+//
+//        if(typeOfOrder == 2)
+//        {
+//            feedbackValues.put(FEEDBACK_PHASE2_ID, orderID);
+//        }
+//
+//        feedbackValues.put(FEEDBACK_HAS_RATED, 1);
+//
+//        // Insert the feedback into the database
+//        long feedbackInsertResult = db.insert("FEEDBACK", null, feedbackValues);
+//
+//        return feedbackInsertResult != -1;
+//    }
+
+    public boolean insertFeedback(int clientID, String comment, int rating, int courierID,
+                                  int washerID, int orderID, int typeOfOrder) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String tableName = "FEEDBACK";
+        String orderIdColumn = "";
+
+        switch (typeOfOrder) {
+            case 1:
+                orderIdColumn = "FEEDBACK_PHASE1_ID";
+                break;
+            case 2:
+                orderIdColumn = "FEEDBACK_PHASE2_ID";
+                break;
+            default:
+                return false;
+        }
+
+        String query = "INSERT INTO " + tableName + " (" +
+                "FEEDBACK_COMMENT, RATING, FEEDBACK_CLIENT_ID, FEEDBACK_COURIER_ID, " +
+                "FEEDBACK_WASHER_ID, " + orderIdColumn + ", FEEDBACK_HAS_RATED) " +
+                "VALUES (?, ?, ?, ?, ?, ?, 1)";
+
+        try {
+            db.execSQL(query, new Object[]{comment, rating, clientID, courierID, washerID, orderID});
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            db.close();
+        }
+    }
+
+    public void updateWasherOverallRating(int washerID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Calculate the average rating from the feedback table
+        String avgRatingQuery = "SELECT AVG(" + RATING + ") AS avgRating FROM " + "FEEDBACK" +
+                " WHERE " + FEEDBACK_WASHER_ID + " = ?";
+        Cursor cursor = db.rawQuery(avgRatingQuery, new String[]{String.valueOf(washerID)});
+
+        if (cursor.moveToFirst()) {
+            @SuppressLint("Range") double averageRating = cursor.getDouble(cursor.getColumnIndex("avgRating"));
+
+            // Round up the average rating using Math.ceil and cast to int
+            int roundedAverageRating = (int) Math.ceil(averageRating);
+
+            // Update the WASHER_OVERALL_RATING in the WASHER table
+            ContentValues values = new ContentValues();
+            values.put(WASHER_OVERALL_RATING, roundedAverageRating);
+
+            db.update("WASHER", values, WASHER_ID + " = ?", new String[]{String.valueOf(washerID)});
+        }
+
+        cursor.close();
+        db.close();
+    }
+
+    public void updateCourierOverallRating(int courierID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Calculate the average rating from the feedback table for the courier
+        String avgRatingQuery = "SELECT AVG(" + RATING + ") AS avgRating FROM " + "FEEDBACK" +
+                " WHERE " + FEEDBACK_COURIER_ID + " = ?";
+        Cursor cursor = db.rawQuery(avgRatingQuery, new String[]{String.valueOf(courierID)});
+
+        if (cursor.moveToFirst()) {
+            @SuppressLint("Range") double averageRating = cursor.getDouble(cursor.getColumnIndex("avgRating"));
+
+            // Round up the average rating using Math.ceil and cast to int
+            int roundedAverageRating = (int) Math.ceil(averageRating);
+
+            // Update the COURIER_OVERALL_RATING in the COURIER table
+            ContentValues values = new ContentValues();
+            values.put(COURIER_OVERALL_RATING, roundedAverageRating);
+
+            db.update("COURIER", values, COURIER_ID + " = ?", new String[]{String.valueOf(courierID)});
+        }
+
+        cursor.close();
+        db.close();
+    }
+
+
+    public List<Phase1Order> getToFeedbackListOnPhase1(int clientID) {
+        List<Phase1Order> pendingFeedback = new ArrayList<>();
+
+        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_CLIENT_ID = ? AND (PHASE1_ORDER_STATUS IN (-1,7)) ORDER BY PHASE1_DATE_PLACED DESC";
+
+        String[] selectionArgs = {String.valueOf(clientID)};
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        try {
+            while (cursor.moveToNext()) {
+                // Extract column indexes
+                int orderIdIndex = cursor.getColumnIndex(PHASE1_ORDER_ID);
+                int clientIdIndex = cursor.getColumnIndex(PHASE1_ORDER_CLIENT_ID);
+                int washerIdIndex = cursor.getColumnIndex(PHASE1_ORDER_WASHER_ID);
+                int courierIdIndex = cursor.getColumnIndex(PHASE1_ORDER_COURIER_ID);
+                int courierStatusIndex = cursor.getColumnIndex(PHASE1_COURIER_STATUS);
+                int totalCourierAmountIndex = cursor.getColumnIndex(PHASE1_TOTAL_COURIER_AMOUNT);
+                int dateCourierIndex = cursor.getColumnIndex(PHASE1_DATE_COURIER);
+                int totalDueIndex = cursor.getColumnIndex(PHASE1_TOTAL_DUE);
+                int totalPaidIndex = cursor.getColumnIndex(PHASE1_TOTAL_PAID);
+                int paymentStatusIndex = cursor.getColumnIndex(PHASE1_PAYMENT_STATUS);
+                int dateReceivedIndex = cursor.getColumnIndex(PHASE1_DATE_RECEIVED);
+                int initialLoadIndex = cursor.getColumnIndex(PHASE1_INITIAL_LOAD);
+                int orderStatusIndex = cursor.getColumnIndex(PHASE1_ORDER_STATUS);
+                int datePlacedIndex = cursor.getColumnIndex(PHASE1_DATE_PLACED);
+
+                // Check if the column indexes are valid
+                if (orderIdIndex != -1 && washerIdIndex != -1 && courierIdIndex != -1 &&
+                        courierStatusIndex != -1 && totalCourierAmountIndex != -1 &&
+                        dateCourierIndex != -1 && totalDueIndex != -1 &&
+                        totalPaidIndex != -1 && paymentStatusIndex != -1 &&
+                        dateReceivedIndex != -1) {
+
+                    // Create a new Phase1Order instance using the constructo
+                    Phase1Order pendingOrder = new Phase1Order(
+                            cursor.getInt(orderIdIndex),
+                            getClient(cursor.getInt(clientIdIndex)),
+                            getWasher(cursor.getInt(washerIdIndex)),
+                            getCourier(cursor.getInt(courierIdIndex)),
+                            cursor.getInt(courierStatusIndex),
+                            cursor.getDouble(totalCourierAmountIndex),
+                            cursor.getString(dateCourierIndex),
+                            cursor.getDouble(totalDueIndex),
+                            cursor.getDouble(totalPaidIndex),
+                            cursor.getInt(paymentStatusIndex),
+                            cursor.getString(dateReceivedIndex),
+                            cursor.getInt(initialLoadIndex),
+                            cursor.getInt(orderStatusIndex),
+                            cursor.getString(datePlacedIndex)
+                    );
+
+                    if(!hasAlreadyRatedBefore(clientID,pendingOrder.getOrderID(),1))
+                    {
+                        pendingFeedback.add(pendingOrder);
+                    }
+                } else {
+                    // Handle invalid column indexes, log an error, or throw an exception
+                }
+            }
+        } catch (Exception e) {
+            Log.e("DATABASE ERROR", e.getMessage().toString());
+        } finally {
+            // Close the cursor and database
+            cursor.close();
+        }
+
+        return pendingFeedback;
+    }
+
+    public List<Phase2Order> getToFeedbackListOnPhase2(int clientID) {
+        List<Phase2Order> pendingFeedback = new ArrayList<>();
+
+        String query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_CLIENT_ID = ? AND (PHASE2_ORDER_STATUS IN (-1,16,22)) ORDER BY PHASE2_DATE_PLACED DESC";
+
+        String[] selectionArgs = {String.valueOf(clientID)};
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        try {
+            while (cursor.moveToNext()) {
+                // Extract column indexes
+                int orderIDIndex = cursor.getColumnIndex(PHASE2_ORDER_ID);
+                int clientIDIndex = cursor.getColumnIndex(PHASE2_ORDER_CLIENT_ID);
+                int washerIDIndex = cursor.getColumnIndex(PHASE2_ORDER_WASHER_ID);
+                int courierIDIndex = cursor.getColumnIndex(PHASE2_ORDER_COURIER_ID);
+                int courierStatusIndex = cursor.getColumnIndex(PHASE2_COURIER_STATUS);
+                int totalCourierAmountIndex = cursor.getColumnIndex(PHASE2_TOTAL_COURIER_AMOUNT);
+                int dateCourierIndex = cursor.getColumnIndex(PHASE2_DATE_COURIER);
+                int totalDueIndex = cursor.getColumnIndex(PHASE2_TOTAL_DUE);
+                int totalPaidIndex = cursor.getColumnIndex(PHASE2_TOTAL_PAID);
+                int paymentStatusIndex = cursor.getColumnIndex(PHASE2_PAYMENT_STATUS);
+                int dateReceivedIndex = cursor.getColumnIndex(PHASE2_DATE_RECEIVED);
+                int phase2OrderStatusIndex = cursor.getColumnIndex(PHASE2_ORDER_STATUS);
+                int referenceNoIndex = cursor.getColumnIndex(PHASE2_REFERENCE_NO);
+                int datePlacedIndex = cursor.getColumnIndex(PHASE2_DATE_PLACED);
+                int phase1OrderIDIndex = cursor.getColumnIndex(PHASE2_PHASE1_ORDER_ID);
+
+                // Check if the column indexes are valid
+                if (orderIDIndex != -1 && clientIDIndex != -1 && washerIDIndex != -1 &&
+                        courierIDIndex != -1 && courierStatusIndex != -1 &&
+                        totalCourierAmountIndex != -1 && dateCourierIndex != -1 &&
+                        totalDueIndex != -1 && totalPaidIndex != -1 &&
+                        paymentStatusIndex != -1 && dateReceivedIndex != -1 &&
+                        phase2OrderStatusIndex != -1 && referenceNoIndex != -1 &&
+                        datePlacedIndex != -1 && phase1OrderIDIndex != -1) {
+
+                    // Create a new Phase2Order instance using the constructor
+                    Phase2Order feedbackOrder = new Phase2Order(
+                            cursor.getInt(orderIDIndex),
+                            getClient(cursor.getInt(clientIDIndex)),
+                            getWasher(cursor.getInt(washerIDIndex)),
+                            getCourier(cursor.getInt(courierIDIndex)),
+                            cursor.getInt(courierStatusIndex),
+                            cursor.getDouble(totalCourierAmountIndex),
+                            cursor.getString(dateCourierIndex),
+                            cursor.getDouble(totalDueIndex),
+                            cursor.getDouble(totalPaidIndex),
+                            cursor.getInt(paymentStatusIndex),
+                            cursor.getString(dateReceivedIndex),
+                            cursor.getInt(phase2OrderStatusIndex),
+                            cursor.getString(referenceNoIndex),
+                            cursor.getString(datePlacedIndex),
+                            cursor.getInt(phase1OrderIDIndex)
+                    );
+
+                    Log.e("feedback Order", feedbackOrder + "");
+                    if(!hasAlreadyRatedBefore(clientID,feedbackOrder.getOrderID(),2))
+                    {
+                        boolean hasAlreadyRated = hasAlreadyRatedBefore(clientID,feedbackOrder.getOrderID(),2);
+                        Log.e("Already Rated", hasAlreadyRated + "");
+                        pendingFeedback.add(feedbackOrder);
+                    }
+                } else {
+                    // Handle invalid column indexes, log an error, or throw an exception
+                }
+            }
+        } catch (Exception e) {
+            Log.e("DATABASE ERROR", e.getMessage().toString());
+        } finally {
+            // Close the cursor and database
+            cursor.close();
+        }
+
+        Log.e("pendingFeedback size", pendingFeedback.size() + "");
+
+        return pendingFeedback;
+    }
+
+    public boolean hasAlreadyRatedBefore(int clientID, int orderID, int typeOfOrder) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "";
+        String tableName = "";
+        String orderIdColumnName = "";
+
+        switch (typeOfOrder) {
+            case 1:
+                tableName = "PHASE1_ORDER";
+                orderIdColumnName = "PHASE1_ORDER_ID";
+                break;
+            case 2:
+                tableName = "PHASE2_ORDER";
+                orderIdColumnName = "PHASE2_ORDER_ID";
+                break;
+        }
+
+        // Check if the order exists in the specified table for the given client
+        String orderQuery = "SELECT * FROM " + tableName + " WHERE " +
+                (typeOfOrder == 1 ? "PHASE1_ORDER_CLIENT_ID" : "PHASE2_ORDER_CLIENT_ID") + " = ? AND " +
+                orderIdColumnName + " = ?";
+
+        Cursor orderCursor = db.rawQuery(orderQuery, new String[]{String.valueOf(clientID), String.valueOf(orderID)});
+
+        if (orderCursor.moveToFirst()) {
+            // Order exists, check if the client has rated it
+            int orderIndex = orderCursor.getColumnIndex(orderIdColumnName);
+            int orderIDFromDB = orderCursor.getInt(orderIndex);
+
+            String feedbackQuery = "SELECT * FROM FEEDBACK WHERE FEEDBACK_CLIENT_ID = ? AND " + (typeOfOrder == 1 ? "FEEDBACK_PHASE1_ID" : "FEEDBACK_PHASE2_ID") + " = ?";
+            Cursor feedbackCursor = db.rawQuery(feedbackQuery, new String[]{String.valueOf(clientID), String.valueOf(orderIDFromDB)});
+
+            if (feedbackCursor.moveToFirst()) {
+                // Client has already rated this order
+                int hasRatedIndex = feedbackCursor.getColumnIndex("FEEDBACK_HAS_RATED");
+                int hasRated = feedbackCursor.getInt(hasRatedIndex);
+                return hasRated == 1;
+            }
+        }
+
+        return false;
+    }
+
+
     public boolean acceptPendingRequestOnCourier(int courierID, int orderID) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE PHASE1_ORDER SET PHASE1_ORDER_COURIER_ID = " + courierID +
@@ -1436,7 +1776,7 @@ public class Connect extends SQLiteOpenHelper {
                 int clientIDIndex = cursor.getColumnIndex(PHASE2_ORDER_CLIENT_ID);
                 int washerIDIndex = cursor.getColumnIndex(PHASE2_ORDER_WASHER_ID);
                 int courierIDIndex = cursor.getColumnIndex(PHASE2_ORDER_COURIER_ID);
-                int courierStatusIndex = cursor.getColumnIndex(PHASE2_ORDER_STATUS);
+                int courierStatusIndex = cursor.getColumnIndex(PHASE2_COURIER_STATUS);
                 int totalCourierAmountIndex = cursor.getColumnIndex(PHASE2_TOTAL_COURIER_AMOUNT);
                 int dateCourierIndex = cursor.getColumnIndex(PHASE2_DATE_COURIER);
                 int totalDueIndex = cursor.getColumnIndex(PHASE2_TOTAL_DUE);
@@ -2956,6 +3296,7 @@ public class Connect extends SQLiteOpenHelper {
         return OrderToReceiveList.size() +phase2OrderList.size() ;
     }
 
+    @SuppressLint("Range")
     public int getPhase1LaundryWeight(int phase1OrderID) {
         SQLiteDatabase db = this.getReadableDatabase();
         int initialLoad = -1; // Default value if not found

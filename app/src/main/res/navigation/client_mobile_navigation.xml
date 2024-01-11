@@ -28,4 +28,10 @@
         android:label="@string/client_menu_notification"
         tools:layout="@layout/client_fragment_notification" />
 
+    <fragment
+        android:id="@+id/client_nav_feedback"
+        android:name="com.example.laundirii.view.client_dashboard_ui.client_dashboard_feedback.ClientFeedbackFragment"
+        android:label="Feedback"
+        tools:layout="@layout/client_fragment_feedback" />
+
 </navigation>

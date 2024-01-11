@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.laundirii.model.Client;
 import com.example.laundirii.model.Courier;
+import com.example.laundirii.model.Feedback;
 import com.example.laundirii.model.Notification;
 import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.model.Phase2Order;
@@ -19,6 +20,7 @@ public class DashboardController {
     private Phase1Order phase1Order;
     private Phase2Order phase2Order;
     private Notification notification;
+    private Feedback feedback;
 
     public DashboardController()
     {
@@ -28,6 +30,7 @@ public class DashboardController {
         phase1Order = new Phase1Order();
         phase2Order = new Phase2Order();
         notification = new Notification();
+        feedback = new Feedback();
     }
     public DashboardController(Client client)
     {
@@ -240,9 +243,37 @@ public class DashboardController {
         return phase1Order.getWasherPhase1OrderHistory(washerID,context);
     }
 
+    public List<Phase1Order> getToFeedbackListOnPhase1(int clientID, Context context)
+    {
+        return feedback.getToFeedbackListOnPhase1(clientID,context);
+    }
+
+    public List<Phase2Order> getToFeedbackListOnPhase2(int clientID, Context context)
+    {
+        return feedback.getToFeedbackListOnPhase2(clientID,context);
+    }
+
+
+    public boolean insertFeedback(int clientID, String comment, int rating, int courierID, int washerID, int orderID, int typeOfOrder, Context context)
+    {
+        return feedback.insertFeedback(clientID, comment, rating, courierID, washerID, orderID, typeOfOrder, context);
+    }
+
+    public void updateWasherOverallRating(int washerID, Context context)
+    {
+        feedback.updateWasherOverallRating(washerID, context);
+    }
+
+    public void updateCourierOverallRating(int courierID, Context context)
+    {
+        feedback.updateCourierOverallRating(courierID, context);
+    }
+
+
     public List<Phase1Order> getWasherReceivedClothes(int washerID, Context context) {
         return phase1Order.getWasherReceivedClothes(washerID,context);
     }
+
 
     public int washerMarkedClothesAsReceived(int orderID, Context context) {
         return phase1Order.washerMarkedClothesAsReceived(orderID,context);

@@ -79,14 +79,14 @@ public class RegisterAndLoginController {
         return client.insertClient(username,password,name,contactNo,address,paymentInfo,context);
     }
 
-    public boolean registerCourier(String username, String password, String name, String contactNo, String plateNo, int courierStatus, Context context)
+    public boolean registerCourier(String username, String password, String name, String contactNo, String plateNo, int courierStatus, int overAllRating, Context context)
     {
-        return courier.insertCourier(username,password,name,contactNo,plateNo,courierStatus,context);
+        return courier.insertCourier(username,password,name,contactNo,plateNo,courierStatus,overAllRating, context);
     }
 
-    public boolean registerWasher(String username, String password, String shopName, String shopLocation, String contactNo, int washerStatus, double ratePerKg, Context context)
+    public boolean registerWasher(String username, String password, String shopName, String shopLocation, String contactNo, int washerStatus, double ratePerKg, int overAllRating, Context context)
     {
-        return washer.insertWasher(username,password,shopName,shopLocation,contactNo,washerStatus,ratePerKg, context);
+        return washer.insertWasher(username,password,shopName,shopLocation,contactNo,washerStatus,ratePerKg,overAllRating, context);
     }
 
 
