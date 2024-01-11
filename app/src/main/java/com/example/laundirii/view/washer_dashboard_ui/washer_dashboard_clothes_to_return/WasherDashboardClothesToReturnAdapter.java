@@ -108,14 +108,8 @@ public class WasherDashboardClothesToReturnAdapter extends RecyclerView.Adapter<
         initialize(holder,order);
         holder.textViewOrderId.setText("Client Collect");
         holder.textViewCourierStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.pending10));
+        holder.textViewCourierName.setText("");
         holder.textViewCourierStatus.setText("Payment Confirmation");
-        holder.itemView.setOnClickListener(view->{
-            Intent intent = new Intent(view.getContext(), WasherDashboardClothesToReturnClothesHandedOverToCourier.class);
-            intent.putExtra("selectedOrder", order);
-            view.getContext().startActivity(intent);
-        });
-
-
     }
 
     private void setPhase2OrderCompleteTransactionStyle(ClothesToReturnHolder holder, Phase2Order order) {

@@ -127,25 +127,43 @@ public class ClientFeedbackFragment extends Fragment {
                 else if(order instanceof Phase2Order)
                 {
                     Phase2Order phase2Order = (Phase2Order) order;
-                    Log.e("INSIDE PHASE2ORDER","phase2Order");
-                    // rate courier
-                    boolean success = dashboardController.insertFeedback(phase2Order.getClientID(),
-                            commentStr,roundedRating,phase2Order.getCourier().getCourierID(),
-                            0,phase2Order.getOrderID(),2,getContext());
-                    boolean success2 = dashboardController.insertFeedback(phase2Order.getClientID(),
-                            commentStr,roundedRating,0,
-                            phase2Order.getWasherID(), phase2Order.getOrderID(),2,getContext());
-                    dashboardController.updateWasherOverallRating(phase2Order.getWasherID(),getContext());
-                    dashboardController.updateCourierOverallRating(phase2Order.getCourier().getCourierID(),getContext());
-                    Toast.makeText(getContext(), "Success!", Toast.LENGTH_SHORT).show();
+                    if(phase2Order.getPhase2OrderStatus() == 16)
+                    {
+                        Log.e("INSIDE PHASE2ORDER","phase2Order");
+                        // rate courier
+                        boolean success = dashboardController.insertFeedback(phase2Order.getClientID(),
+                                commentStr,roundedRating,phase2Order.getCourier().getCourierID(),
+                                0,phase2Order.getOrderID(),2,getContext());
+                        boolean success2 = dashboardController.insertFeedback(phase2Order.getClientID(),
+                                commentStr,roundedRating,0,
+                                phase2Order.getWasherID(), phase2Order.getOrderID(),2,getContext());
+                        dashboardController.updateWasherOverallRating(phase2Order.getWasherID(),getContext());
+                        dashboardController.updateCourierOverallRating(phase2Order.getCourier().getCourierID(),getContext());
+                        Toast.makeText(getContext(), "Success!", Toast.LENGTH_SHORT).show();
 
-                    // send notif to both
-                    String notificationTitle = "You received a rating from Client!";
-                    String notificationMessage = "Client under the order ID " + phase2Order.getOrderID() + " rated you " + roundedRating + "/5. Thank you using Laundiri!";
-                    dashboardController.sendNotifications(0, 0,phase2Order.getCourier().getCourierID(),notificationTitle,notificationMessage,getContext());
-                    dashboardController.sendNotifications(phase2Order.getWasherID(), 0,0,notificationTitle,notificationMessage,getContext());
-                    Log.e("SUCCESS1","success = " + success);
-                    Log.e("SUCCESS2","success2 = " + success2);
+                        // send notif to both
+                        String notificationTitle = "You received a rating from Client!";
+                        String notificationMessage = "Client under the order ID " + phase2Order.getOrderID() + " rated you " + roundedRating + "/5. Thank you using Laundiri!";
+                        dashboardController.sendNotifications(0, 0,phase2Order.getCourier().getCourierID(),notificationTitle,notificationMessage,getContext());
+                        dashboardController.sendNotifications(phase2Order.getWasherID(), 0,0,notificationTitle,notificationMessage,getContext());
+                        Log.e("SUCCESS1","success = " + success);
+                        Log.e("SUCCESS2","success2 = " + success2);
+                    }else if(phase2Order.getPhase2OrderStatus() == 22)
+                    {
+                        Log.e("INSIDE PHASE2ORDER","phase2Order");
+                        boolean success2 = dashboardController.insertFeedback(phase2Order.getClientID(),
+                                commentStr,roundedRating,0,
+                                phase2Order.getWasherID(), phase2Order.getOrderID(),2,getContext());
+                        dashboardController.updateWasherOverallRating(phase2Order.getWasherID(),getContext());
+                        Toast.makeText(getContext(), "Success!", Toast.LENGTH_SHORT).show();
+
+                        // send notif to both
+                        String notificationTitle = "You received a rating from Client!";
+                        String notificationMessage = "Client under the order ID " + phase2Order.getOrderID() + " rated you " + roundedRating + "/5. Thank you using Laundiri!";
+                        dashboardController.sendNotifications(phase2Order.getWasherID(), 0,0,notificationTitle,notificationMessage,getContext());
+                        Log.e("SUCCESS2","success2 = " + success2);
+                    }
+
                 }
                 displayFeedback();
                 dialog.dismiss();

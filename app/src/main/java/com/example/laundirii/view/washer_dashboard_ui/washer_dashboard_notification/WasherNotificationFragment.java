@@ -1,5 +1,8 @@
 package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_notification;
 
+import static com.example.laundirii.view.washer_dashboard_ui.WasherDashboardActivity.notification_counter_number;
+import static com.example.laundirii.view.washer_dashboard_ui.WasherDashboardActivity.showNotificationCounter;
+
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -43,24 +46,22 @@ public class WasherNotificationFragment extends Fragment {
         String clientUsername = washerSharedPreferences.getString("washerUsername", "");
         washer = dashboardController.getWasher(clientUsername, this.getActivity());
 
+        dashboardController.markNotificationsAsRead(washer.getWasherID(),2,this.getActivity());
+
         // display the listview
-        ListView listView = root.findViewById(R.id.washer_dashboard_fragment_notification_listview);
-        List<Notification> notificationList = dashboardController.getWasherNotification(washer.getWasherID(), getContext());
-        notifications = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, notificationList);
-        listView.setAdapter(notifications);
+        listView = root.findViewById(R.id.washer_dashboard_fragment_notification_listview);
+        displayNotification();
 
-
+        notification_counter_number = 0;
+        showNotificationCounter(notification_counter_number);
         return root;
     }
 
-
-    private void showNotification(Notification notification) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        // This will display the (Title of Notification)
-        builder.setTitle(notification.getTitle());
-
-        // This will display the (Message of Notification)
-        builder.setMessage(notification.getMessage());
+    private void displayNotification()
+    {
+        List<Notification> notificationList = dashboardController.getWasherNotification(washer.getWasherID(), getContext());
+        notifications = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, notificationList);
+        listView.setAdapter(notifications);
     }
 
 
