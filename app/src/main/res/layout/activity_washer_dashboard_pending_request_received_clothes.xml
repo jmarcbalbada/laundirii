@@ -147,7 +147,7 @@
         android:id="@+id/washer_dashboard_fragment_pendingrequest_receivedclothes_acitivity_cancelbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Not Received"
+        android:text="Not Yet"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.476"
