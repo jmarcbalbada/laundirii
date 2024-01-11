@@ -118,9 +118,10 @@ public class WasherDashboardActivity extends AppCompatActivity {
 
             // if washer status is 1 or 0
             int washeractive = dashboardController.getWasherStatus(washer.getWasherID(),getBaseContext());
+            int washerPendingTransaction = dashboardController.getWasherPhasePendingTransaction(washer.getWasherID(),getBaseContext());
             Log.e("PENDINGGG",""+statusSetter);
             //0 AND 0
-        if(statusSetter > 0 && washeractive == 0){
+        if(statusSetter > 0 && washerPendingTransaction > 0 && washeractive == 0){
             washerSwitchStatus.setText("Pending");
             washerSwitchStatus.setChecked(false);
         }else if (statusSetter < 1 && washeractive == 0){
@@ -273,14 +274,22 @@ public class WasherDashboardActivity extends AppCompatActivity {
 
 
                             // check pending deliveries on phase1 and 2
-                            int washerPendingTransaction = dashboardController.getWasherPhasePendingTransaction(washer.getWasherID(),getBaseContext());
-                            Log.e("washerPendingTransaction", washerPendingTransaction + "");
-                            if( washerPendingTransaction > 0){
+                            int statusSetter2 = dashboardController.getWasherPhasePendingTransaction(washer.getWasherID(),getBaseContext());
+
+                            // if washer status is 1 or 0
+                            int washeractive2 = dashboardController.getWasherStatus(washer.getWasherID(),getBaseContext());
+                            int washerPendingTransaction2 = dashboardController.getWasherPhasePendingTransaction(washer.getWasherID(),getBaseContext());
+                            Log.e("PENDINGGG",""+statusSetter2);
+                            //0 AND 0
+                            if(statusSetter2 > 0 && washerPendingTransaction2 > 0 && washeractive2 == 0){
                                 washerSwitchStatus.setText("Pending");
                                 washerSwitchStatus.setChecked(false);
-                            }else{
+                            }else if (statusSetter2 < 1 && washeractive2 == 0){
                                 washerSwitchStatus.setText("Off");
                                 washerSwitchStatus.setChecked(false);
+                            }else {
+                                washerSwitchStatus.setText("On");
+                                washerSwitchStatus.setChecked(true);
                             }
 
                             Toast.makeText(this, "Client have been notified", Toast.LENGTH_SHORT).show();
