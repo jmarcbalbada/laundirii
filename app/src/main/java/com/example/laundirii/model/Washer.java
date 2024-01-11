@@ -16,6 +16,7 @@ public class Washer implements Serializable {
     private String contactNo;
     private double ratePerKg;
     private boolean status;
+    private int overAllRating;
     Connect dbHelper;
 
     //constructors
@@ -28,9 +29,10 @@ public class Washer implements Serializable {
         contactNo = "";
         status = false;
         ratePerKg = 0.0;
+        overAllRating = 1;
     }
 
-    public Washer(int washerID,String user,String pass,String name,String loc,String contact, double ratePerKg, boolean stat)
+    public Washer(int washerID,String user,String pass,String name,String loc,String contact, double ratePerKg, boolean stat, int overAllRating)
     {
         this.washerID = washerID;
         this.username = user;
@@ -40,9 +42,10 @@ public class Washer implements Serializable {
         this.contactNo = contact;
         this.status = stat;
         this.ratePerKg = ratePerKg;
+        this.overAllRating = overAllRating;
     }
 
-    public Washer(String user,String pass,String name,String loc,String contact, double ratePerKg, boolean stat)
+    public Washer(String user,String pass,String name,String loc,String contact, double ratePerKg, boolean stat, int overAllRating)
     {
         this.username = user;
         this.password = pass;
@@ -51,9 +54,19 @@ public class Washer implements Serializable {
         this.contactNo = contact;
         this.status = stat;
         this.ratePerKg = ratePerKg;
+        this.overAllRating = overAllRating;
     }
 
     // GETTERS AND SETTERS
+
+
+    public int getOverAllRating() {
+        return overAllRating;
+    }
+
+    public void setOverAllRating(int overAllRating) {
+        this.overAllRating = overAllRating;
+    }
 
     public int getWasherID()
     {
@@ -121,10 +134,10 @@ public class Washer implements Serializable {
 
     // REGISTER
 
-    public boolean insertWasher(String username, String password, String shopName, String shopLocation, String contactNo, int washerStatus, double ratePerKg, Context context)
+    public boolean insertWasher(String username, String password, String shopName, String shopLocation, String contactNo, int washerStatus, double ratePerKg,int overAllRating, Context context)
     {
         dbHelper = new Connect(context);
-        return dbHelper.insertWasher(username,password,shopName,shopLocation,contactNo,washerStatus,ratePerKg);
+        return dbHelper.insertWasher(username,password,shopName,shopLocation,contactNo,washerStatus,ratePerKg,overAllRating);
     }
 
     @Override
@@ -133,7 +146,8 @@ public class Washer implements Serializable {
         return "\nShop Name: " + shopName + "\n"
                 + "Contact No: " + contactNo + "\n"
                 + "Shop Location: " + shopLocation + "\n"
-                + "Rate per kg.: " + ratePerKg + "\n";
+                + "Rate per kg.: " + ratePerKg + "\n"
+                + "Rating: " + overAllRating + "/5\n";
     }
 
     public void setWasherID(int washerID) {

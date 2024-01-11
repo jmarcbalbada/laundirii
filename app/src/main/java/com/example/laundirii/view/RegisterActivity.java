@@ -284,12 +284,12 @@ public class RegisterActivity extends AppCompatActivity {
                         break;
                     }
                     case 1: {
-                        boolean success = registerController.registerCourier(uname, pword, fname + " " + lname, phone, addr, 1, this);
+                        boolean success = registerController.registerCourier(uname, pword, fname + " " + lname, phone, addr, 1, 1,this);
                         break;
                     }
                     case 2: {
                         double ratePerKg = Double.parseDouble(lname);
-                        boolean success = registerController.registerWasher(uname, pword, fname, addr, phone, 0,ratePerKg,this);
+                        boolean success = registerController.registerWasher(uname, pword, fname, addr, phone, 0,ratePerKg, 1,this);
                         break;
                     }
                 }

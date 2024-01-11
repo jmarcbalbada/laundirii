@@ -20,5 +20,9 @@
             android:id="@+id/client_nav_notification"
             android:icon="@android:drawable/star_big_on"
             android:title="@string/client_menu_notification" />
+        <item
+            android:id="@+id/client_nav_feedback"
+            android:icon="@android:drawable/ic_menu_agenda"
+            android:title="Feedback" />
     </group>
 </menu>
