@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +30,7 @@ import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.model.Phase2Order;
 import com.example.laundirii.model.Washer;
 import com.example.laundirii.view.LoginActivity;
+import com.example.laundirii.view.client_dashboard_ui.ClientDashboardActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -45,6 +47,8 @@ public class WasherDashboardActivity extends AppCompatActivity {
     private Washer washer;
     private TextView WasherNavNameText;
     private TextView WashernavPhoneNumberText;
+    public static int notification_counter_number = 0;
+    public static TextView notificationCounter;
 
     private Switch washerSwitchStatus;
     @Override
@@ -91,6 +95,16 @@ public class WasherDashboardActivity extends AppCompatActivity {
 //        // instantiate navigation bar values
         WasherNavNameText.setText("Good day, " + washer.getShopName() + "!");
         WashernavPhoneNumberText.setText("Contact No: " + washer.getContactNo());
+
+        notification_counter_number = dashboardController.getUnreadNotificationCount(washer.getWasherID(),2,this);
+        if(notification_counter_number > 0)
+        {
+            LayoutInflater li = LayoutInflater.from(WasherDashboardActivity.this);
+            notificationCounter = (TextView) li.inflate(R.layout.notification_counter, null);
+            navigationView.getMenu().findItem(R.id.washer_nav_notification).setActionView(notificationCounter);
+            showNotificationCounter(notification_counter_number);
+        }
+
         // check all pending deliveries on phase order 1 and 2
         // 1,2,3
 //        List<Phase1Order> list1 = dashboardController.getAllPhase1PendingDeliveries(washer.getWasherID(),getBaseContext());
@@ -105,6 +119,7 @@ public class WasherDashboardActivity extends AppCompatActivity {
             // if washer status is 1 or 0
             int washeractive = dashboardController.getWasherStatus(washer.getWasherID(),getBaseContext());
             Log.e("PENDINGGG",""+statusSetter);
+            //0 AND 0
         if(statusSetter > 0 && washeractive == 0){
             washerSwitchStatus.setText("Pending");
             washerSwitchStatus.setChecked(false);
@@ -259,6 +274,7 @@ public class WasherDashboardActivity extends AppCompatActivity {
 
                             // check pending deliveries on phase1 and 2
                             int washerPendingTransaction = dashboardController.getWasherPhasePendingTransaction(washer.getWasherID(),getBaseContext());
+                            Log.e("washerPendingTransaction", washerPendingTransaction + "");
                             if( washerPendingTransaction > 0){
                                 washerSwitchStatus.setText("Pending");
                                 washerSwitchStatus.setChecked(false);
@@ -278,6 +294,18 @@ public class WasherDashboardActivity extends AppCompatActivity {
                         .show();
             }
         });
+    }
+
+    public static void showNotificationCounter(int count)
+    {
+        if (notificationCounter != null) {
+            if (count > 0) {
+                notificationCounter.setText(String.valueOf(count));
+                notificationCounter.setVisibility(View.VISIBLE);
+            } else {
+                notificationCounter.setVisibility(View.GONE);
+            }
+        }
     }
 
 

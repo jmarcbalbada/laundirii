@@ -1,6 +1,7 @@
 package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_clothes_to_return;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.laundirii.R;
 import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.model.Phase2Order;
+import com.example.laundirii.view.washer_dashboard_ui.WasherDashboardActivity;
 
 public class WasherDashboardClothesToReturnClothesHandedToClientActivity extends AppCompatActivity {
 
@@ -62,6 +64,8 @@ public class WasherDashboardClothesToReturnClothesHandedToClientActivity extends
                 String notificationMessage = "You have collected your clothes.";
 
                 dashboardController.sendNotifications(0, selectedOrder.getClient().getCustomerID(), 0, notificationTitle, notificationMessage, getBaseContext());
+                Intent intent = new Intent(WasherDashboardClothesToReturnClothesHandedToClientActivity.this, WasherDashboardActivity.class);
+                startActivity(intent);
             });
 
             builder.setNegativeButton("No", (dialog, which) -> {

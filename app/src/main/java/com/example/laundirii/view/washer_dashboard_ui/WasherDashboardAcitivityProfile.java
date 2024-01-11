@@ -39,7 +39,7 @@ public class WasherDashboardAcitivityProfile extends AppCompatActivity {
 
         // You can set text or perform other operations on the TextViews
         //TODO SET overall rating
-        textViewWasherRating.setText("3/5");
+        textViewWasherRating.setText("Overall Rating: " + washer.getOverAllRating());
         textViewWasherContactNumber.setText("Contact Number: " + washer.getContactNo());
         textViewWasherRate.setText("Rate Kilo:  " + washer.getRatePerKg());
         textViewWasherShopLocation.setText("Shop Location: "+ washer.getShopLocation());

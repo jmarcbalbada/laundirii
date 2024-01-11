@@ -2580,7 +2580,7 @@ public class Connect extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Query the Notification table
-        Cursor cursor = db.rawQuery("SELECT * FROM NOTIFICATION WHERE NOTIFICATION_WASHER_ID = ?", new String[]{Integer.toString(washerID)});
+        Cursor cursor = db.rawQuery("SELECT * FROM NOTIFICATION WHERE NOTIFICATION_WASHER_ID = ? ORDER BY NOTIFICATION_DATETIME DESC", new String[]{Integer.toString(washerID)});
 
         List<Notification> notifications = new ArrayList<>();
 
@@ -3197,7 +3197,7 @@ public class Connect extends SQLiteOpenHelper {
 
         db = this.getReadableDatabase();
         // TODO change the courrier Collect
-        query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_WASHER_ID = ? AND PHASE2_ORDER_STATUS IN (0,10,11,12,13,14,15) OR PHASE2_ORDER_STATUS IN (20,21,22) ORDER BY PHASE2_ORDER_STATUS ASC, PHASE2_DATE_COURIER ASC";
+        query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_WASHER_ID = ? AND PHASE2_ORDER_STATUS IN (0,10,11,12,13,14,15) OR PHASE2_ORDER_STATUS IN (20,21) ORDER BY PHASE2_ORDER_STATUS ASC, PHASE2_DATE_COURIER ASC";
         selectionArgs = new String[]{String.valueOf(washerID)};
 //
         cursor = db.rawQuery(query, selectionArgs);
