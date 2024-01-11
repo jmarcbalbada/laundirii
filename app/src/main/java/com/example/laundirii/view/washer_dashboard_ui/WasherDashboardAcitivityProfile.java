@@ -19,6 +19,7 @@ public class WasherDashboardAcitivityProfile extends AppCompatActivity {
     private TextView textViewWasherRate;
     private TextView textViewWasherShopLocation;
     private TextView textViewWasherShopName;
+    private TextView textViewWasherRating;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +29,7 @@ public class WasherDashboardAcitivityProfile extends AppCompatActivity {
         washer =  (Washer) getIntent().getSerializableExtra("washer");
 
         buttonWasherProfileConfirm = findViewById(R.id.buttonWasherProfileConfirm);
+        textViewWasherRating = findViewById(R.id.textViewOverallRating);
         textViewWasherContactNumber = findViewById(R.id.textViewWasherContactNumber);
         textViewWasherRate = findViewById(R.id.textViewWasherRate);
         textViewWasherShopLocation = findViewById(R.id.textViewWasherShopLocation);
@@ -36,6 +38,8 @@ public class WasherDashboardAcitivityProfile extends AppCompatActivity {
         // Now you can use these views in your code
 
         // You can set text or perform other operations on the TextViews
+        //TODO SET overall rating
+        textViewWasherRating.setText("3/5");
         textViewWasherContactNumber.setText("Contact Number: " + washer.getContactNo());
         textViewWasherRate.setText("Rate Kilo:  " + washer.getRatePerKg());
         textViewWasherShopLocation.setText("Shop Location: "+ washer.getShopLocation());

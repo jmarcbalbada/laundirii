@@ -24,6 +24,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.laundirii.R;
 import com.example.laundirii.controller.DashboardController;
 import com.example.laundirii.databinding.ActivityWasherDashboardUiBinding;
+import com.example.laundirii.model.Orders;
 import com.example.laundirii.model.Phase1Order;
 import com.example.laundirii.model.Phase2Order;
 import com.example.laundirii.model.Washer;
@@ -31,7 +32,9 @@ import com.example.laundirii.view.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 public class WasherDashboardActivity extends AppCompatActivity {
@@ -129,13 +132,34 @@ public class WasherDashboardActivity extends AppCompatActivity {
 
                 // client with status (11,12,13,14,15) will receive notification
                 List<Phase2Order> Phase2list = dashboardController.getWasherPhase2StatusGetter(washer.getWasherID(), getBaseContext());
-                Phase2list.forEach(client -> {dashboardController.sendNotifications(0, client.getClient().getCustomerID(), 0, notificationTitle3, notificationMessage3, getBaseContext());});
+//                Phase2list.forEach(client -> {dashboardController.sendNotifications(0, client.getClient().getCustomerID(), 0, notificationTitle3, notificationMessage3, getBaseContext());});
 
                 // client with status (0,1,2,3) will receive notification
                 List<Phase1Order> Phase1list = dashboardController.getWasherPhase1StatusGetter(washer.getWasherID(),getBaseContext());
-                Phase1list.forEach(client -> {dashboardController.sendNotifications(0, client.getClient().getCustomerID(), 0, notificationTitle3, notificationMessage3, getBaseContext());});
+//                Phase1list.forEach(client -> {dashboardController.sendNotifications(0, client.getClient().getCustomerID(), 0, notificationTitle3, notificationMessage3, getBaseContext());});
+
+                List<Orders> sendnotif = new ArrayList<>();
+                sendnotif.addAll(Phase1list);
+                sendnotif.addAll(Phase2list);
+
+                HashMap<Integer, Integer> map = new HashMap<>();
+                for (Orders orders : sendnotif) {
+                    if (orders instanceof Phase1Order) {
+                        int value = ((Phase1Order) orders).getClient().getCustomerID();
+                        map.put(value, value);  // Using put directly, as it replaces the value for an existing key
+                    }
+                    if (orders instanceof Phase2Order) {
+                        int value = ((Phase2Order) orders).getClient().getCustomerID();
+                        map.put(value, value);  // Using put directly, as it replaces the value for an existing key
+                    }
+                }
+
+                map.forEach((key, value) -> {
+                    dashboardController.sendNotifications(0, key, 0, notificationTitle3, notificationMessage3, getBaseContext());
+                });
 
 
+                washerSwitchStatus.setChecked(true);
                 washerSwitchStatus.setText("On");
             } else if(isChecked == false){
                 View datePickerView = getLayoutInflater().inflate(R.layout.washer_date_picker_layout, null);
@@ -168,22 +192,22 @@ public class WasherDashboardActivity extends AppCompatActivity {
                             // check if there are pending deliveries and notify the clients
 
                             // Send notification to all phase1 Orders Clients
-                            String notificaitonTitle = washer.getShopName() + " - Important Shop Closing Notice";
-                            String notificationMessage = "Dear valued customer,\n\n" +
-                                    "We hope this message finds you well. We would like to inform you that our shop, " + washer.getShopName() +
-                                    ", will be close and will reopen on " +
-                                    year + "-" + (month + 1) + "-" + dayOfMonth + ".";
-
-                            // sending the message using controller
-                            // client with status (0,1,2,3) will receive notification
-//                            List<Phase1Order> Phase1list = dashboardController.getPendingDeliveriesOnWasher(washer.getWasherID(), getBaseContext());
-                            //TODO send notifiction to phase1 order 0,1,2,3,4,5,6
-
+//                            String notificaitonTitle = washer.getShopName() + " - Important Shop Closing Notice";
+//                            String notificationMessage = "Dear valued customer,\n\n" +
+//                                    "We hope this message finds you well. We would like to inform you that our shop, " + washer.getShopName() +
+//                                    ", will be close and will reopen on " +
+//                                    year + "-" + (month + 1) + "-" + dayOfMonth + ".";
+//
+//                            // sending the message using controller
+//                            // client with status (0,1,2,3) will receive notification
+////                            List<Phase1Order> Phase1list = dashboardController.getPendingDeliveriesOnWasher(washer.getWasherID(), getBaseContext());
+//                            //TODO send notifiction to phase1 order 0,1,2,3,4,5,6
+//
                             List<Phase1Order> Phase1list = dashboardController.getWasherPhase1StatusGetter(washer.getWasherID(),getBaseContext());
-                            Log.e("PHASE1 LLIST","" + Phase1list.size() );
-                            Log.e("PHASE1 LLIST","" + washer.getWasherID() );
-                            Phase1list.forEach(client -> {
-                                dashboardController.sendNotifications(0, client.getClient().getCustomerID(), 0, notificaitonTitle, notificationMessage, getBaseContext());});
+//                            Log.e("PHASE1 LLIST","" + Phase1list.size() );
+//                            Log.e("PHASE1 LLIST","" + washer.getWasherID() );
+//                            Phase1list.forEach(client -> {
+//                                dashboardController.sendNotifications(0, client.getClient().getCustomerID(), 0, notificaitonTitle, notificationMessage, getBaseContext());});
 
                             // send notification to all phase2 Orders Clients
                             String notificaitonTitle1 = washer.getShopName() + " - Shop Closing Notice";
@@ -194,16 +218,37 @@ public class WasherDashboardActivity extends AppCompatActivity {
                                     "clothes before our shop closes. For \n" +
                                     "those with incoming or outcoming deliveries \n" +
                                     "dont worry we will make sure to process you \n" +
-                                    "laundry";
+                                    "laundry. \n";
 
                             // sending the message using controller
-//                            List<Phase2Order> Phase2list = dashboardController.getWasherPhase2ClohtesToReturn(washer.getWasherID(), getBaseContext());
-                            //TODO send notification to phase2 Order 0,11,12,13,14,15,20,21,22
-                            List<Phase2Order> Phase2list = dashboardController.getWasherPhase2StatusGetter(washer.getWasherID(), getBaseContext());
-                            // client with status (11,12,13,14,15) will receive notification
-                            Phase2list.forEach(client -> {
-                                    dashboardController.sendNotifications(0, client.getClient().getCustomerID(), 0, notificaitonTitle1, notificationMessage2, getBaseContext());
-                                });
+                            List<Phase2Order> Phase2list = dashboardController.getWasherPhase2ClohtesToReturn(washer.getWasherID(), getBaseContext());
+//                            //TODO send notification to phase2 Order 0,11,12,13,14,15,20,21,22
+//                            List<Phase2Order> Phase2list = dashboardController.getWasherPhase2StatusGetter(washer.getWasherID(), getBaseContext());
+//                            // client with status (11,12,13,14,15) will receive notification
+//                            Phase2list.forEach(client -> {
+//                                    dashboardController.sendNotifications(0, client.getClient().getCustomerID(), 0, notificaitonTitle1, notificationMessage2, getBaseContext());
+//                                });
+
+                            List<Orders> sendnotif = new ArrayList<>();
+                            sendnotif.addAll(Phase1list);
+                            sendnotif.addAll(Phase2list);
+
+                            HashMap<Integer, Integer> map = new HashMap<>();
+                            for (Orders orders : sendnotif) {
+                                if (orders instanceof Phase1Order) {
+                                    int value = ((Phase1Order) orders).getClient().getCustomerID();
+                                    map.put(value, value);  // Using put directly, as it replaces the value for an existing key
+                                }
+                                if (orders instanceof Phase2Order) {
+                                    int value = ((Phase2Order) orders).getClient().getCustomerID();
+                                    map.put(value, value);  // Using put directly, as it replaces the value for an existing key
+                                }
+                            }
+
+                            map.forEach((key, value) -> {
+                                dashboardController.sendNotifications(0, key, 0, notificaitonTitle1, notificationMessage2, getBaseContext());
+                            });
+
 
                             //TODO
                             // send message to self regarding make sure there are no pending deliveries within next 2 days
