@@ -2655,7 +2655,7 @@ public class Connect extends SQLiteOpenHelper {
     public List<Phase2Order> getWasherPhase2ClohtesToReturn(int washerID) {
         SQLiteDatabase db = this.getReadableDatabase();
         // TODO change the courrier Collect
-        String query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_WASHER_ID = ? AND PHASE2_ORDER_STATUS IN (10,11,12,13,14,15,16) OR PHASE2_ORDER_STATUS IN (20,21,22) ORDER BY PHASE2_ORDER_STATUS ASC, PHASE2_DATE_COURIER ASC";
+        String query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_WASHER_ID = ? AND PHASE2_ORDER_STATUS IN (10,11,12,13,14,15) OR PHASE2_ORDER_STATUS IN (20,21) ORDER BY PHASE2_ORDER_STATUS ASC, PHASE2_DATE_COURIER ASC";
         String[] selectionArgs = {String.valueOf(washerID)};
 //
         Cursor cursor = db.rawQuery(query, selectionArgs);
@@ -3029,6 +3029,7 @@ public class Connect extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS IN (0,1,2,3,4,5,6);";
+//        String query = "SELECT * FROM PHASE1_ORDER WHERE PHASE1_ORDER_WASHER_ID = ? AND PHASE1_ORDER_STATUS IN (0,1,2,3,4,5,6);";
         String[] selectionArgs = {String.valueOf(washerID)};
 
         Cursor cursor = db.rawQuery(query, selectionArgs);
@@ -3063,7 +3064,7 @@ public class Connect extends SQLiteOpenHelper {
     public List<Phase2Order> getWasherPhase2StatusGetter(int washerID) {
         SQLiteDatabase db = this.getReadableDatabase();
         // TODO change the courrier Collect
-        String query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_WASHER_ID = ? AND PHASE2_ORDER_STATUS IN (0,10,11,12,13,14,15) OR PHASE2_ORDER_STATUS IN (20,21,22) ORDER BY PHASE2_ORDER_STATUS ASC, PHASE2_DATE_COURIER ASC";
+        String query = "SELECT * FROM PHASE2_ORDER WHERE PHASE2_ORDER_WASHER_ID = ? AND PHASE2_ORDER_STATUS IN (0,10,11,12,13,14,15) OR PHASE2_ORDER_STATUS IN (20,21) ORDER BY PHASE2_ORDER_STATUS ASC, PHASE2_DATE_COURIER ASC";
         String[] selectionArgs = {String.valueOf(washerID)};
 //
         Cursor cursor = db.rawQuery(query, selectionArgs);

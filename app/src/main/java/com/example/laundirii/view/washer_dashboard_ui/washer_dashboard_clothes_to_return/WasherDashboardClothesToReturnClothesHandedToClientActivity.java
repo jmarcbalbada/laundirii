@@ -1,5 +1,6 @@
 package com.example.laundirii.view.washer_dashboard_ui.washer_dashboard_clothes_to_return;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -48,7 +49,26 @@ public class WasherDashboardClothesToReturnClothesHandedToClientActivity extends
         TextViewDescription.setText("The client will pick up their laundry, and pay the total charge.\n\n Note: total charge includes the courier to washer delivery fee");  // Set text to blank
 
         buttonReceived.setOnClickListener(v -> {
-            // send notification
+            AlertDialog.Builder builder = new AlertDialog.Builder(WasherDashboardClothesToReturnClothesHandedToClientActivity.this);
+            builder.setTitle("Confirm Clothes Handover");
+            builder.setMessage("Have you handed over the clothes to the client?");
+
+            builder.setPositiveButton("Yes", (dialog, which) -> {
+                // User clicked Yes, update phase2 status to 21
+                dashboardController.updatePhase2OrderStatus(selectedOrder.getOrderID(), 21, getBaseContext());
+
+                // Send notification
+                String notificationTitle = selectedOrder.getWasher().getShopName() + " - Clothes collected";
+                String notificationMessage = "You have collected your clothes.";
+
+                dashboardController.sendNotifications(0, selectedOrder.getClient().getCustomerID(), 0, notificationTitle, notificationMessage, getBaseContext());
+            });
+
+            builder.setNegativeButton("No", (dialog, which) -> {
+                // User clicked No, do nothing or handle as needed
+            });
+
+            builder.show();
         });
 
 

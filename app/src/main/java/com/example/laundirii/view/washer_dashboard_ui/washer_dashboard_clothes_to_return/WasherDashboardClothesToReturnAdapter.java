@@ -78,11 +78,6 @@ public class WasherDashboardClothesToReturnAdapter extends RecyclerView.Adapter<
                 // client change the status to 16 mark the item as received
                 setCourierArrivedStyle(holder,order);
                 break;
-            case 16:
-
-                // completed
-                setPhase2OrderCompleteTransactionStyle(holder,order);
-                break;
             case 20:
                 // client is on the way
                 setPhase2OrderSelfCollectClientOnTheWay(holder,order);
@@ -91,19 +86,11 @@ public class WasherDashboardClothesToReturnAdapter extends RecyclerView.Adapter<
                 // messagee did you received the payment?
                 setPhase2OrderSelfCollectWasherReceivedPayment(holder,order);
                 break;
-            case 22:
-                // messagee did you received the payment?
-                setPhase2SelfCollectCompletedStyle(holder,order);
-                break;
 
         }
     }
 
-    private void setPhase2SelfCollectCompletedStyle(ClothesToReturnHolder holder, Phase2Order order) {
-        initialize(holder,order);
-        holder.textViewOrderId.setText("Client Collect");
 
-    }
 
     private void setPhase2OrderSelfCollectClientOnTheWay(ClothesToReturnHolder holder, Phase2Order order) {
         initialize(holder,order);
