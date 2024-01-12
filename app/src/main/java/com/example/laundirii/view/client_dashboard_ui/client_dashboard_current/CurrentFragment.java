@@ -183,6 +183,10 @@ public class CurrentFragment extends Fragment {
                 dashboardController.updatePhase1OrderStatus(phase1Order.getOrderID(), -1,getContext());
                 displayPendingOrders();
                 Toast.makeText(getContext(), "Transaction Cancelled!", Toast.LENGTH_SHORT).show();
+                String notificationtitlea = "System Notice - Canceled Booking";
+                String notificationmessage = "Transaction under the order ID " + phase1Order.getOrderID() + " has been cancelled.";
+                dashboardController.sendNotifications(phase1Order.getWasher().getWasherID(),0,0,notificationtitlea,notificationmessage,getContext());
+                dashboardController.sendNotifications(0,phase1Order.getClient().getCustomerID(),0,notificationtitlea,notificationmessage,getContext());
                 dialog.dismiss();
             }
         });    }
