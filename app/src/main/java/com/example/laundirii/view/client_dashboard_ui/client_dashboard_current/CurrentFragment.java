@@ -86,7 +86,9 @@ public class CurrentFragment extends Fragment {
                 {
                     case -1:
                         break;
-                    case 0: showCustomDialog(selectedOrder);
+                    case 0:
+                        showOnCancelDialog(selectedOrder);
+//                        showCustomDialog(selectedOrder);
                         break;
                     case 1:
                         break;
@@ -124,7 +126,7 @@ public class CurrentFragment extends Fragment {
         return dashboardController.getPendingDeliveryOnClient(client.getCustomerID(), getActivity());
     }
 
-    // timer is active iff the dialog is active and showingi
+    // timer is active iff the dialog is active and showing
     private void showCustomDialog(Phase1Order phase1Order) {
         // Inflate the layout for the dialog
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.popup_client_timer_countdown, null);
@@ -150,6 +152,40 @@ public class CurrentFragment extends Fragment {
             }
         });
     }
+
+    private void showOnCancelDialog(Phase1Order phase1Order)
+    {
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.popup_cancellation, null);
+
+        // Create the AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+        builder.setTitle("Reminder!");
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        TextView textViewContinue = dialogView.findViewById(R.id.textViewOnCancelContinueButton);
+        TextView textViewCancel = dialogView.findViewById(R.id.textViewOnCancelCancelButton);
+
+
+        textViewContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        textViewCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dashboardController.updatePhase1OrderStatus(phase1Order.getOrderID(), -1,getContext());
+                displayPendingOrders();
+                Toast.makeText(getContext(), "Transaction Cancelled!", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });    }
 
     private void showCustomDialogReadyCollect(Phase1Order phase1Order) {
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.popup_client_ready_to_collect, null);
