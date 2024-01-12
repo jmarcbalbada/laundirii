@@ -2149,6 +2149,7 @@ public class Connect extends SQLiteOpenHelper {
                     Client client = getClient(cursor.getInt(1));
                     Washer washer = getWasher(cursor.getInt(2));
                     String notificationtitle = washer.getShopName() +" - Cancellation Notice";
+                    setReturnPhase1OrderStatus(cursor.getInt(0),-1);
                     String notificationMessage ="Your booking has been cancelled. We are busy at the moment please try again after 30 minutes";
                     sendNotifications(0,client.getCustomerID(),0,notificationtitle,notificationMessage);
                     continue;
