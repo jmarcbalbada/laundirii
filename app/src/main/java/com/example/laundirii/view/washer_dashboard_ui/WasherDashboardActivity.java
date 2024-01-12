@@ -105,38 +105,8 @@ public class WasherDashboardActivity extends AppCompatActivity {
             showNotificationCounter(notification_counter_number);
         }
 
-        // check all pending deliveries on phase order 1 and 2
-        // 1,2,3
-//        List<Phase1Order> list1 = dashboardController.getAllPhase1PendingDeliveries(washer.getWasherID(),getBaseContext());
-        // 10,11,12,13
-//        List<Phase2Order> list2 = dashboardController.getAllPhase2PendingDeliveries(washer.getWasherID(),getBaseContext());
-
-        // set for shop status and set its value to the previous value upon on create
-
-            // check its pending deliveries
-            int statusSetter = dashboardController.getWasherPhasePendingTransaction(washer.getWasherID(),getBaseContext());
-
-            // if washer status is 1 or 0
-            int washeractive = dashboardController.getWasherStatus(washer.getWasherID(),getBaseContext());
-            int washerPendingTransaction = dashboardController.getWasherPhasePendingTransaction(washer.getWasherID(),getBaseContext());
-            Log.e("PENDINGGG",""+statusSetter);
-            //0 AND 0
-        if(statusSetter > 0 && washerPendingTransaction > 0 && washeractive == 0){
-            washerSwitchStatus.setText("Pending");
-            washerSwitchStatus.setChecked(false);
-        }else if (statusSetter < 1 && washeractive == 0){
-            washerSwitchStatus.setText("Off");
-            washerSwitchStatus.setChecked(false);
-        }else {
-            washerSwitchStatus.setText("On");
-            washerSwitchStatus.setChecked(true);
-        }
-
-        // TODO: auto cancel if more that 2days and still not settle the deliveries
-
-
-        // send notification penalty
-
+        // update the UI with the current washer on/off status
+        udpateWasherStatus();
 
         washerSwitchStatus.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {
@@ -272,25 +242,8 @@ public class WasherDashboardActivity extends AppCompatActivity {
                             String notificationMessage3 = "Please make sure to deliver all pending deliveries withn 2 days or the shop will face consequenses";
                             dashboardController.sendNotifications(washer.getWasherID(),0,0,notificationTitle3,notificationMessage3,getBaseContext());
 
+                            udpateWasherStatus();
 
-                            // check pending deliveries on phase1 and 2
-                            int statusSetter2 = dashboardController.getWasherPhasePendingTransaction(washer.getWasherID(),getBaseContext());
-
-                            // if washer status is 1 or 0
-                            int washeractive2 = dashboardController.getWasherStatus(washer.getWasherID(),getBaseContext());
-                            int washerPendingTransaction2 = dashboardController.getWasherPhasePendingTransaction(washer.getWasherID(),getBaseContext());
-                            Log.e("PENDINGGG",""+statusSetter2);
-                            //0 AND 0
-                            if(statusSetter2 > 0 && washerPendingTransaction2 > 0 && washeractive2 == 0){
-                                washerSwitchStatus.setText("Pending");
-                                washerSwitchStatus.setChecked(false);
-                            }else if (statusSetter2 < 1 && washeractive2 == 0){
-                                washerSwitchStatus.setText("Off");
-                                washerSwitchStatus.setChecked(false);
-                            }else {
-                                washerSwitchStatus.setText("On");
-                                washerSwitchStatus.setChecked(true);
-                            }
 
                             Toast.makeText(this, "Client have been notified", Toast.LENGTH_SHORT).show();
                         })
@@ -303,6 +256,24 @@ public class WasherDashboardActivity extends AppCompatActivity {
                         .show();
             }
         });
+    }
+    public void udpateWasherStatus(){
+        // check pending deliveries on phase1 and 2
+        int pendingPhase1deliveries = dashboardController.getWasherPhasePendingTransaction(washer.getWasherID(),getBaseContext());
+        int pendingPhase2deliveries = dashboardController.getWasherPhasePendingTransaction(washer.getWasherID(),getBaseContext());
+        // check if washer status if off
+        int washerStatus = dashboardController.getWasherStatus(washer.getWasherID(),getBaseContext());
+
+        if(pendingPhase1deliveries > 0 && pendingPhase2deliveries > 0 && washerStatus == 0){
+            washerSwitchStatus.setText("Pending");
+            washerSwitchStatus.setChecked(false);
+        }else if (pendingPhase1deliveries < 1 && pendingPhase2deliveries == 0){
+            washerSwitchStatus.setText("Off");
+            washerSwitchStatus.setChecked(false);
+        }else {
+            washerSwitchStatus.setText("On");
+            washerSwitchStatus.setChecked(true);
+        }
     }
 
     public static void showNotificationCounter(int count)

@@ -2142,10 +2142,15 @@ public class Connect extends SQLiteOpenHelper {
 
 
 // Check if the formatted date is 5 minutes or more greater than the current date
-                boolean result = isFiveMinutesGreater( formattedDate,currentDate);
+                boolean greaterthanoneminute = isFiveMinutesGreater( formattedDate,currentDate);
 
                 // dont store if phase1order is greater than 1 minute
-                if(result == true && cursor.getInt(12) == 0){
+                if(greaterthanoneminute == true && cursor.getInt(12) == 0){
+                    Client client = getClient(cursor.getInt(1));
+                    Washer washer = getWasher(cursor.getInt(2));
+                    String notificationtitle = washer.getShopName() +" - Cancellation Notice";
+                    String notificationMessage ="Your booking has been cancelled. We are busy at the moment please try again after 30 minutes";
+                    sendNotifications(0,client.getCustomerID(),0,notificationtitle,notificationMessage);
                     continue;
                 }
 
